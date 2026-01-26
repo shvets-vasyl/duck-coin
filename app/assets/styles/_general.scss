@@ -8,10 +8,9 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-user-drag: none;
   font-size: vw(16);
-  text-transform: uppercase;
   background: var(--c-milk);
   color: var(--c-black);
-  font-family: var(--f-regular);
+  font-family: var(--f-medium);
 }
 ::selection {
   color: var(--c-white);

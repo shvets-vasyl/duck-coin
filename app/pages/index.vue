@@ -1,6 +1,6 @@
 <template>
   <main class="main-page">
-    <CommonHeader />
+    <!-- <CommonHeader /> -->
     <!-- <CommonMenu /> -->
 
     <PageMainHero />

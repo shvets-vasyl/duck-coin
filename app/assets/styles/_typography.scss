@@ -1,1 +1,96 @@
 @use "./utils/mixins" as *;
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  font-family: var(--f-extrabold);
+}
+
+.sub-l,
+.sub-m,
+.sub-s {
+  font-family: var(--f-semibold);
+}
+
+.body-xl,
+.body-l,
+.body-m,
+.body-s,
+.cap-m,
+.cap-s,
+.cta {
+  font-family: var(--f-medium);
+}
+
+.h1 {
+  font-size: 6rem;
+  line-height: 6rem;
+}
+.h2 {
+  font-size: 4.5rem;
+  line-height: 4.5rem;
+}
+.h3 {
+  font-size: 3.5rem;
+  line-height: 3.5rem;
+}
+.h4 {
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+}
+.h5 {
+  font-size: 2rem;
+  line-height: 2rem;
+}
+
+.sub-l {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+.sub-m {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+}
+.sub-s {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.body-xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.body-l {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.body-m {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.body-s {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+.cap-m,
+.cap-s,
+.cta {
+  font-family: var(--f-medium);
+}
+.cap-m {
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+.cap-s {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+}
+
+.cta {
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: -0.0075em;
+}

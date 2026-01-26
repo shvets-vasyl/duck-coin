@@ -1,9 +1,29 @@
 @font-face {
-  font-family: "CodecPro-Thin";
+  font-family: "Nohemi-ExtraBold";
   src:
-    url("../fonts/CodecPro/CodecPro-Thin.woff2"),
-    url("../fonts/CodecPro/CodecPro-Thin.woff"),
-    url("../fonts/CodecPro/CodecPro-Thin.otf");
+    url("../fonts/Nohemi/Nohemi-ExtraBold.woff2"),
+    url("../fonts/Nohemi/Nohemi-ExtraBold.woff"),
+    url("../fonts/Nohemi/Nohemi-ExtraBold.otf");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins-Medium";
+  src:
+    url("../fonts/Poppins/Poppins-Medium.woff2"),
+    url("../fonts/Poppins/Poppins-Medium.woff"),
+    url("../fonts/Poppins/Poppins-Medium.otf");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins-SemiBold";
+  src:
+    url("../fonts/Poppins/Poppins-SemiBold.woff2"),
+    url("../fonts/Poppins/Poppins-SemiBold.woff"),
+    url("../fonts/Poppins/Poppins-SemiBold.otf");
   font-style: normal;
   font-display: swap;
 }
