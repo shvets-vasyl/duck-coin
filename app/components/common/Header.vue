@@ -1,0 +1,15 @@
+<template>
+  <header class="header">header</header>
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped lang="scss">
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-header);
+}
+</style>

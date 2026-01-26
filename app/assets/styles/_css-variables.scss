@@ -1,0 +1,42 @@
+@use "./utils/mixins" as *;
+
+// viewport
+
+:root {
+  --viewport: 1440;
+
+  @include mobile {
+    --viewport: 375;
+  }
+}
+
+// fonts
+
+:root {
+  --f-regular: "CodecPro-Thin";
+}
+
+// transitions
+
+:root {
+  --t-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+// colors
+
+:root {
+  --c-black: rgb(0, 0, 0);
+  --c-white: rgb(255, 255, 255);
+  --c-milk: rgb(249, 250, 251);
+}
+
+// z-index
+
+:root {
+  --z-header: 3000;
+  --z-menu: 2000;
+  --z-popup: 5000;
+  --z-loader: 9000;
+  --z-preloader: 9999;
+  --z-cover: 100;
+}
