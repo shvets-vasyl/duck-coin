@@ -1,27 +1,75 @@
 <template>
   <section class="hero">
-    <h1 class="h1">H1</h1>
-    <h2 class="h2">H2</h2>
-    <h3 class="h3">H3</h3>
-    <h4 class="h4">H4</h4>
-    <h5 class="h5">H5</h5>
+    <div class="circles-wrap">
+      <IconCircles />
+    </div>
+    <div class="content">
+      <div class="hero-tip cap-m">
+        <CommonTip text="The Most Based Launchpad on Solana" />
+      </div>
 
-    <p class="sub-l">Subheading Large</p>
-    <p class="sub-m">Subheading Medium</p>
-    <p class="sub-s">Subheading Small</p>
+      <h1 class="title h1">$DUCK Presale is Live!</h1>
+      <p class="subtitle sub-s">
+        Early Price. Limited Time. No Second Chances.
+      </p>
 
-    <p class="body-xl">Body Extra Large</p>
-    <p class="body-l">Body Large</p>
-    <p class="body-m">Body Medium</p>
-    <p class="body-s">Body Small</p>
+      <div class="logo">
+        <img
+          class="duck-img"
+          draggable="false"
+          src="/images/main/duck-1.svg"
+          role="presentation"
+        />
+      </div>
 
-    <p class="cap-m">Caption Medium</p>
-    <p class="cap-s">Caption Small</p>
-
-    <p class="cta">CTA Standart</p>
+      <div class="descr body-m">
+        <p>The first meme coin launchpad with contract-level rug protection.</p>
+        <p>No trust required – just code that actually works.</p>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.hero {
+  min-height: 100vh;
+  padding: 7rem 1.5rem 1.5rem;
+  text-align: center;
+  background: var(--c-yellow);
+  border-radius: 0 0 3.5rem 3.5rem;
+  position: relative;
+}
+.circles-wrap {
+  position: absolute;
+  top: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  width: 82.3125rem;
+}
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.hero-tip {
+  transform: rotate(3deg);
+  margin-bottom: 1.5rem;
+}
+.title {
+  margin-bottom: 1rem;
+}
+.logo {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-end;
+  margin-left: -11.25rem;
+}
+.duck-img {
+  width: 55.875rem;
+}
+</style>
