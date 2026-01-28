@@ -9,6 +9,8 @@
     <PageMainLaunchpad />
     <PageMainWhy />
     <PageMainTokenomics />
+    <PageMainBuilt />
+    <PageMainPlan />
   </main>
 </template>
 
