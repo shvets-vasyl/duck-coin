@@ -8,6 +8,7 @@
     <PageMainGrowing />
     <PageMainLaunchpad />
     <PageMainWhy />
+    <PageMainTokenomics />
   </main>
 </template>
 

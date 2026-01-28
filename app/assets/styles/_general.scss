@@ -104,3 +104,10 @@ html.lenis {
   flex-direction: column;
   align-items: center;
 }
+.base-card {
+  border-radius: 1.5rem;
+  border: 0.0938rem solid var(--c-grey-3);
+  background: var(--c-white);
+  padding: 1.5rem;
+  width: 100%;
+}
