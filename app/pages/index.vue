@@ -4,20 +4,19 @@
     <!-- <CommonMenu /> -->
 
     <PageMainHero />
-    <PageMainCalculator />
+    <PageMainCalculate />
     <PageMainGrowing />
     <PageMainLaunchpad />
     <PageMainWhy />
     <PageMainTokenomics />
     <PageMainBuilt />
     <PageMainPlan />
+    <SectionJoin />
+
+    <CommonFooter />
   </main>
 </template>
 
-<script setup lang="ts">
-onMounted(() => {
-  useLockScroll(false)
-})
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss"></style>

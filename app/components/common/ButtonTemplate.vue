@@ -1,14 +1,19 @@
 <template>
-  <div class="btn-template cta-s" :class="{ yellow, small, big }">
+  <div
+    class="btn-template cta-s"
+    :class="{ yellow, small, big, extra, disabled }"
+  >
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps<{
+  disabled?: boolean
   yellow?: boolean
   small?: boolean
   big?: boolean
+  extra?: boolean
 }>()
 </script>
 
@@ -25,8 +30,15 @@ defineProps<{
   align-items: center;
   transition: all 0.4s var(--t-ease);
 }
+.btn-template.disabled {
+  pointer-events: none;
+}
 .btn-template.big {
   height: 3.5rem;
+  width: 100%;
+}
+.btn-template.extra {
+  height: 4.5rem;
   width: 100%;
 }
 .btn-template.small {

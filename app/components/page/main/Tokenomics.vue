@@ -32,17 +32,7 @@
             <h5 class="item-percent h5">{{ formatPercent(value) }}</h5>
           </div>
 
-          <div class="item-progress-wrap">
-            <div class="item-progress">
-              <div
-                class="progress-percent"
-                :style="{
-                  width: `${value}%`,
-                  backgroundColor: color,
-                }"
-              />
-            </div>
-          </div>
+          <CommonProgress :percent="value" :color="color" />
         </div>
       </div>
 
@@ -96,17 +86,7 @@
             <h5 class="item-percent h5">{{ formatPercent(value) }}</h5>
           </div>
 
-          <div class="item-progress-wrap">
-            <div class="item-progress">
-              <div
-                class="progress-percent"
-                :style="{
-                  width: `${value}%`,
-                  backgroundColor: color,
-                }"
-              />
-            </div>
-          </div>
+          <CommonProgress :percent="value" :color="color" />
         </div>
       </div>
     </div>
@@ -349,24 +329,6 @@ const arcs = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-}
-.item-progress-wrap {
-  width: 100%;
-  border-radius: 6.25rem;
-  border: 0.0625rem solid var(--c-black);
-  background: var(--c-white);
-  height: 1.5rem;
-  padding: 0.25rem;
-}
-.item-progress {
-  width: 100%;
-  height: 100%;
-  border-radius: 6.25rem;
-  background: var(--c-grey-3);
-}
-.progress-percent {
-  height: 100%;
-  border-radius: 6.25rem;
 }
 .left,
 .right {

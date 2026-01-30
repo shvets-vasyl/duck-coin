@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <!-- <CommonPreloader v-if="!preloaderDone" />
-    <CommonLoader /> -->
+    <CommonPreloader v-if="!preloaderDone" />
+    <!-- <CommonLoader /> -->
 
     <NuxtPage />
   </div>
