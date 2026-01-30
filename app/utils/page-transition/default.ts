@@ -1,6 +1,5 @@
 import type { TransitionProps } from "vue"
 import type { RouteLocationNormalized } from "#vue-router"
-import type { HeaderStateInterface } from "@/types/general"
 import gsap from "gsap"
 
 export default function defaultTransition(
@@ -9,7 +8,6 @@ export default function defaultTransition(
 ) {
   const transitionDone = useState("transition-done")
   const preloaderDone = useState("preloader-done")
-  const headerState = useState<HeaderStateInterface>("header-state")
   const duration = 1
 
   to.meta.pageTransition = { ...(to.meta.pageTransition as TransitionProps) }
@@ -25,24 +23,15 @@ export default function defaultTransition(
     transitionDone.value = false
     preloaderDone.value = true
 
-    gsap.set(".transition-loader", {
-      opacity: 1,
-    })
-
     const tl = gsap.timeline({
       onComplete() {
         ScrollTrigger.killAll()
-        headerState.value.white = false
-        headerState.value.onlyBtnWhite = false
-        headerState.value.instant = false
-        headerState.value.isMenuOpen = false
         done()
       },
     })
 
-    tl.to(".transition-loader .overlay", {
-      x: 0,
-      xPercent: 0,
+    tl.to(_el, {
+      opacity: 0,
       duration,
     })
   }
@@ -56,13 +45,9 @@ export default function defaultTransition(
       },
     })
 
-    tl.to(".transition-loader", {
+    tl.from(_el, {
       opacity: 0,
       duration,
-    })
-
-    tl.set(".transition-loader .overlay", {
-      xPercent: 100,
     })
   }
 

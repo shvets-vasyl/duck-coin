@@ -1,5 +1,5 @@
 <template>
-  <section class="join">
+  <section class="join" :class="{ white }">
     <img
       class="duck-img"
       draggable="false"
@@ -15,13 +15,17 @@
       </p>
 
       <div class="socials-wrap">
-        <CommonSocials />
+        <CommonSocials :yellow="white" />
       </div>
     </div>
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{
+  white?: boolean
+}>()
+</script>
 
 <style scoped lang="scss">
 .join {
@@ -29,6 +33,10 @@
   background: var(--c-yellow);
   position: relative;
   overflow: hidden;
+}
+.join.white {
+  background: transparent;
+  border-bottom: 0.125rem solid var(--c-black);
 }
 .title {
   margin-bottom: 1rem;

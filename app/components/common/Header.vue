@@ -7,14 +7,16 @@
     </div>
 
     <nav class="nav">
-      <NuxtLink
-        v-for="({ text, link }, i) in nav"
-        :key="i"
-        class="nav-item cta-s hover-fade"
-        :to="link"
-      >
-        {{ text }}
-      </NuxtLink>
+      <template v-if="!hideNav">
+        <NuxtLink
+          v-for="({ text, link }, i) in nav"
+          :key="i"
+          class="nav-item cta-s hover-fade"
+          :to="link"
+        >
+          {{ text }}
+        </NuxtLink>
+      </template>
     </nav>
 
     <div class="cta-wrap">
@@ -26,6 +28,9 @@
 </template>
 
 <script setup lang="ts">
+defineProps<{
+  hideNav?: boolean
+}>()
 const nav = [
   {
     text: "Presale",
@@ -94,5 +99,9 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 2.5rem;
   align-items: center;
+}
+.cta-wrap {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

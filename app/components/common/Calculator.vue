@@ -420,7 +420,7 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
 }
 .receive-field {
   height: 4rem;
-  background: #f9fafb;
+  background: var(--c-milk);
 }
 .receive {
   margin-bottom: 1.5rem;

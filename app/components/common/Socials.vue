@@ -9,7 +9,7 @@
       :class="{ small }"
       rel="nofollow noopener noreferrer"
     >
-      <CommonButtonTemplate :extra="!small" :small="small">
+      <CommonButtonTemplate :extra="!small" :small="small" :yellow="yellow">
         <div class="link-wrap">
           <component :is="icons[name as IconName]" />
           <p v-if="!small" class="cta-s">{{ name }}</p>
@@ -27,6 +27,7 @@ import IconTelegram from "@/components/icon/Telegram.vue"
 
 defineProps<{
   small?: boolean
+  yellow?: boolean
 }>()
 
 type IconName = keyof typeof icons
