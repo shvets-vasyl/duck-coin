@@ -103,6 +103,9 @@ html.lenis {
   display: flex;
   flex-direction: column;
   align-items: center;
+  @include mobile {
+    padding: 2.5rem 0;
+  }
 }
 .base-card {
   border-radius: 1.5rem;

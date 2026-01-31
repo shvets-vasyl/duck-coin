@@ -146,15 +146,27 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   background: var(--c-yellow);
   padding: 8.5625rem 3.5rem 3.5rem;
   position: relative;
+  overflow: hidden;
+  @include mobile {
+    padding: 5.75rem 1.25rem 18rem;
+  }
 }
 .content {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 34rem;
   gap: 3.5rem;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
 }
 .title {
   margin-bottom: 1rem;
+  @include mobile {
+    margin-bottom: 0.5rem;
+  }
 }
 .duck-img {
   position: absolute;
@@ -162,16 +174,27 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   left: 0;
   width: 52rem;
   pointer-events: none;
+  @include mobile {
+    width: 26.25rem;
+    left: 1rem;
+  }
 }
 .form {
   border-color: var(--c-black);
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
+  @include mobile {
+    padding: 1.5rem 1.25rem;
+  }
 }
 .form-title {
   text-align: center;
   margin-bottom: 0.5rem;
+  @include mobile {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 }
 .vip {
   display: flex;
@@ -180,6 +203,12 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   justify-content: center;
   text-transform: capitalize;
   margin-bottom: 3.5rem;
+  @include mobile {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 2.5rem;
+  }
 }
 .vip-best {
   background: var(--c-yellow);
@@ -195,6 +224,9 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @include mobile {
+    margin-bottom: 2.5rem;
+  }
 }
 .form-text {
   border-radius: 0.75rem;
@@ -208,5 +240,11 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 .text-wrap {
   display: inline-flex;
   justify-content: center;
+}
+.descr {
+  @include mobile {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
 }
 </style>

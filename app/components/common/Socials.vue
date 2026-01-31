@@ -1,12 +1,11 @@
 <template>
-  <div class="socials">
+  <div class="socials" :class="{ small }">
     <a
       v-for="({ link, name }, i) in soc"
       :key="i"
       target="_blank"
       class="soc-link"
       :href="link"
-      :class="{ small }"
       rel="nofollow noopener noreferrer"
     >
       <CommonButtonTemplate :extra="!small" :small="small" :yellow="yellow">
@@ -60,16 +59,32 @@ const soc = [
 </script>
 
 <style scoped lang="scss">
-.soc-link:not(.small) {
+.socials:not(.small) .soc-link {
   text-transform: capitalize;
   width: 11.5rem;
+  @include mobile {
+    width: 100%;
+  }
 }
 .soc-link:deep(svg) {
   width: 1.5rem;
+  @include mobile {
+    width: 1rem;
+  }
 }
 .socials {
   display: flex;
   gap: 1rem;
+  @include mobile {
+    gap: 0.5rem;
+  }
+}
+.socials:not(.small) {
+  @include mobile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
 }
 .link-wrap {
   display: flex;

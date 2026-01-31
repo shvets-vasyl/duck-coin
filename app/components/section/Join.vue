@@ -33,6 +33,9 @@ defineProps<{
   background: var(--c-yellow);
   position: relative;
   overflow: hidden;
+  @include mobile {
+    padding: 1.5rem 1rem 20rem;
+  }
 }
 .join.white {
   background: transparent;
@@ -41,10 +44,17 @@ defineProps<{
 .title {
   margin-bottom: 1rem;
   width: 43.75rem;
+  @include mobile {
+    width: 100%;
+  }
 }
 .descr {
   width: 28rem;
   margin-bottom: 3.5rem;
+  @include mobile {
+    width: 85%;
+    margin-bottom: 1.5rem;
+  }
 }
 .duck-img {
   position: absolute;
@@ -52,5 +62,12 @@ defineProps<{
   width: 94.0625rem;
   right: -19.375rem;
   pointer-events: none;
+  @include mobile {
+    top: auto;
+    bottom: -13.75rem;
+    right: auto;
+    left: -20rem;
+    width: 54rem;
+  }
 }
 </style>

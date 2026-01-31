@@ -24,6 +24,9 @@ const items = [
   padding: 3.5rem 0;
   overflow: hidden;
   display: flex;
+  @include mobile {
+    padding: 2.5rem 0;
+  }
 }
 
 .photo {
@@ -32,6 +35,10 @@ const items = [
   position: relative;
   overflow: hidden;
   border-radius: 1rem;
+  @include mobile {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
 }
 
 .track {
@@ -40,5 +47,9 @@ const items = [
   padding-left: 1rem;
   gap: 1rem;
   @include ticker(30s);
+  @include mobile {
+    padding-left: 0.5rem;
+    gap: 0.5rem;
+  }
 }
 </style>

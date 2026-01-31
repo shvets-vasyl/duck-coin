@@ -4,7 +4,8 @@
 .h2,
 .h3,
 .h4,
-.h5 {
+.h5,
+.title {
   font-family: var(--f-extrabold);
 }
 
@@ -23,39 +24,74 @@
 .cta {
   font-family: var(--f-medium);
 }
-
+.tit-big {
+  font-size: 4rem;
+  line-height: 4rem;
+}
 .h1 {
   font-size: 6rem;
   line-height: 6rem;
+  @include mobile {
+    font-size: 3.5rem;
+    line-height: 3.5rem;
+  }
 }
 .h2 {
   font-size: 4.5rem;
   line-height: 4.5rem;
+  @include mobile {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+  }
 }
 .h3 {
   font-size: 3.5rem;
   line-height: 3.5rem;
+  @include mobile {
+    font-size: 2.25rem;
+    line-height: 2.25rem;
+  }
 }
 .h4 {
   font-size: 2.5rem;
   line-height: 2.5rem;
+  @include mobile {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 }
 .h5 {
   font-size: 2rem;
   line-height: 2rem;
+  @include mobile {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
 }
 
 .sub-l {
   font-size: 1.5rem;
   line-height: 1.5rem;
+  @include mobile {
+    font-size: 1.125rem;
+    line-height: 1.125rem;
+  }
 }
 .sub-m {
   font-size: 1.25rem;
   line-height: 1.25rem;
+  @include mobile {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
 }
 .sub-s {
   font-size: 1rem;
   line-height: 1rem;
+  @include mobile {
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+  }
 }
 
 .body-xl {
@@ -65,14 +101,26 @@
 .body-l {
   font-size: 1.25rem;
   line-height: 1.75rem;
+  @include mobile {
+    font-size: 1.125rem;
+    line-height: 1.375rem;
+  }
 }
 .body-m {
   font-size: 1rem;
   line-height: 1.5rem;
+  @include mobile {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
 }
 .body-s {
   font-size: 0.875rem;
   line-height: 1.375rem;
+  @include mobile {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+  }
 }
 
 .cap-m,
@@ -83,14 +131,26 @@
 .cap-m {
   font-size: 1rem;
   line-height: 1.25rem;
+  @include mobile {
+    font-size: 0.875rem;
+    line-height: 0.875rem;
+  }
 }
 .cap-s {
   font-size: 0.875rem;
   line-height: 1.125rem;
+  @include mobile {
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+  }
 }
 
 .cta-s {
   font-size: 1rem;
   line-height: 1rem;
   letter-spacing: -0.0075em;
+  @include mobile {
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+  }
 }

@@ -84,6 +84,11 @@ onBeforeUnmount(() => {
   grid-template-columns: 0.3fr 1fr 0.3fr;
   padding: 1.5rem 3.5rem;
   align-items: center;
+  @include mobile {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 .header.scrolled {
   background: var(--c-yellow);
@@ -99,6 +104,9 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 2.5rem;
   align-items: center;
+  @include mobile {
+    display: none;
+  }
 }
 .cta-wrap {
   display: flex;

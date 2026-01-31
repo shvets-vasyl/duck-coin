@@ -60,6 +60,9 @@ defineProps<{
   color: var(--c-black);
   border-radius: 1rem;
   padding: 0 1rem;
+  @include mobile {
+    height: 3.5rem;
+  }
 }
 .field.withIcon .input {
   padding-right: 3.125rem;
@@ -73,6 +76,9 @@ defineProps<{
   right: 1rem;
   width: 1.5rem;
   pointer-events: none;
+  @include mobile {
+    bottom: 1rem;
+  }
 }
 
 // error

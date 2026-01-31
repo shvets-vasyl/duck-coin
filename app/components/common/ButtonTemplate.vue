@@ -29,6 +29,11 @@ defineProps<{
   justify-content: center;
   align-items: center;
   transition: all 0.4s var(--t-ease);
+  @include mobile {
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    padding: 0 1rem;
+  }
 }
 .btn-template.disabled {
   pointer-events: none;
@@ -36,16 +41,25 @@ defineProps<{
 .btn-template.big {
   height: 3.5rem;
   width: 100%;
+  @include mobile {
+    height: 2.75rem;
+  }
 }
 .btn-template.extra {
   height: 4.5rem;
   width: 100%;
+  @include mobile {
+    height: 3rem;
+  }
 }
 .btn-template.small {
   padding: 0;
   width: 3rem;
   border-radius: 0.75rem;
   box-shadow: 0 0.125rem 0 0 var(--c-black);
+  @include mobile {
+    width: 2.5rem;
+  }
 }
 .btn-template.yellow {
   background: var(--c-yellow);
