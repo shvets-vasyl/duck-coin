@@ -109,7 +109,10 @@ const schema = yup.object({
 const formOpenedAt = Date.now()
 const sended = ref(false)
 
-const onSubmit: SubmissionHandler<GenericObject> = async (values) => {
+const onSubmit: SubmissionHandler<GenericObject> = async (
+  values,
+  { resetForm }
+) => {
   const check = values.check as string
   if (check || sended.value) return
 
@@ -121,6 +124,8 @@ const onSubmit: SubmissionHandler<GenericObject> = async (values) => {
   const data = { name, email }
 
   sended.value = true
+
+  resetForm()
 
   const res = await $fetch("/api/whitelist", {
     method: "POST",
