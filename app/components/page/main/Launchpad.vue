@@ -11,13 +11,18 @@
       <div v-for="({ icon, title, descr }, i) in items" :key="i" class="item">
         <img :src="icon" :alt="title" class="item-img" draggable="false" />
         <p class="item-title sub-l">{{ title }}</p>
-        <p class="item-title body-m">{{ descr }}</p>
+        <p class="item-descr body-m">{{ descr }}</p>
       </div>
 
       <div class="item-inner">
         <img
           src="/images/main/content-card.webp"
-          class="inner-media"
+          class="inner-media desk"
+          draggable="false"
+        />
+        <img
+          src="/images/main/content-card-mob.webp"
+          class="inner-media mob"
           draggable="false"
         />
       </div>
@@ -65,22 +70,39 @@ const items = [
 </script>
 
 <style scoped lang="scss">
+.launchpad {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
+}
 .title {
   width: 45rem;
   text-align: center;
   margin-bottom: 1rem;
   text-transform: capitalize;
+  @include mobile {
+    width: 100%;
+  }
 }
 .descr {
   width: 55rem;
   text-align: center;
   margin-bottom: 3.5rem;
+  @include mobile {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
 }
 .items {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 .item {
   padding: 1.5rem;
@@ -90,19 +112,46 @@ const items = [
   border-radius: 1.5rem;
   border: 0.25rem solid var(--c-grey-3);
   background: var(--c-white);
+  @include mobile {
+    aspect-ratio: unset;
+    padding: 1rem;
+    border-width: 0.125rem;
+    border-radius: 1rem;
+    text-align: center;
+    align-items: center;
+  }
 }
 .item-inner {
   position: relative;
   grid-row: 2;
   grid-column: 1;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  @include mobile {
+    height: 11.75rem;
+    border-radius: 1rem;
+  }
 }
 
 .item-img {
   width: 9.75rem;
   margin-bottom: auto;
+  @include mobile {
+    width: 3.5rem;
+    margin-bottom: 1rem;
+  }
 }
 .item-title {
   margin-bottom: 1rem;
+  @include mobile {
+    margin-bottom: 0.5rem;
+  }
+}
+.item-descr {
+  @include mobile {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+  }
 }
 
 .subtitle {
@@ -110,5 +159,11 @@ const items = [
   text-align: center;
   width: 55rem;
   text-transform: capitalize;
+  @include mobile {
+    width: 85%;
+    font-size: 1.5rem;
+    line-height: 100%;
+    margin-top: 1.5rem;
+  }
 }
 </style>

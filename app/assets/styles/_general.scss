@@ -104,7 +104,7 @@ html.lenis {
   flex-direction: column;
   align-items: center;
   @include mobile {
-    padding: 2.5rem 0;
+    padding: 2.5rem 1rem;
   }
 }
 .base-card {
@@ -113,4 +113,59 @@ html.lenis {
   background: var(--c-white);
   padding: 1.5rem;
   width: 100%;
+}
+
+// adaptive
+.mob {
+  @include desktop {
+    display: none;
+  }
+}
+.desk {
+  @include mobile {
+    display: none;
+  }
+}
+
+// swiper
+.swiper-pag {
+  display: flex;
+  gap: 0.5938rem;
+  justify-content: center;
+}
+.swiper-pagination-bullet {
+  border-radius: 0.1875rem;
+  background: #e7e7e7;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 0.0313rem solid transparent;
+  transition: all 0.4s var(--t-ease);
+}
+.swiper-pagination-bullet-active {
+  background: var(--c-yellow);
+  border-color: var(--c-black);
+  box-shadow: 0.125rem 0.125rem 0 var(--c-black);
+}
+
+.swiper-prev-btn,
+.swiper-next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+.swiper-prev-btn {
+  left: 1rem;
+}
+.swiper-next-btn {
+  right: 1rem;
+}
+
+.swiper-prev-btn svg {
+  width: 1.25rem;
+  transform: rotate(90deg);
+}
+.swiper-next-btn svg {
+  width: 1.25rem;
+  transform: rotate(-90deg);
 }

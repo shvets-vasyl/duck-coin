@@ -86,10 +86,16 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+  @include mobile {
+    gap: 1rem;
+  }
 }
 .dots {
   font-size: 2.5rem;
   font-family: var(--f-semibold);
+  @include mobile {
+    font-size: 1.5rem;
+  }
 }
 .time {
   width: 6rem;
@@ -98,6 +104,11 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  @include mobile {
+    width: 4.5rem;
+    padding: 1rem 0.5rem;
+    gap: 0.25rem;
+  }
 }
 .time-bg {
   position: absolute;

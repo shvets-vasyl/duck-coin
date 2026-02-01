@@ -43,6 +43,7 @@ defineProps<{
   width: 100%;
   @include mobile {
     height: 2.75rem;
+    border-radius: 1rem;
   }
 }
 .btn-template.extra {
@@ -50,6 +51,7 @@ defineProps<{
   width: 100%;
   @include mobile {
     height: 3rem;
+    border-radius: 1rem;
   }
 }
 .btn-template.small {

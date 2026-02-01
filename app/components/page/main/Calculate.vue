@@ -1,7 +1,7 @@
 <template>
   <section class="section calculate">
     <img
-      class="inner-media"
+      class="calculate-img inner-media"
       draggable="false"
       src="/images/main/calc-bg.png"
       loading="lazy"
@@ -30,6 +30,9 @@
 <style scoped lang="scss">
 .calculate {
   position: relative;
+  @include mobile {
+    overflow: hidden;
+  }
 }
 .content {
   display: grid;
@@ -38,18 +41,46 @@
   width: 100%;
   align-items: center;
   position: relative;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
 }
 .left {
   text-align: center;
 }
 .title {
   margin-bottom: 3.125rem;
+  @include mobile {
+    margin-bottom: 1.5rem;
+  }
 }
 .descr {
   margin-bottom: 1.5rem;
+  @include mobile {
+    margin-bottom: 1rem;
+  }
 }
 .descr span {
   font-size: 2.25rem;
   font-family: var(--f-bold);
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+.calculate-img {
+  @include mobile {
+    object-fit: inset;
+    height: auto;
+    width: 200%;
+    margin-left: -4.375rem;
+    margin-top: 6.2rem;
+  }
+}
+.right {
+  @include mobile {
+    width: 21.4375rem;
+  }
 }
 </style>

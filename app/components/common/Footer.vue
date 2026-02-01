@@ -170,7 +170,7 @@ const legal = [
 .nav-title {
   margin-bottom: 1.5rem;
   @include mobile {
-    margin-bottom: 2.1rem;
+    margin-bottom: 2.2rem;
   }
 }
 .list-link {

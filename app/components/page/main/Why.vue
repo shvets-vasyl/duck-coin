@@ -38,6 +38,26 @@
       <div class="stroke" />
     </div>
 
+    <div class="items-mob">
+      <div class="head-mob">
+        <div class="col-mob">
+          <img
+            class="item-logo"
+            draggable="false"
+            :src="items[0]?.icon"
+            loading="lazy"
+            :alt="items[0]?.feature"
+          />
+          <p class="sub-s">{{ items[0]?.feature }}</p>
+        </div>
+        <div class="col-mob">
+          <div class="select-wrap">
+            <CommonSelect v-model="selectedOption" :items="selectOptions" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="join-btn">
       <CommonButtonTemplate yellow big>
         Join the $DUCK Presale
@@ -138,14 +158,37 @@ const getIcon = (available: Availability) => {
   if (available === "half") return IconExclamation
   return IconMinus
 }
+
+const selectOptions = computed(() =>
+  items.slice(1).map((it) => ({
+    text: it.feature,
+    icon: it.icon,
+  }))
+)
+
+const selectedOption = ref(selectOptions.value[0]!)
+
+// const selected = computed<Item>(() => {
+//   const found = items.find((it) => it.feature === selectedOption.value.text)
+//   return found ?? items[0]!
+// })
 </script>
 
 <style scoped lang="scss">
+.why {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
+}
 .title {
   width: 45rem;
   text-align: center;
   margin-bottom: 3.5rem;
   text-transform: capitalize;
+  @include mobile {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
 }
 .items {
   width: 100%;
@@ -153,6 +196,9 @@ const getIcon = (available: Availability) => {
   border: 0.0938rem solid var(--c-grey-3);
   background: var(--c-white);
   position: relative;
+  @include mobile {
+    display: none;
+  }
 }
 .stroke {
   position: absolute;
@@ -167,6 +213,10 @@ const getIcon = (available: Availability) => {
 .join-btn {
   margin-top: 3.5rem;
   width: 15.625rem;
+  @include mobile {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
 }
 .item-logo {
   width: 1.5rem;
@@ -195,5 +245,36 @@ const getIcon = (available: Availability) => {
 }
 .row {
   height: 4.5rem;
+}
+.items-mob {
+  display: none;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+}
+.head-mob {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 3.125rem;
+  gap: 0.5rem;
+  border: 0.0625rem solid var(--c-grey-3);
+  background: var(--c-white);
+  padding: 0.5rem;
+}
+.col-mob {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.select-wrap {
+  width: 100%;
+}
+.select-wrap:deep(.select-btn) {
+  border-color: var(--c-grey-3);
+  background: var(--c-milk);
 }
 </style>

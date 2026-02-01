@@ -1,7 +1,8 @@
 <template>
   <section class="hero">
     <div class="circles-wrap">
-      <IconCircles />
+      <IconCircles class="desk" />
+      <IconCirclesMob class="mob" />
     </div>
     <div class="content">
       <div class="hero-tip cap-m">
@@ -18,6 +19,12 @@
           class="duck-img"
           draggable="false"
           src="/images/main/duck-1.svg"
+          role="presentation"
+        />
+        <img
+          class="duck-img-mob"
+          draggable="false"
+          src="/images/main/duck-1-mob.svg"
           role="presentation"
         />
       </div>
@@ -40,6 +47,9 @@
   background: var(--c-yellow);
   border-radius: 0 0 3.5rem 3.5rem;
   position: relative;
+  @include mobile {
+    border-radius: 0 0 2rem 2rem;
+  }
 }
 .circles-wrap {
   position: absolute;
@@ -48,6 +58,10 @@
   transform: translateX(-50%);
   z-index: 0;
   width: 82.3125rem;
+  @include mobile {
+    width: 21.4375rem;
+    top: 28rem;
+  }
 }
 .content {
   height: 100%;
@@ -68,8 +82,24 @@
   display: flex;
   align-items: flex-end;
   margin-left: -11.25rem;
+  @include mobile {
+    margin-left: 0;
+    flex: 1;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 }
 .duck-img {
   width: 55.875rem;
+  @include mobile {
+    display: none;
+  }
+}
+.duck-img-mob {
+  display: none;
+  @include mobile {
+    display: block;
+    width: 21.4375rem;
+  }
 }
 </style>

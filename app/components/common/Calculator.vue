@@ -22,11 +22,11 @@
 
     <div class="bot-info">
       <div class="cost">
-        <span class="cap-m">1 $DUCK = </span
+        <span class="cap-m">1 $DUCK = <br class="mob" /></span
         ><span class="sub-s">{{ duckPriceDisplay }}</span>
       </div>
       <div class="launching">
-        <span class="cap-m">Launching price = </span
+        <span class="cap-m">Launching price = <br class="mob" /></span
         ><span class="sub-s">{{ launchPriceDisplay }}</span>
       </div>
     </div>
@@ -45,31 +45,8 @@
           @input="onInput"
         />
 
-        <div ref="selectRef" class="select">
-          <button class="select-btn" @click="toggle">
-            <img
-              class="select-icon"
-              :src="selected.icon"
-              :alt="selected.text"
-            />
-            <span class="select-text sub-s">{{ selected.text }}</span>
-            <span class="select-arrow" :class="{ open: isOpen }">
-              <IconCaret />
-            </span>
-          </button>
-
-          <div v-if="isOpen" class="select-dropdown">
-            <button
-              v-for="item in exchange"
-              :key="item.text"
-              class="select-item"
-              :class="{ active: item.text === selected.text }"
-              @click="pick(item)"
-            >
-              <img class="select-icon" :src="item.icon" :alt="item.text" />
-              <span class="select-text sub-s">{{ item.text }}</span>
-            </button>
-          </div>
+        <div class="select-wrap">
+          <CommonSelect v-model="selected" :items="exchange" />
         </div>
       </div>
     </div>
@@ -144,25 +121,6 @@ const auditedItems = [
 ]
 
 const selected = ref<ExchangeItem>(exchange[0]!)
-
-const isOpen = ref(false)
-const selectRef = ref<HTMLElement | null>(null)
-
-function toggle() {
-  isOpen.value = !isOpen.value
-}
-function close() {
-  isOpen.value = false
-}
-function pick(item: ExchangeItem) {
-  selected.value = item
-  close()
-}
-function onDocClick(e: MouseEvent) {
-  const el = selectRef.value
-  if (!el) return
-  if (e.target instanceof Node && !el.contains(e.target)) close()
-}
 
 /** ---------------------------
  *  Мінімальні "дані пресейлу"
@@ -266,9 +224,6 @@ const duckPriceDisplay = computed(() => nfPrice(duckPriceUsd.value))
 const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 
 // const canBuy = computed(() => amountNum.value > 0 && payUsd.value > 0)
-
-onMounted(() => document.addEventListener("click", onDocClick))
-onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
 </script>
 
 <style scoped lang="scss">
@@ -280,10 +235,19 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   align-items: flex-end;
   gap: 1rem;
   margin-bottom: 2.5rem;
+  @include mobile {
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+    align-items: center;
+  }
 }
 .price-text {
   position: relative;
   top: -1rem;
+  @include mobile {
+    top: 0;
+  }
 }
 .top-info {
   display: flex;
@@ -294,6 +258,12 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   display: flex;
   justify-content: space-between;
   margin-bottom: 2.5rem;
+  @include mobile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
 }
 .calc-progress {
   margin-bottom: 1rem;
@@ -324,7 +294,7 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   margin-bottom: 1rem;
 }
 
-.select {
+.select-wrap {
   flex: 0 0 7.75rem;
   position: relative;
   margin-right: 1rem;
@@ -405,6 +375,9 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   gap: 1rem;
   align-items: center;
   margin-bottom: 1rem;
+  @include mobile {
+    display: none;
+  }
 }
 .decor-line {
   height: 0.125rem;
@@ -443,9 +416,15 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   justify-content: center;
   text-align: center;
   gap: 0.5rem;
+  @include mobile {
+    gap: 0.25rem;
+  }
 }
 .btn-wrap {
   margin-bottom: 2.5rem;
+  @include mobile {
+    margin-bottom: 1.5rem;
+  }
 }
 .audited-img {
   width: 4.5rem;
