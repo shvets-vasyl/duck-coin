@@ -36,7 +36,7 @@
 }
 .content {
   display: grid;
-  grid-template-columns: 1fr 34rem;
+  grid-template-columns: 1fr 31rem;
   gap: 3.5rem;
   width: 100%;
   align-items: center;
@@ -70,6 +70,7 @@
   }
 }
 .calculate-img {
+  margin-left: 3rem;
   @include mobile {
     object-fit: inset;
     height: auto;

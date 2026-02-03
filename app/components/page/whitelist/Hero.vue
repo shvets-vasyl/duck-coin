@@ -57,9 +57,9 @@
             </CommonButtonTemplate>
           </button>
 
-          <div class="text-wrap">
+          <!-- <div class="text-wrap">
             <div class="form-text body-s">No spam. No data selling. Ever.</div>
-          </div>
+          </div> -->
         </Form>
       </div>
     </div>
@@ -144,9 +144,10 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 <style scoped lang="scss">
 .hero {
   background: var(--c-yellow);
-  padding: 8.5625rem 3.5rem 3.5rem;
+  padding: 6.5rem 3.5rem 3rem;
   position: relative;
   overflow: hidden;
+  min-height: 100vh;
   @include mobile {
     padding: 5.75rem 1.25rem 18rem;
   }
@@ -164,6 +165,8 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 }
 .title {
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
   @include mobile {
     margin-bottom: 0.5rem;
   }
@@ -172,7 +175,7 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 52rem;
+  width: 48rem;
   pointer-events: none;
   @include mobile {
     width: 26.25rem;
@@ -217,7 +220,6 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 }
 .form-btn {
   width: 100%;
-  margin-bottom: 2.5rem;
 }
 .fields {
   margin-bottom: 3.5rem;
@@ -242,6 +244,8 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   justify-content: center;
 }
 .descr {
+  position: relative;
+  z-index: 2;
   @include mobile {
     font-size: 1rem;
     line-height: 1rem;

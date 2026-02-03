@@ -21,7 +21,9 @@
 
     <div class="cta-wrap">
       <button class="cta-btn">
-        <CommonButtonTemplate> Join the presale </CommonButtonTemplate>
+        <CommonButtonTemplate>
+          {{ btnText ? btnText : "Join the presale" }}
+        </CommonButtonTemplate>
       </button>
     </div>
   </header>
@@ -30,6 +32,7 @@
 <script setup lang="ts">
 defineProps<{
   hideNav?: boolean
+  btnText?: string
 }>()
 const nav = [
   {

@@ -1,13 +1,13 @@
 <template>
   <main class="whitelist-page">
-    <CommonHeader hide-nav />
+    <CommonHeader hide-nav btn-text="Join Whitelist" />
     <!-- <CommonMenu /> -->
 
     <PageWhitelistHero />
     <PageWhitelistPhotos />
     <SectionJoin white />
 
-    <CommonFooter />
+    <!-- <CommonFooter /> -->
   </main>
 </template>
 
