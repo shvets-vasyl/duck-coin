@@ -49,6 +49,10 @@
 }
 .left {
   text-align: center;
+  padding-top: 3rem;
+  @include mobile {
+    padding-top: 0;
+  }
 }
 .title {
   margin-bottom: 3.125rem;
