@@ -61,7 +61,7 @@ const nav = [
   },
   {
     text: "Contact",
-    link: "/",
+    link: "/contact",
   },
 ]
 
