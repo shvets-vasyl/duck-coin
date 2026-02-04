@@ -98,7 +98,7 @@ const ecosystem = [
   },
   {
     title: "Ecosystem",
-    link: "/",
+    link: "/ecosystem",
   },
 ]
 

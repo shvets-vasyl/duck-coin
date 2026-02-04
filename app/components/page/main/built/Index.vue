@@ -121,8 +121,12 @@ const blocks = [
 
 let swiper: Swiper | null = null
 
+const { isMobile } = useViewport()
+
 onMounted(() => {
-  initSwiper()
+  if (isMobile.value) {
+    initSwiper()
+  }
 })
 
 onBeforeUnmount(() => {

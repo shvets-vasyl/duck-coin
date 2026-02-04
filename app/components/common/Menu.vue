@@ -44,7 +44,7 @@ const nav = [
   },
   {
     text: "Ecosystem",
-    link: "/",
+    link: "/ecosystem",
   },
   {
     text: "Contact",
