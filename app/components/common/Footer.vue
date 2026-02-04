@@ -7,11 +7,13 @@
         <IconLogo class="logo-name" />
       </div>
 
-      <div class="nav" :class="{ open: ecosystemOpen }">
-        <p class="nav-title sub-m" @click="ecosystemOpen = !ecosystemOpen">
-          Ecosystem
-        </p>
-        <div class="nav-open" @click="ecosystemOpen = !ecosystemOpen">
+      <div
+        class="nav"
+        :class="{ open: ecosystemOpen }"
+        @click="ecosystemOpen = !ecosystemOpen"
+      >
+        <p class="nav-title sub-m">Ecosystem</p>
+        <div class="nav-open">
           <CommonButtonTemplate small>
             <div class="link-wrap">
               <IconCaret2 />
@@ -30,9 +32,13 @@
         </div>
       </div>
 
-      <div class="nav" :class="{ open: legalOpen }">
-        <p class="nav-title sub-m" @click="legalOpen = !legalOpen">Legal</p>
-        <div class="nav-open" @click="legalOpen = !legalOpen">
+      <div
+        class="nav"
+        :class="{ open: legalOpen }"
+        @click="legalOpen = !legalOpen"
+      >
+        <p class="nav-title sub-m">Legal</p>
+        <div class="nav-open">
           <CommonButtonTemplate small>
             <div class="link-wrap">
               <IconCaret2 />

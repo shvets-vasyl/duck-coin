@@ -8,28 +8,25 @@
     </p>
 
     <div class="blocks">
-      <div v-for="({ title, items }, b) in blocks" :key="b" class="block">
-        <p class="block-title sub-m">{{ title }}</p>
+      <PageMainBuiltCard v-for="(block, b) in blocks" :key="b" :data="block" />
+    </div>
 
-        <div class="items">
-          <div v-for="({ icon, name }, i) in items" :key="i" class="item">
-            <img
-              class="item-icon"
-              draggable="false"
-              :src="icon"
-              loading="lazy"
-              :alt="name"
-            />
-
-            <p class="item-name cap-m">{{ name }}</p>
-          </div>
+    <div class="built-swiper swiper">
+      <div class="swiper-wrapper">
+        <div v-for="(block, b) in blocks" :key="b" class="swiper-slide">
+          <PageMainBuiltCard :data="block" />
         </div>
       </div>
+
+      <div class="swiper-pag" />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import Swiper from "swiper"
+import { Pagination, Autoplay } from "swiper/modules"
+
 const blocks = [
   {
     title: "Blockchain & Infrastructure",
@@ -121,6 +118,36 @@ const blocks = [
     ],
   },
 ]
+
+let swiper: Swiper | null = null
+
+onMounted(() => {
+  initSwiper()
+})
+
+onBeforeUnmount(() => {
+  if (swiper) {
+    swiper.destroy(true, true)
+    swiper = null
+  }
+})
+
+const initSwiper = () => {
+  swiper = new Swiper(".built-swiper", {
+    modules: [Pagination, Autoplay],
+    slidesPerView: 1,
+    speed: 600,
+    loop: true,
+    autoplay: {
+      delay: 4000,
+      stopOnLastSlide: false,
+    },
+    pagination: {
+      el: ".built-swiper .swiper-pag",
+      clickable: true,
+    },
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -128,11 +155,25 @@ const blocks = [
   width: 43rem;
   margin-bottom: 1rem;
   text-align: center;
+  @include mobile {
+    width: 100%;
+    text-align: left;
+  }
+}
+.built {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
 }
 .descr {
   width: 45rem;
   margin-bottom: 3.5rem;
   text-align: center;
+  @include mobile {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 2.5rem;
+  }
 }
 .blocks {
   display: flex;
@@ -140,45 +181,26 @@ const blocks = [
   row-gap: 3.5rem;
   flex-wrap: wrap;
   width: 100%;
+  @include mobile {
+    display: none;
+  }
 }
-.block {
-  border: 0.0625rem solid var(--c-black);
-  border-radius: 1.5rem;
-  padding: 2rem 2.5rem;
-  position: relative;
+.built-swiper {
+  display: none;
+  @include mobile {
+    display: block;
+    padding: 0.5rem 0;
+    width: calc(100% + 2rem);
+    margin-left: -1rem;
+  }
 }
-.block-title {
-  position: absolute;
-  top: 0;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  background: var(--c-milk);
-  padding: 0 1.5rem;
-  white-space: nowrap;
+.swiper-pag {
+  @include mobile {
+    margin-top: 1.5rem;
+  }
 }
-.items {
-  display: flex;
-  align-items: flex-end;
-}
-.item {
-  width: 8.9375rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-.block:nth-child(1) .item,
-.block:nth-child(2) .item {
-  width: 8.9375rem;
-}
-.block:nth-child(3) .item,
-.block:nth-child(4) .item {
-  width: 8.4375rem;
-}
-.block:nth-child(5) .item {
-  width: 7.5rem;
-}
-.item-icon {
-  width: 1.9375rem;
+.swiper-slide {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 </style>

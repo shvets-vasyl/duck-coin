@@ -30,9 +30,7 @@
 <style scoped lang="scss">
 .calculate {
   position: relative;
-  @include mobile {
-    overflow: hidden;
-  }
+  overflow: hidden;
 }
 .content {
   display: grid;

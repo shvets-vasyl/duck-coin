@@ -11,8 +11,18 @@
       <div
         v-for="({ title, list }, i) in items"
         :key="i"
+        ref="itemRef"
         class="item base-card"
+        :class="{ active: currentOpen === i }"
+        @click="toggleItem(i)"
       >
+        <div class="nav-open">
+          <CommonButtonTemplate small>
+            <div class="link-wrap">
+              <IconCaret2 />
+            </div>
+          </CommonButtonTemplate>
+        </div>
         <svg v-if="i === 0" class="top-decor" viewBox="0 0 134 80" fill="none">
           <path
             d="M111.5 0.000126401L5.40391e-06 0.000136149L92.5841 23.5037C98.8706 25.0996 104.244 29.172 107.479 34.7933L133.5 80.0005L133.5 22.0001C133.5 9.84986 123.65 0.000125339 111.5 0.000126401Z"
@@ -23,8 +33,8 @@
         <svg
           v-if="i === 0"
           class="bottom-decor"
+          viewBox="0 0 199 142"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M22 142H147H199L46.5428 118.394C37.1458 116.939 29.494 110.073 27.0329 100.888L0 0V120C0 132.15 9.84973 142 22 142Z"
@@ -46,7 +56,7 @@
               <IconCheck2 v-if="checked" />
             </div>
             <div class="list-text">
-              <p class="body-l">{{ text }}</p>
+              <p class="list-text-p body-l">{{ text }}</p>
 
               <div v-if="button" class="list-info sub-s">3x completed</div>
             </div>
@@ -186,9 +196,39 @@ const items = [
     ],
   },
 ]
+
+const { isDesktop } = useViewport()
+
+const currentOpen = ref(0)
+const itemRef = ref()
+
+const toggleItem = (index: number) => {
+  if (isDesktop.value) return
+
+  if (currentOpen.value === index) {
+    gsap.to(itemRef.value[index], {
+      height: "6.5rem",
+    })
+
+    currentOpen.value = -1
+
+    return
+  }
+
+  currentOpen.value = index
+
+  gsap.to(itemRef.value, {
+    height: (i) => (index === i ? "auto" : "6.5rem"),
+  })
+}
 </script>
 
 <style scoped lang="scss">
+.plan {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
+}
 .title {
   margin-bottom: 1rem;
   text-align: center;
@@ -197,6 +237,10 @@ const items = [
   width: 30rem;
   margin-bottom: 3.5rem;
   text-align: center;
+  @include mobile {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
 }
 .items {
   width: 100%;
@@ -204,6 +248,12 @@ const items = [
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   padding: 0 7rem;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0;
+  }
 }
 .item {
   display: flex;
@@ -211,6 +261,11 @@ const items = [
   position: relative;
   padding: 2.5rem;
   padding-bottom: 9.4375rem;
+  @include mobile {
+    padding: 1.5rem;
+    height: 6.5rem;
+    overflow: hidden;
+  }
 }
 .top-decor,
 .bottom-decor {
@@ -221,11 +276,18 @@ const items = [
   top: 0;
   right: 0;
   width: 9.125rem;
+  @include mobile {
+    width: 5.3125rem;
+  }
 }
 .bottom-decor {
-  bottom: -0.5rem;
+  bottom: 0;
   left: 0;
   width: 12.4375rem;
+  @include mobile {
+    width: 6.25rem;
+    bottom: 0;
+  }
 }
 .item:nth-child(1) {
   border: 0.125rem solid var(--c-black);
@@ -233,17 +295,30 @@ const items = [
 }
 .item-subtitle {
   margin-bottom: 1rem;
+  @include mobile {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
 }
 .item-title {
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 0.125rem solid var(--c-black);
+  @include mobile {
+    margin-bottom: 1rem;
+    padding-bottom: 1.25rem;
+    border-width: 0.0625rem;
+  }
 }
 .list-item {
   display: grid;
   grid-template-columns: 1.5rem 1fr;
   gap: 1.5rem;
   position: relative;
+  @include mobile {
+    gap: 1rem;
+    grid-template-columns: 1.25rem 1fr;
+  }
 }
 .list-item:not(:last-child):after {
   content: "";
@@ -256,9 +331,16 @@ const items = [
   background-image: linear-gradient(to bottom, #dadada 33%, transparent 0);
   background-size: 0.125rem 0.625rem;
   background-repeat: repeat-y;
+
+  @include mobile {
+    left: 0.5625rem;
+  }
 }
 .list-item:not(:last-child) {
   padding-bottom: 2rem;
+  @include mobile {
+    padding-bottom: 1.5rem;
+  }
 }
 .item:nth-child(1) .list-item:after {
   background-image: linear-gradient(to bottom, #baac00 33%, transparent 0);
@@ -270,7 +352,11 @@ const items = [
     transparent 0
   );
 }
-
+.item:nth-child(1) {
+  @include mobile {
+    height: auto;
+  }
+}
 .list-check {
   width: 1.5rem;
   height: 1.5rem;
@@ -281,9 +367,17 @@ const items = [
   border: 0.125rem solid var(--c-black);
   position: relative;
   top: 0.0625rem;
+  @include mobile {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.375rem;
+  }
 }
 .list-check:deep(svg) {
   width: 0.9375rem;
+  @include mobile {
+    width: 0.625rem;
+  }
 }
 .list-item.checked .list-check {
   background: var(--c-black);
@@ -302,6 +396,16 @@ const items = [
   align-items: center;
   justify-content: center;
   margin-top: 0.75rem;
+  @include mobile {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    height: 1.75rem;
+  }
+}
+.list {
+  @include mobile {
+    padding-bottom: 3rem;
+  }
 }
 .foot {
   margin-top: 3.5rem;
@@ -311,8 +415,41 @@ const items = [
   justify-content: center;
   gap: 1.5rem;
   text-align: center;
+  @include mobile {
+    margin-top: 1.5rem;
+    gap: 1rem;
+  }
 }
 .join-btn {
   width: 25rem;
+  @include mobile {
+    width: 100%;
+  }
+}
+.list-text-p {
+  @include mobile {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
+}
+
+.link-wrap {
+  width: 1.25rem;
+  transition: all 0.5s var(--t-ease);
+}
+.item.active .link-wrap {
+  @include mobile {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-open {
+  display: none;
+  @include mobile {
+    display: block;
+    position: absolute;
+    top: 1.8rem;
+    right: 1.5rem;
+  }
 }
 </style>

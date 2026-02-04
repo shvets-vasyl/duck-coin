@@ -23,14 +23,14 @@
 
       <!-- ROWS -->
       <div class="rows">
-        <div v-for="row in rows" :key="row.key" class="row">
+        <div v-for="{ label, key } in rows" :key="key" class="row">
           <div class="col">
-            <p class="sub-s">{{ row.label }}</p>
+            <p class="sub-s">{{ label }}</p>
           </div>
 
           <div v-for="(item, i) in items" :key="i" class="col">
-            <component :is="getIcon(item[row.key].available)" />
-            <p class="sub-s">{{ item[row.key].text }}</p>
+            <component :is="getIcon(item[key].available)" />
+            <p class="sub-s">{{ item[key].text }}</p>
           </div>
         </div>
       </div>
@@ -53,6 +53,20 @@
         <div class="col-mob">
           <div class="select-wrap">
             <CommonSelect v-model="selectedOption" :items="selectOptions" />
+          </div>
+        </div>
+      </div>
+
+      <div class="body-mob">
+        <div v-for="{ label, key } in rows" :key="key" class="body-row">
+          <div class="body-title sub-s">{{ label }}</div>
+          <div class="body-col body-col-1">
+            <component :is="getIcon(items[0]![key].available)" />
+            <p class="body-s">{{ items[0]![key].text }}</p>
+          </div>
+          <div class="body-col">
+            <component :is="getIcon(selectedItem[key].available)" />
+            <p class="body-s">{{ selectedItem[key].text }}</p>
           </div>
         </div>
       </div>
@@ -168,10 +182,10 @@ const selectOptions = computed(() =>
 
 const selectedOption = ref(selectOptions.value[0]!)
 
-// const selected = computed<Item>(() => {
-//   const found = items.find((it) => it.feature === selectedOption.value.text)
-//   return found ?? items[0]!
-// })
+const selectedItem = computed<Item>(() => {
+  const found = items.find((it) => it.feature === selectedOption.value.text)
+  return found ?? items[0]!
+})
 </script>
 
 <style scoped lang="scss">
@@ -276,5 +290,37 @@ const selectedOption = ref(selectOptions.value[0]!)
 .select-wrap:deep(.select-btn) {
   border-color: var(--c-grey-3);
   background: var(--c-milk);
+}
+.body-mob {
+  border-radius: 1rem;
+  border: 0.0625rem solid var(--c-grey-3);
+  background: var(--c-white);
+  overflow: hidden;
+}
+.body-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+}
+.body-title {
+  grid-column: 1 / span 2;
+  background: var(--c-grey-3);
+}
+.body-title,
+.body-col {
+  padding: 0.9375rem;
+}
+
+.body-col {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.body-col:deep(svg) {
+  width: 1.25rem;
+}
+.body-col-1 {
+  border-right: 0.0625rem solid var(--c-grey-3);
 }
 </style>

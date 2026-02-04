@@ -23,7 +23,7 @@
     <div class="graph">
       <div class="left">
         <div
-          v-for="({ value, name, color }, i) in leftItems"
+          v-for="({ value, name, color, number }, i) in leftItems"
           :key="i"
           class="item"
         >
@@ -33,6 +33,11 @@
           </div>
 
           <CommonProgress :percent="value" :color="color" />
+
+          <p class="item-tokens">
+            <span class="sub-xs">{{ number }}</span>
+            <span class="token-title cap-s">Tokens</span>
+          </p>
         </div>
       </div>
 
@@ -77,7 +82,7 @@
 
       <div class="right">
         <div
-          v-for="({ value, name, color }, i) in rightItems"
+          v-for="({ value, name, color, number }, i) in rightItems"
           :key="i"
           class="item"
         >
@@ -87,6 +92,11 @@
           </div>
 
           <CommonProgress :percent="value" :color="color" />
+
+          <p class="item-tokens">
+            <span class="sub-xs">{{ number }}</span>
+            <span class="token-title cap-s">Tokens</span>
+          </p>
         </div>
       </div>
     </div>
@@ -128,6 +138,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue"
+
+const { isDesktop } = useViewport()
 
 /* ------------------ contract ------------------ */
 const contract = "0xB9Ca2693Dfb8B4fA3Bb1B49934FE2D442427221e"
@@ -187,14 +199,20 @@ const activeArc = computed(() =>
 )
 
 const onEnter = (i: number) => {
+  if (!isDesktop.value) return
+
   hoveredIndex.value = i
 }
 
 const onLeave = () => {
+  if (!isDesktop.value) return
+
   hoveredIndex.value = null
 }
 
 const onMove = (e: PointerEvent) => {
+  if (!isDesktop.value) return
+
   const target = e.target as Element
 
   if (!target?.classList?.contains("donut-segment")) {
@@ -283,11 +301,23 @@ const arcs = computed(() => {
 }
 .title {
   margin-bottom: 3.5rem;
+  @include mobile {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+}
+.tokenomics {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
 }
 .contract {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @include mobile {
+    display: none;
+  }
 }
 .contract-title {
   margin-bottom: 0.75rem;
@@ -319,22 +349,55 @@ const arcs = computed(() => {
   align-items: center;
   width: 100%;
   margin-top: 3.5rem;
+  @include mobile {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+    gap: 0;
+    column-gap: 0.5rem;
+    align-items: flex-start;
+  }
 }
 .item {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @include mobile {
+    border-radius: 1rem;
+    border: 0.0625rem solid var(--c-grey-3);
+    background: var(--c-white);
+    padding: 1rem;
+    gap: 0;
+  }
 }
 .item-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
 }
 .left,
 .right {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @include mobile {
+    gap: 0.5rem;
+  }
+}
+.left {
+  @include mobile {
+    order: 2;
+  }
+}
+.right {
+  @include mobile {
+    order: 3;
+  }
 }
 
 .donut-segment {
@@ -363,6 +426,9 @@ const arcs = computed(() => {
   white-space: nowrap;
   z-index: 3;
   margin-top: -2rem;
+  @include mobile {
+    display: none;
+  }
 }
 .donut-tooltip:after {
   content: "";
@@ -392,6 +458,14 @@ const arcs = computed(() => {
 }
 .center {
   position: relative;
+  @include mobile {
+    order: 1;
+    height: 14.1875rem;
+    width: 14.1875rem;
+    grid-column: 1 / span 2;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+  }
 }
 .center-logo {
   width: 9.6875rem;
@@ -400,12 +474,18 @@ const arcs = computed(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  @include mobile {
+    width: 4.375rem;
+  }
 }
 .total {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 3.5rem;
+  @include mobile {
+    display: none;
+  }
 }
 .total-text {
   margin-bottom: 1rem;
@@ -422,6 +502,9 @@ const arcs = computed(() => {
   gap: 1rem;
   width: 100%;
   margin-top: 3.5rem;
+  @include mobile {
+    display: none;
+  }
 }
 .card {
   display: flex;
@@ -460,6 +543,31 @@ const arcs = computed(() => {
 @include hover {
   .card-info:hover .tooltip-card {
     opacity: 1;
+  }
+}
+.item-name {
+  @include mobile {
+    font-size: 0.875rem;
+    line-height: 100%;
+    margin-bottom: 1.5rem;
+  }
+}
+.item:deep(.progress-wrap) {
+  @include mobile {
+    height: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+.item-tokens {
+  display: none;
+  @include mobile {
+    display: flex;
+    gap: 0.25rem;
+  }
+}
+.token-title {
+  @include mobile {
+    color: var(--c-grey);
   }
 }
 </style>

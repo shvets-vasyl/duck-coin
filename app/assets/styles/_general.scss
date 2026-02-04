@@ -113,6 +113,9 @@ html.lenis {
   background: var(--c-white);
   padding: 1.5rem;
   width: 100%;
+  @include mobile {
+    border-radius: 1rem;
+  }
 }
 
 // adaptive
