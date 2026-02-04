@@ -90,7 +90,7 @@ const ecosystem = [
   },
   {
     title: "DuckPad",
-    link: "/",
+    link: "/duckpad",
   },
   {
     title: "About",

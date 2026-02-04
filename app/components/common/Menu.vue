@@ -36,7 +36,7 @@ const nav = [
   },
   {
     text: "DuckPad",
-    link: "/",
+    link: "/duckpad",
   },
   {
     text: "About",
