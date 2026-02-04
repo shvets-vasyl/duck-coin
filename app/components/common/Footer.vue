@@ -193,6 +193,9 @@ const legal = [
   grid-template-columns: 1.5rem 1fr;
   align-items: center;
   gap: 1rem;
+  @include mobile {
+    gap: 0.5rem;
+  }
 }
 .contact {
   margin-left: auto;

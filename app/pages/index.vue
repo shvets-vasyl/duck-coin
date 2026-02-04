@@ -1,7 +1,7 @@
 <template>
   <main class="main-page">
     <CommonHeader />
-    <!-- <CommonMenu /> -->
+    <CommonMenu />
 
     <PageMainHero />
     <PageMainCalculate />

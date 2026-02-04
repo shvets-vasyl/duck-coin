@@ -1,5 +1,8 @@
 <template>
-  <header class="header" :class="{ scrolled: headerState.isScrolled }">
+  <header
+    class="header"
+    :class="{ scrolled: headerState.isScrolled, open: headerState.isMenuOpen }"
+  >
     <div class="logo">
       <NuxtLink class="logo-link" to="/">
         <IconLogo />
@@ -26,6 +29,11 @@
         </CommonButtonTemplate>
       </button>
     </div>
+
+    <button v-if="!hideNav" class="burger" @click="toggleMenu">
+      <IconBurger v-if="!headerState.isMenuOpen" />
+      <IconClose v-else />
+    </button>
   </header>
 </template>
 
@@ -62,6 +70,38 @@ const headerState = useState<{
   isScrolled: boolean
 }>("header-state")
 
+const animating = ref(false)
+
+const toggleMenu = () => {
+  if (animating.value) return
+  animating.value = true
+
+  const menu = document.querySelector("menu.menu")
+
+  if (headerState.value.isMenuOpen) {
+    headerState.value.isMenuOpen = false
+    useLockScroll(false)
+
+    gsap.to(menu, {
+      xPercent: 105,
+      onComplete() {
+        animating.value = false
+      },
+    })
+  } else {
+    headerState.value.isMenuOpen = true
+    useLockScroll(true)
+
+    gsap.to(menu, {
+      x: 0,
+      xPercent: 0,
+      onComplete() {
+        animating.value = false
+      },
+    })
+  }
+}
+
 const onScroll = () => {
   headerState.value.isScrolled = window.scrollY > 0
 }
@@ -90,12 +130,24 @@ onBeforeUnmount(() => {
   @include mobile {
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+  }
+}
+.logo {
+  @include mobile {
+    margin-right: auto;
   }
 }
 .header.scrolled {
   background: var(--c-yellow);
   border-bottom: 0.0625rem solid var(--c-black);
+  @include mobile {
+    transition: border-color 0.4s var(--t-ease);
+  }
+}
+.header.open.scrolled {
+  @include mobile {
+    border-color: transparent;
+  }
 }
 
 .logo-link {
@@ -114,5 +166,25 @@ onBeforeUnmount(() => {
 .cta-wrap {
   display: flex;
   justify-content: flex-end;
+  @include mobile {
+    transition: opacity 0.4s var(--t-ease);
+  }
+}
+.header.open .cta-wrap {
+  @include mobile {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.burger {
+  display: none;
+  @include mobile {
+    display: block;
+    padding: 1rem;
+    margin-right: -1rem;
+  }
+}
+.burger:deep(svg) {
+  width: 1.5rem;
 }
 </style>
