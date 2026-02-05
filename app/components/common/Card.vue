@@ -11,7 +11,7 @@
     </div>
 
     <h5 class="name h5">{{ data.title }}</h5>
-    <p class="descr sub-s">{{ data.descr }}</p>
+    <p v-if="data.descr" class="descr sub-s">{{ data.descr }}</p>
 
     <div class="list">
       <div v-for="(text, l) in data.list" :key="l" class="list-item">
@@ -21,6 +21,10 @@
         <p class="list-text">{{ text }}</p>
       </div>
     </div>
+
+    <div v-if="data.descr2" class="tip-wrap bode-m">
+      <CommonTip :text="data.descr2" />
+    </div>
   </div>
 </template>
 
@@ -29,7 +33,8 @@ defineProps<{
   data: {
     photo: string
     title: string
-    descr: string
+    descr?: string
+    descr2?: string
     list: string[]
   }
 }>()
@@ -38,9 +43,13 @@ defineProps<{
 <style scoped lang="scss">
 .card {
   padding-bottom: 3.5rem;
+  width: 27rem;
+  display: flex;
+  flex-direction: column;
   @include mobile {
     padding: 1.25rem 1.25rem 2rem;
     text-align: center;
+    width: 100%;
   }
 }
 
@@ -105,5 +114,24 @@ defineProps<{
 }
 .list-text {
   line-height: 1.5rem;
+}
+.tip-wrap {
+  text-align: center;
+  padding-top: 2.5rem;
+  margin-top: auto;
+  margin-bottom: -2rem;
+  @include mobile {
+    margin-bottom: -0.5rem;
+    padding-top: 1.5rem;
+  }
+}
+.tip-wrap:deep(.tip) {
+  padding: 1rem 1.5rem;
+  line-height: 1.5rem;
+  @include mobile {
+    line-height: 1.375rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
 }
 </style>

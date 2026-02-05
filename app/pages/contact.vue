@@ -3,7 +3,8 @@
     <CommonHeader />
     <CommonMenu />
 
-    <PageDuckpadWho />
+    <PageContactHero />
+    <PageContactWho />
     <SectionJoin />
     <CommonFooter />
   </main>
