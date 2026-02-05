@@ -6,6 +6,10 @@ export default function defaultTransition(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ) {
+  const headerState = useState<{
+    isMenuOpen: boolean
+    isScrolled: boolean
+  }>("header-state")
   const transitionDone = useState("transition-done")
   const preloaderDone = useState("preloader-done")
   const duration = 1
@@ -25,6 +29,7 @@ export default function defaultTransition(
 
     const tl = gsap.timeline({
       onComplete() {
+        headerState.value.isMenuOpen = false
         ScrollTrigger.killAll()
         done()
       },
