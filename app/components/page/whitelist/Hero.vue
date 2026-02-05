@@ -29,17 +29,6 @@
             />
 
             <CommonFormInput
-              name="name"
-              type="text"
-              :label="fields.name.label"
-              :placeholder="fields.name.placeholder"
-              :required="fields.name.required"
-              icon
-            >
-              <IconProfile />
-            </CommonFormInput>
-
-            <CommonFormInput
               name="email"
               type="email"
               :label="fields.email.label"
@@ -64,11 +53,7 @@
       </div>
     </div>
 
-    <img
-      class="duck-img"
-      draggable="false"
-      src="/images/whitelist/whitelist-duck.png"
-    />
+    <img class="duck-img" draggable="false" src="/images/whitelist/hero.png" />
   </section>
 </template>
 
@@ -79,11 +64,6 @@ import { emailRegex } from "@/utils/validation/emailRegex"
 import * as yup from "yup"
 
 const fields = {
-  name: {
-    label: "Name",
-    placeholder: "Name",
-    required: true,
-  },
   email: {
     label: "Email",
     placeholder: "Email",
@@ -93,12 +73,6 @@ const fields = {
 
 // ----- FORM SCHEMA
 const schema = yup.object({
-  name: yup
-    .string()
-    .required("Is a required field")
-    .min(2, "Must be at least 2 characters")
-    .matches(/^[^\d]*$/, "Invalid format"),
-
   email: yup
     .string()
     .required("Is a required field")
@@ -119,9 +93,8 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   const duration = Date.now() - formOpenedAt
   if (duration < 1200) return
 
-  const name = values.name as string
   const email = values.email as string
-  const data = { name, email }
+  const data = { email }
 
   sended.value = true
 
@@ -149,7 +122,7 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   overflow: hidden;
   min-height: 100vh;
   @include mobile {
-    padding: 5.75rem 1.25rem 18rem;
+    padding: 5.75rem 1.25rem 24rem;
   }
 }
 .content {
@@ -160,7 +133,7 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   @include mobile {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
 }
 .title {
@@ -173,13 +146,15 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 }
 .duck-img {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 48rem;
+  bottom: -9.5rem;
+  left: 1rem;
+  width: 32.8125rem;
   pointer-events: none;
   @include mobile {
-    width: 26.25rem;
-    left: 1rem;
+    width: 21.875rem;
+    left: auto;
+    right: 0;
+    bottom: 1.25rem;
   }
 }
 .form {
@@ -194,9 +169,14 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 .form-title {
   text-align: center;
   margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  padding-left: 5rem;
+  padding-right: 5rem;
   @include mobile {
     font-size: 2rem;
     line-height: 2rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 .vip {
@@ -222,13 +202,10 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   width: 100%;
 }
 .fields {
-  margin-bottom: 3.5rem;
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  @include mobile {
-    margin-bottom: 2.5rem;
-  }
 }
 .form-text {
   border-radius: 0.75rem;
