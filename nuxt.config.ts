@@ -63,7 +63,7 @@ export default defineNuxtConfig({
         {
           name: "description",
           content:
-            "The first meme coin launchpad with contract-level rug protection.No trust required – just code that actually works.",
+            "2026's Hottest Memecoin Presale. The memecoin everyone's talking about. Early adopters get exclusive perks and higher allocations.",
         },
 
         // Open Graph
@@ -71,7 +71,7 @@ export default defineNuxtConfig({
         {
           property: "og:description",
           content:
-            "The first meme coin launchpad with contract-level rug protection. No trust required – just code that actually works.",
+            "2026's Hottest Memecoin Presale. The memecoin everyone's talking about. Early adopters get exclusive perks and higher allocations.",
         },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "Duck" },
@@ -87,7 +87,7 @@ export default defineNuxtConfig({
         {
           name: "twitter:description",
           content:
-            "The first meme coin launchpad with contract-level rug protection. No trust required – just code that actually works.",
+            "2026's Hottest Memecoin Presale. The memecoin everyone's talking about. Early adopters get exclusive perks and higher allocations.",
         },
         { name: "twitter:image", content: "/og.png" },
       ],
