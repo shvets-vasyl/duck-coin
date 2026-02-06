@@ -34,6 +34,9 @@ export default defineNuxtConfig({
         },
       },
     },
+    server: {
+      allowedHosts: ["itsduck.com", "www.itsduck.com"],
+    },
   },
 
   // -------------------------------------------------
