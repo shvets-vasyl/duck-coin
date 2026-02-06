@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <CommonPreloader v-if="!preloaderDone" />
+    <!-- <CommonPreloader v-if="!preloaderDone" /> -->
     <!-- <CommonLoader /> -->
 
     <NuxtPage />

@@ -15,5 +15,5 @@ export default defineNuxtPlugin(() => {
     lenis.value.raf(time * 1000)
   })
   gsap.ticker.lagSmoothing(0)
-  lenis.value.stop()
+  // lenis.value.stop()
 })
