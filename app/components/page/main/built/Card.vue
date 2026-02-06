@@ -4,13 +4,7 @@
 
     <div class="items">
       <div v-for="({ icon, name }, i) in data.items" :key="i" class="item">
-        <img
-          class="item-icon"
-          draggable="false"
-          :src="icon"
-          loading="lazy"
-          :alt="name"
-        />
+        <img class="item-icon" draggable="false" :src="icon" :alt="name" />
 
         <p class="item-name cap-m">{{ name }}</p>
       </div>

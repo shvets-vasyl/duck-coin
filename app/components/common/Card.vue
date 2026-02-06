@@ -5,7 +5,6 @@
         class="inner-media"
         draggable="false"
         :src="data.photo"
-        loading="lazy"
         :alt="data.title"
       />
     </div>

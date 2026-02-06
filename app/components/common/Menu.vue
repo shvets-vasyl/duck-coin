@@ -32,7 +32,7 @@ defineProps<{
 const nav = [
   {
     text: "Presale",
-    link: "/",
+    link: "/presale",
   },
   {
     text: "DuckPad",

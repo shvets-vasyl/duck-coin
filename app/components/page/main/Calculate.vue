@@ -4,7 +4,6 @@
       class="calculate-img inner-media"
       draggable="false"
       src="/images/main/calc-bg.png"
-      loading="lazy"
       alt="some alt"
     />
     <div class="content">

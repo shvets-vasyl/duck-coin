@@ -118,13 +118,7 @@
         :key="i"
         class="card base-card"
       >
-        <img
-          class="card-icon"
-          draggable="false"
-          :src="icon"
-          loading="lazy"
-          :alt="text"
-        />
+        <img class="card-icon" draggable="false" :src="icon" :alt="text" />
         <p class="sub-s">{{ text }}</p>
 
         <div class="card-info">

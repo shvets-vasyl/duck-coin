@@ -1,12 +1,6 @@
 <template>
   <section class="join" :class="{ white }">
-    <img
-      class="duck-img"
-      draggable="false"
-      src="/images/main/join-duck.webp"
-      loading="lazy"
-      role="presentation"
-    />
+    <img class="duck-img" draggable="false" src="/images/main/join-duck.png" />
     <div class="content">
       <h2 class="title h2">Join the Duck Army</h2>
       <p class="descr body-m">
@@ -58,16 +52,13 @@ defineProps<{
 }
 .duck-img {
   position: absolute;
-  top: -7.5rem;
-  width: 94.0625rem;
-  right: -19.375rem;
+  bottom: 0;
+  width: 35rem;
+  right: 3.5rem;
   pointer-events: none;
   @include mobile {
-    top: auto;
-    bottom: -13.75rem;
-    right: auto;
-    left: -20rem;
-    width: 54rem;
+    width: 21.5rem;
+    right: 1.5rem;
   }
 }
 </style>

@@ -12,7 +12,7 @@
     <nav class="nav">
       <template v-if="!hideNav">
         <NuxtLink
-          v-for="({ text, link }, i) in nav"
+          v-for="({ text, link }, i) in navList ? navList : nav"
           :key="i"
           class="nav-item cta-s hover-fade"
           :to="link"
@@ -41,11 +41,15 @@
 defineProps<{
   hideNav?: boolean
   btnText?: string
+  navList?: {
+    text: string
+    link: string
+  }[]
 }>()
 const nav = [
   {
     text: "Presale",
-    link: "/",
+    link: "/presale",
   },
   {
     text: "DuckPad",

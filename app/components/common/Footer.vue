@@ -86,7 +86,7 @@ const legalOpen = ref(false)
 const ecosystem = [
   {
     title: "Presale",
-    link: "/",
+    link: "/presale",
   },
   {
     title: "DuckPad",

@@ -10,13 +10,7 @@
         </div>
 
         <div v-for="({ feature, icon }, i) in items" :key="i" class="col">
-          <img
-            class="item-logo"
-            draggable="false"
-            :src="icon"
-            loading="lazy"
-            :alt="feature"
-          />
+          <img class="item-logo" draggable="false" :src="icon" :alt="feature" />
           <p class="sub-s">{{ feature }}</p>
         </div>
       </div>
@@ -45,7 +39,6 @@
             class="item-logo"
             draggable="false"
             :src="items[0]?.icon"
-            loading="lazy"
             :alt="items[0]?.feature"
           />
           <p class="sub-s">{{ items[0]?.feature }}</p>
