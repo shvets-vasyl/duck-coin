@@ -46,22 +46,24 @@
           <IconLogo />
         </div>
         <div class="donut-wrap" @pointermove="onMove" @pointerleave="onLeave">
-          <svg viewBox="0 0 120 120" class="donut">
-            <g>
-              <path
-                v-for="(arc, i) in arcs"
-                :key="arc.name"
-                :d="arc.d"
-                fill="none"
-                :stroke-width="STROKE_WIDTH"
-                stroke-linecap="round"
-                :stroke="arc.color"
-                class="donut-segment"
-                style="pointer-events: visibleStroke"
-                @pointerenter="onEnter(i)"
-              />
-            </g>
-          </svg>
+          <ClientOnly>
+            <svg viewBox="0 0 120 120" class="donut">
+              <g>
+                <path
+                  v-for="(arc, i) in arcs"
+                  :key="arc.name"
+                  :d="arc.d"
+                  fill="none"
+                  :stroke-width="STROKE_WIDTH"
+                  stroke-linecap="round"
+                  :stroke="arc.color"
+                  class="donut-segment"
+                  style="pointer-events: visibleStroke"
+                  @pointerenter="onEnter(i)"
+                />
+              </g>
+            </svg>
+          </ClientOnly>
 
           <div
             v-if="activeArc"
@@ -137,8 +139,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
-
 const { isDesktop } = useViewport()
 
 /* ------------------ contract ------------------ */
