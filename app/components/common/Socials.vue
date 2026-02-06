@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import IconFacebook from "@/components/icon/Facebook.vue"
+import IconTiktok from "@/components/icon/Tiktok.vue"
 import IconX from "@/components/icon/X.vue"
 import IconInstagram from "@/components/icon/Instagram.vue"
 import IconTelegram from "@/components/icon/Telegram.vue"
@@ -34,26 +35,26 @@ type IconName = keyof typeof icons
 const icons = {
   twitter: IconX,
   instagram: IconInstagram,
-  facebook: IconFacebook,
+  tiktok: IconTiktok,
   telegram: IconTelegram,
 } as const
 
 const soc = [
   {
     name: "twitter",
-    link: "https://www.x.com/",
+    link: "https://x.com/itsduck_time",
   },
   {
     name: "instagram",
-    link: "https://www.instagram.com/",
+    link: "https://www.instagram.com/itsduck_time/",
   },
   {
-    name: "facebook",
-    link: "https://www.facebook.com/",
+    name: "tiktok",
+    link: "https://www.tiktok.com/@itsduck_time",
   },
   {
     name: "telegram",
-    link: "https://web.telegram.org/k/",
+    link: "https://t.me/itsduck_community",
   },
 ]
 </script>

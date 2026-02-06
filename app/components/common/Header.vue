@@ -22,7 +22,7 @@
       </template>
     </nav>
 
-    <div class="cta-wrap">
+    <div v-if="!hideNav" class="cta-wrap">
       <button class="cta-btn">
         <CommonButtonTemplate>
           {{ btnText ? btnText : "Join the presale" }}
