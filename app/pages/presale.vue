@@ -3,7 +3,10 @@
     <CommonHeader :nav-list="headerNav" btn-text="Connect wallet" />
     <CommonMenu />
 
-    123
+    <PagePresaleHero />
+    <PagePresaleHow />
+    <PagePresaleReferrals />
+    <PagePresaleLeaderboard />
     <SectionJoin />
 
     <CommonFooter />
