@@ -110,25 +110,50 @@ const items = [
 </script>
 
 <style scoped lang="scss">
+.referrals {
+  @include mobile {
+    padding-top: 0.5rem;
+  }
+}
 .title {
   text-transform: capitalize;
   margin-bottom: 1rem;
 }
 .descr {
   margin-bottom: 3.5rem;
+  @include mobile {
+    margin-bottom: 1.5rem;
+  }
 }
 .content {
   padding: 2.5rem;
   margin-bottom: 3.5rem;
   display: grid;
   grid-template-columns: 50% 50%;
+  @include mobile {
+    display: none;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
 }
 .left {
   padding-right: 2.5rem;
   border-right: 0.125rem solid var(--c-grey-3);
+  @include mobile {
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.0625rem solid var(--c-grey-3);
+    margin-bottom: 1.5rem;
+  }
 }
 .right {
   padding-left: 2.5rem;
+  @include mobile {
+    padding-left: 0;
+  }
 }
 .content-title {
   text-transform: capitalize;
@@ -138,6 +163,9 @@ const items = [
 .copy-btn {
   width: 7.5rem;
   position: relative;
+  @include mobile {
+    width: 100%;
+  }
 }
 .copy {
   display: flex;
@@ -150,6 +178,9 @@ const items = [
   padding-left: 1rem;
   padding-right: 0.5rem;
   margin-bottom: 1rem;
+  @include mobile {
+    height: 3.625rem;
+  }
 }
 .copy-text {
   white-space: nowrap;
@@ -176,11 +207,19 @@ const items = [
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 .info-item {
   display: flex;
   gap: 1rem;
   box-shadow: 0.25rem 0.25rem 0 0 var(--c-grey-3);
+  @include mobile {
+    padding: 1rem;
+  }
 }
 .info-icon:deep(svg) {
   width: 1.5rem;
@@ -223,6 +262,10 @@ const items = [
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+  }
 }
 .item {
   position: relative;
@@ -231,6 +274,14 @@ const items = [
   display: flex;
   flex-direction: column;
   height: 27rem;
+  @include mobile {
+    height: 15rem;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 1.5rem;
+    align-items: center;
+    overflow: hidden;
+  }
 }
 .item:nth-child(1) {
   background: #e7e5ca;
@@ -244,21 +295,53 @@ const items = [
   background: #dfeeff;
   box-shadow: 0 0 0 0.25rem rgba(#dfeeff, 0.5);
 }
+
 .item:nth-child(1) .item-img {
   width: 14rem;
+  @include mobile {
+    margin-top: auto;
+    width: 10rem;
+    margin-bottom: -3rem;
+  }
 }
 .item:nth-child(2) .item-img {
   width: 100%;
   margin-top: 4rem;
+  @include mobile {
+    margin-top: auto;
+    width: 16.125rem;
+    margin-bottom: 1rem;
+  }
 }
 .item:nth-child(3) .item-img {
   width: 100%;
   margin-top: 2rem;
+  @include mobile {
+    margin-top: auto;
+    width: 15.0625rem;
+    margin-bottom: 0.5rem;
+  }
+}
+.item-img {
+  @include mobile {
+    order: 3;
+    margin-top: auto;
+  }
 }
 .item-title {
   margin-bottom: 1rem;
   margin-top: auto;
   text-transform: capitalize;
   padding-right: 10%;
+  @include mobile {
+    order: 1;
+    margin-bottom: 0.5rem;
+    padding-right: 0;
+  }
+}
+.item-descr {
+  @include mobile {
+    order: 2;
+  }
 }
 </style>

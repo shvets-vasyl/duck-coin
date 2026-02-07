@@ -86,6 +86,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+  text-align: center;
   @include mobile {
     gap: 1rem;
   }
@@ -98,10 +99,10 @@ onBeforeUnmount(() => {
   }
 }
 .time {
-  width: 6rem;
+  width: 5.75rem;
   position: relative;
   padding: 1rem;
-  padding-top: 1.25rem;
+  padding-top: 1.125rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

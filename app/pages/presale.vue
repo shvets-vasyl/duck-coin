@@ -4,6 +4,8 @@
     <CommonMenu />
 
     <PagePresaleHero />
+    <PagePresaleProfile />
+    <PagePresalePanel />
     <PagePresaleHow />
     <PagePresaleReferrals />
     <PagePresaleLeaderboard />

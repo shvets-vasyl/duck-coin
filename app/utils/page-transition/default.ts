@@ -12,7 +12,7 @@ export default function defaultTransition(
   }>("header-state")
   const transitionDone = useState("transition-done")
   const preloaderDone = useState("preloader-done")
-  const duration = 1
+  const duration = 0.7
 
   to.meta.pageTransition = { ...(to.meta.pageTransition as TransitionProps) }
   from.meta.pageTransition = {
