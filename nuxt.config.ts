@@ -106,8 +106,8 @@ export default defineNuxtConfig({
   // 🔧 Runtime Config
   // -------------------------------------------------
   runtimeConfig: {
-    emailApiKey: process.env.EMAIL_API_KEY,
-    emailApiBase: process.env.EMAIL_API_BASE,
+    esputnikApiKey: process.env.ESPUTNIK_API_KEY,
+    esputnikUsername: process.env.ESPUTNIK_USERNAME || "any",
     public: {
       dev_mode: Boolean(process.env.DEV_MODE),
     },

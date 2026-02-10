@@ -91,14 +91,15 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   if (duration < 1200) return
 
   const email = values.email as string
-  const data = { email }
 
   resetForm()
 
   const res = await $fetch("/api/whitelist", {
     method: "POST",
-    body: data,
+    body: { email },
   })
+
+  console.log(res)
 
   if (res.ok) {
     sended.value = true
