@@ -1,3 +1,5 @@
+const isDevMode = process.env.DEV_MODE === "true"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // -------------------------------------------------
@@ -16,7 +18,18 @@ export default defineNuxtConfig({
   // -------------------------------------------------
   // 📦 Modules
   // -------------------------------------------------
-  modules: ["@nuxt/eslint"],
+  modules: ["@nuxt/eslint", "@nuxtjs/sitemap"],
+
+  sitemap: {
+    exclude: isDevMode
+      ? []
+      : ["/", "/presale", "/contact", "/ecosystem", "/duckpad"],
+    defaults: {
+      lastmod: new Date().toISOString(),
+      priority: 1.0,
+      changefreq: "daily",
+    },
+  },
 
   // -------------------------------------------------
   // 🎨 Global CSS

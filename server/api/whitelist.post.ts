@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
       `${config.esputnikUsername}:${config.esputnikApiKey}`
     ).toString("base64")
 
-    // ВАЖЛИВО: channels на верхньому рівні (як в OpenAPI)
     const res = await $fetch("https://esputnik.com/api/v1/contact", {
       method: "POST",
       headers: {
@@ -21,6 +20,7 @@ export default defineEventHandler(async (event) => {
       },
       body: {
         channels: [{ type: "email", value: cleanEmail }],
+        // 286182 wallet_connected
         fields: [{ id: 286181, value: "1" }],
       },
     })

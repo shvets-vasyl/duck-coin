@@ -23,6 +23,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@nuxtjs/sitemap": "^7.6.0",
     "@types/node": "^24.9.1",
     "sass": "^1.93.2",
     "sass-embedded": "^1.93.2",
