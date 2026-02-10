@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
       },
       body: {
         channels: [{ type: "email", value: cleanEmail }],
+        fields: [{ id: 286181, value: "1" }],
       },
     })
 
