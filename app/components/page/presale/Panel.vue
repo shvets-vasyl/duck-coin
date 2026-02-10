@@ -19,6 +19,8 @@
         <div class="body-right">graf</div>
       </div>
     </div>
+
+    <div class="stages-box base-card">123</div>
   </section>
 </template>
 
@@ -90,5 +92,8 @@
     padding: 0;
     border: none;
   }
+}
+.stages-box {
+  margin-top: 1rem;
 }
 </style>

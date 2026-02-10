@@ -1,14 +1,16 @@
 <template>
   <div v-if="sended || errorForm" class="form-message body-m">
-    <div v-if="whitelist">
-      You successfully <br class="mob" />joined the whitelist!
+    <div v-if="sended">
+      <div v-if="whitelist">
+        You successfully <br class="mob" />joined the whitelist!
+      </div>
+
+      <div v-if="transaction">
+        Transaction successful! <br class="mob" />Your purchase is complete.
+      </div>
     </div>
 
-    <div v-if="transaction">
-      Transaction successful! <br class="mob" />Your purchase is complete.
-    </div>
-
-    <div v-if="errorForm">
+    <div v-else>
       Something went wrong. <br class="mob" />
       Please try again later.
     </div>

@@ -106,6 +106,8 @@ export default defineNuxtConfig({
   // 🔧 Runtime Config
   // -------------------------------------------------
   runtimeConfig: {
+    emailApiKey: process.env.EMAIL_API_KEY,
+    emailApiBase: process.env.EMAIL_API_BASE,
     public: {
       dev_mode: Boolean(process.env.DEV_MODE),
     },
