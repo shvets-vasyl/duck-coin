@@ -41,14 +41,10 @@
           </div>
 
           <button class="form-btn">
-            <CommonButtonTemplate big :yellow="!sended">
-              {{ sended ? "Joined Successfully!" : "Join Whitelist" }}
+            <CommonButtonTemplate big yellow>
+              Join Whitelist
             </CommonButtonTemplate>
           </button>
-
-          <!-- <div class="text-wrap">
-            <div class="form-text body-s">No spam. No data selling. Ever.</div>
-          </div> -->
         </Form>
       </div>
     </div>
@@ -81,7 +77,8 @@ const schema = yup.object({
 
 // ----- FORM SUBMIT
 const formOpenedAt = Date.now()
-const sended = ref(false)
+const sended = useState("form-sended")
+const errorForm = useState("form-error")
 
 const onSubmit: SubmissionHandler<GenericObject> = async (
   values,
@@ -96,8 +93,6 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   const email = values.email as string
   const data = { email }
 
-  sended.value = true
-
   resetForm()
 
   const res = await $fetch("/api/whitelist", {
@@ -105,12 +100,19 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
     body: data,
   })
 
-  setTimeout(() => {
-    sended.value = false
-  }, 2000)
+  if (res.ok) {
+    sended.value = true
 
-  console.log(res)
-  console.log(data)
+    setTimeout(() => {
+      sended.value = false
+    }, 2000)
+  } else {
+    errorForm.value = true
+
+    setTimeout(() => {
+      errorForm.value = false
+    }, 2000)
+  }
 }
 </script>
 

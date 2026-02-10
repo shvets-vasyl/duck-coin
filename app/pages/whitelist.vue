@@ -5,6 +5,8 @@
     <PageWhitelistHero />
     <PageWhitelistPhotos />
     <SectionJoin white />
+
+    <CommonFormMessage whitelist />
   </main>
 </template>
 

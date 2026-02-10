@@ -11,6 +11,8 @@
     <PagePresaleLeaderboard />
     <SectionJoin />
 
+    <CommonFormMessage transaction />
+
     <CommonFooter />
   </main>
 </template>

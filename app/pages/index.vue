@@ -13,6 +13,8 @@
     <PageMainPlan />
     <SectionJoin />
 
+    <CommonFormMessage transaction />
+
     <CommonFooter />
   </main>
 </template>

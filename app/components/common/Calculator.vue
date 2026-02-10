@@ -80,7 +80,7 @@
     </div>
 
     <div class="btn-wrap">
-      <button class="btn-buy">
+      <button class="btn-buy" @click="onSubmit">
         <CommonButtonTemplate big yellow> Buy $DUCK </CommonButtonTemplate>
       </button>
     </div>
@@ -121,6 +121,17 @@ const auditedItems = [
 ]
 
 const selected = ref<ExchangeItem>(exchange[0]!)
+
+const sended = useState("form-sended")
+// const errorForm = useState("form-error")
+
+const onSubmit = () => {
+  sended.value = true
+
+  setTimeout(() => {
+    sended.value = false
+  }, 2000)
+}
 
 /** ---------------------------
  *  Мінімальні "дані пресейлу"
