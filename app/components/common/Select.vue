@@ -1,14 +1,19 @@
 <template>
-  <div ref="rootRef" class="select">
+  <div ref="rootRef" class="select" :class="{ inner }">
     <button type="button" class="select-btn" @click="toggle">
-      <img class="select-icon" :src="modelValue.icon" :alt="modelValue.text" />
+      <img
+        v-if="modelValue.icon"
+        class="select-icon"
+        :src="modelValue.icon"
+        :alt="modelValue.text"
+      />
       <span class="select-text sub-s">{{ modelValue.text }}</span>
       <span class="select-arrow" :class="{ open: isOpen }">
         <IconCaret />
       </span>
     </button>
 
-    <div v-if="isOpen" class="select-dropdown">
+    <div v-if="isOpen" class="select-dropdown" data-lenis-prevent>
       <button
         v-for="item in items"
         :key="item.text"
@@ -17,7 +22,12 @@
         :class="{ active: item.text === modelValue.text }"
         @click="pick(item)"
       >
-        <img class="select-icon" :src="item.icon" :alt="item.text" />
+        <img
+          v-if="item.icon"
+          class="select-icon"
+          :src="item.icon"
+          :alt="item.text"
+        />
         <span class="select-text sub-s">{{ item.text }}</span>
       </button>
     </div>
@@ -27,12 +37,13 @@
 <script setup lang="ts">
 export type ExchangeItem = {
   text: string
-  icon: string
+  icon?: string
 }
 
 defineProps<{
   items: ExchangeItem[]
   modelValue: ExchangeItem
+  inner?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -80,6 +91,13 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   border: 0.0625rem solid var(--c-black);
   background: var(--c-white);
 }
+.select.inner .select-btn {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  border: none;
+  background: none;
+}
 
 .select-icon {
   width: 1.25rem;
@@ -109,6 +127,9 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   z-index: 20;
   display: flex;
   flex-direction: column;
+}
+.select.inner .select-dropdown {
+  width: auto;
 }
 
 .select-item {

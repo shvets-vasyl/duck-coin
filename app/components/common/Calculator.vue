@@ -34,10 +34,10 @@
     <div class="amount">
       <p class="amount-title sub-s">Your amount</p>
 
-      <div class="field">
+      <div class="calc-field">
         <input
           v-model="amount"
-          class="input body-xl"
+          class="calc-input body-xl"
           name="amount"
           type="text"
           placeholder="0"
@@ -64,9 +64,9 @@
     <div class="receive">
       <p class="receive-title sub-s">You receive</p>
 
-      <div class="field receive-field">
+      <div class="calc-field receive-field">
         <input
-          class="input body-xl"
+          class="calc-input body-xl"
           name="receive"
           type="text"
           placeholder="0"
@@ -279,27 +279,6 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 .calc-progress {
   margin-bottom: 1rem;
 }
-.input {
-  width: 100%;
-  height: 100%;
-  flex: 1 1 auto;
-  padding-left: 1rem;
-  color: var(--c-black);
-}
-.input::placeholder {
-  color: var(--c-grey);
-}
-.field {
-  display: flex;
-  gap: 1rem;
-  border-radius: 1rem;
-  border: 0.0938rem solid var(--c-grey-3);
-  background: var(--c-white);
-  height: 5rem;
-  position: relative;
-  align-items: center;
-  margin-bottom: 1rem;
-}
 
 .amount-title {
   margin-bottom: 1rem;
@@ -400,7 +379,12 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 }
 .icon-dollar {
   width: 1.5rem;
+  flex: 0 0 1.5rem;
   margin-right: 1rem;
+  @include mobile {
+    width: 1.25rem;
+    flex: 0 0 1.25rem;
+  }
 }
 .receive-field {
   height: 4rem;
