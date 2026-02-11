@@ -14,7 +14,7 @@
       </div>
       <div class="body">
         <div class="body-left">
-          <CommonCalculator />
+          <CommonCalculator smaller />
         </div>
         <div class="body-right">
           <PagePresalePanelGraph

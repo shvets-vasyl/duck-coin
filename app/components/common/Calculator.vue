@@ -1,5 +1,5 @@
 <template>
-  <div class="base-card calculator">
+  <div class="base-card calculator" :class="{ smaller }">
     <div class="price">
       <h3 class="price-number h3">{{ raisedDisplay }}</h3>
       <p class="price-text cap-m">Raised</p>
@@ -103,6 +103,10 @@
 </template>
 
 <script setup lang="ts">
+defineProps<{
+  smaller?: boolean
+}>()
+
 type ExchangeItem = {
   text: string
   icon: string
