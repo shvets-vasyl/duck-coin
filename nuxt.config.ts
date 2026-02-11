@@ -2,6 +2,9 @@ const isDevMode = process.env.DEV_MODE === "true"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  site: {
+    url: isDevMode ? "http://localhost:6969" : "https://itsduck.com",
+  },
   // -------------------------------------------------
   // ⚙️ Core
   // -------------------------------------------------
