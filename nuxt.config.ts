@@ -20,6 +20,9 @@ export default defineNuxtConfig({
   // -------------------------------------------------
   modules: ["@nuxt/eslint", "@nuxtjs/sitemap"],
 
+  // -------------------------------------------------
+  // SITEMAP
+  // -------------------------------------------------
   sitemap: {
     exclude: isDevMode
       ? []
@@ -64,6 +67,52 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en",
       },
+
+      script: isDevMode
+        ? []
+        : [
+            // --- Google Tag Manager ---
+            {
+              id: "gtm-inline",
+              // Nuxt/Unhead inline script:
+              innerHTML: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WMDG4QPJ');`,
+              type: "text/javascript",
+              tagPosition: "head",
+            },
+
+            // --- Google tag (gtag.js) ---
+            {
+              id: "gtag-src",
+              src: "https://www.googletagmanager.com/gtag/js?id=G-VLPZRKJVC6",
+              async: true,
+              tagPosition: "head",
+            },
+            {
+              id: "gtag-inline",
+              innerHTML: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-VLPZRKJVC6');`,
+              type: "text/javascript",
+              tagPosition: "head",
+            },
+          ],
+
+      // ✅ 2) GTM noscript immediately after <body> (prod only)
+      noscript: isDevMode
+        ? []
+        : [
+            {
+              id: "gtm-noscript",
+              innerHTML: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WMDG4QPJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+              tagPosition: "bodyOpen",
+            },
+          ],
 
       meta: [
         // Base
@@ -122,7 +171,7 @@ export default defineNuxtConfig({
     esputnikApiKey: process.env.ESPUTNIK_API_KEY,
     esputnikUsername: process.env.ESPUTNIK_USERNAME || "any",
     public: {
-      dev_mode: Boolean(process.env.DEV_MODE),
+      dev_mode: isDevMode,
     },
   },
   devServer: {
