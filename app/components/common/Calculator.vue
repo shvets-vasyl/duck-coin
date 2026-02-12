@@ -1,5 +1,5 @@
 <template>
-  <div class="base-card calculator" :class="{ smaller }">
+  <div class="base-card calculator" :class="{ smaller: isSmaller }">
     <div class="price">
       <h3 class="price-number h3">{{ raisedDisplay }}</h3>
       <p class="price-text cap-m">Raised</p>
@@ -50,7 +50,7 @@
             <CommonSelect
               v-model="selected"
               :items="exchange"
-              :inner2="smaller"
+              :inner2="isSmaller"
             />
           </div>
         </div>
@@ -58,7 +58,7 @@
 
       <p class="balance cap-s"><span>Balance: </span>0.00000 Max</p>
 
-      <div v-if="!smaller" class="decor-down">
+      <div v-if="!isSmaller" class="decor-down">
         <div class="decor-line" />
         <CommonButtonTemplate small disabled>
           <IconDown class="icon-down" />
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   smaller?: boolean
 }>()
 
@@ -134,6 +134,12 @@ const selected = ref<ExchangeItem>(exchange[0]!)
 
 const sended = useState("form-sended")
 // const errorForm = useState("form-error")
+
+const { isMobile } = useViewport()
+
+const isSmaller = computed(() => {
+  return props.smaller || isMobile.value
+})
 
 const onSubmit = () => {
   sended.value = true
@@ -250,6 +256,9 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 <style scoped lang="scss">
 .calculator {
   padding: 2.5rem 1.5rem;
+  @include mobile {
+    padding: 1.5rem 1rem;
+  }
 }
 .price {
   display: flex;
