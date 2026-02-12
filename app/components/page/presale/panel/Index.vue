@@ -172,7 +172,7 @@ function onJoin() {
 }
 .body {
   display: grid;
-  grid-template-columns: 34.625rem 1fr;
+  grid-template-columns: 34rem 1fr;
   gap: 2.5rem;
   @include mobile {
     display: flex;

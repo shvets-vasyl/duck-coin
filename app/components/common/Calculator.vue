@@ -31,50 +31,56 @@
       </div>
     </div>
 
-    <div class="amount">
-      <p class="amount-title sub-s">Your amount</p>
+    <div class="fields-wrap">
+      <div class="amount">
+        <p class="amount-title sub-s">Your amount</p>
 
-      <div class="calc-field">
-        <input
-          v-model="amount"
-          class="calc-input body-xl"
-          name="amount"
-          type="text"
-          placeholder="0"
-          inputmode="numeric"
-          @input="onInput"
-        />
+        <div class="calc-field">
+          <input
+            v-model="amount"
+            class="calc-input body-xl"
+            name="amount"
+            type="text"
+            placeholder="0"
+            inputmode="numeric"
+            @input="onInput"
+          />
 
-        <div class="select-wrap">
-          <CommonSelect v-model="selected" :items="exchange" />
+          <div class="select-wrap">
+            <CommonSelect
+              v-model="selected"
+              :items="exchange"
+              :inner2="smaller"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <p class="balance cap-s">Balance: 0.00000 Max</p>
+      <p class="balance cap-s"><span>Balance: </span>0.00000 Max</p>
 
-    <div class="decor-down">
-      <div class="decor-line" />
-      <CommonButtonTemplate small disabled>
-        <IconDown class="icon-down" />
-      </CommonButtonTemplate>
-      <div class="decor-line" />
-    </div>
+      <div v-if="!smaller" class="decor-down">
+        <div class="decor-line" />
+        <CommonButtonTemplate small disabled>
+          <IconDown class="icon-down" />
+        </CommonButtonTemplate>
+        <div class="decor-line" />
+      </div>
 
-    <div class="receive">
-      <p class="receive-title sub-s">You receive</p>
+      <div class="receive">
+        <p class="receive-title sub-s">You receive</p>
 
-      <div class="calc-field receive-field">
-        <input
-          class="calc-input body-xl"
-          name="receive"
-          type="text"
-          placeholder="0"
-          :value="receiveDisplay"
-          readonly
-        />
-        <div class="icon-dollar">
-          <IconDollar />
+        <div class="calc-field receive-field">
+          <input
+            class="calc-input body-xl"
+            name="receive"
+            type="text"
+            placeholder="0"
+            :value="receiveDisplay"
+            readonly
+          />
+          <div class="icon-dollar">
+            <IconDollar />
+          </div>
         </div>
       </div>
     </div>
@@ -286,12 +292,41 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 
 .amount-title {
   margin-bottom: 1rem;
+  @include mobile {
+    margin-bottom: 0.75rem;
+  }
+}
+.smaller .amount {
+  order: 1;
+  width: 15rem;
+  @include mobile {
+    width: 9.4375rem;
+  }
+}
+.smaller .receive {
+  order: 2;
+  width: 15rem;
+  margin-bottom: 1rem;
+  @include mobile {
+    width: 9.4375rem;
+  }
+}
+.smaller .balance {
+  order: 3;
+}
+.smaller .balance span {
+  @include mobile {
+    display: none;
+  }
 }
 
 .select-wrap {
   flex: 0 0 7.75rem;
   position: relative;
   margin-right: 1rem;
+}
+.smaller .select-wrap {
+  flex: 1 0 auto;
 }
 
 /* кнопка */
@@ -360,6 +395,12 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
   text-align: center;
   color: var(--c-grey);
 }
+.smaller .balance {
+  width: 15rem;
+  @include mobile {
+    width: 9.4375rem;
+  }
+}
 .icon-down {
   width: 1.5rem;
 }
@@ -380,6 +421,9 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 
 .receive-title {
   margin-bottom: 1rem;
+  @include mobile {
+    margin-bottom: 0.75rem;
+  }
 }
 .icon-dollar {
   width: 1.5rem;
@@ -427,5 +471,15 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 }
 .audited-img {
   width: 4.5rem;
+}
+
+.smaller .fields-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.smaller .calc-field {
+  height: 4rem;
+  margin-bottom: 0;
 }
 </style>

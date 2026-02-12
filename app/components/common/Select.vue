@@ -1,5 +1,5 @@
 <template>
-  <div ref="rootRef" class="select" :class="{ inner }">
+  <div ref="rootRef" class="select" :class="{ inner, inner2 }">
     <button type="button" class="select-btn" @click="toggle">
       <img
         v-if="modelValue.icon"
@@ -7,7 +7,9 @@
         :src="modelValue.icon"
         :alt="modelValue.text"
       />
-      <span class="select-text sub-s">{{ modelValue.text }}</span>
+      <span v-if="!inner2" class="select-text sub-s">{{
+        modelValue.text
+      }}</span>
       <span class="select-arrow" :class="{ open: isOpen }">
         <IconCaret />
       </span>
@@ -44,6 +46,7 @@ defineProps<{
   items: ExchangeItem[]
   modelValue: ExchangeItem
   inner?: boolean
+  inner2?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -91,7 +94,8 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   border: 0.0625rem solid var(--c-black);
   background: var(--c-white);
 }
-.select.inner .select-btn {
+.select.inner .select-btn,
+.select.inner2 .select-btn {
   width: auto;
   height: auto;
   border-radius: 0;
@@ -128,7 +132,8 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   display: flex;
   flex-direction: column;
 }
-.select.inner .select-dropdown {
+.select.inner .select-dropdown,
+.select.inner2 .select-dropdown {
   width: auto;
 }
 
