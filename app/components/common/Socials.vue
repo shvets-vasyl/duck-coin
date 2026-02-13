@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import IconFacebook from "@/components/icon/Facebook.vue"
 import IconTiktok from "@/components/icon/Tiktok.vue"
 import IconX from "@/components/icon/X.vue"
 import IconInstagram from "@/components/icon/Instagram.vue"

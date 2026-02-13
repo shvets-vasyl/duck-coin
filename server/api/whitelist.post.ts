@@ -12,20 +12,22 @@ export default defineEventHandler(async (event) => {
       `${config.esputnikUsername}:${config.esputnikApiKey}`
     ).toString("base64")
 
-    const res = await $fetch("https://esputnik.com/api/v1/contact", {
+    const res = await $fetch("https://esputnik.com/api/v1/contact/subscribe", {
       method: "POST",
       headers: {
         Authorization: `Basic ${auth}`,
         "Content-Type": "application/json",
       },
       body: {
-        channels: [
-          {
-            type: "email",
-            value: cleanEmail,
-          },
-        ],
-        fields: [{ id: 286181, value: "1" }],
+        contact: {
+          channels: [
+            {
+              type: "email",
+              value: cleanEmail,
+            },
+          ],
+          fields: [{ id: 286181, value: "1" }],
+        },
       },
     })
 
