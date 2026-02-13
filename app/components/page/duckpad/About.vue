@@ -6,8 +6,8 @@
       <img class="coin-img" draggable="false" src="/images/duckpad/coin.webp" />
 
       <h3 class="h3 title">
-        DuckPad is a meme token launch platform built to remove the most common
-        rug mechanics.
+        DuckPad is a meme token launch platform built to remove
+        <br class="mob" />the most common rug mechanics.
       </h3>
 
       <button class="about-btn">
@@ -47,7 +47,7 @@ const logos = [
 .about {
   position: relative;
   @include mobile {
-    padding-top: 7.8125rem;
+    padding-top: 2.5rem;
     overflow: hidden;
   }
 }
@@ -79,7 +79,7 @@ const logos = [
     width: 100%;
     margin-bottom: 1.5rem;
 
-    font-size: 2rem;
+    font-size: 1.9rem;
     line-height: 100%;
   }
 }

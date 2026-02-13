@@ -324,7 +324,7 @@ watch([currentPct, nextPct, totalStages], updateLinks, { flush: "post" })
   box-shadow: 0 0 0 0.1875rem var(--c-white);
   padding: 0.25rem 1rem;
   @include mobile {
-    padding: 0.15rem 0.75rem;
+    padding: 0.15rem 0.25rem;
     bottom: auto;
     top: 100%;
     margin-bottom: 0;

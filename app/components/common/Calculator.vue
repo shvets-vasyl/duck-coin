@@ -26,7 +26,8 @@
         ><span class="sub-s">{{ duckPriceDisplay }}</span>
       </div>
       <div class="launching">
-        <span class="cap-m">Launching price = <br class="mob" /></span
+        <span class="cap-m"
+          >Launch<span class="txt-1">ing</span> price = <br class="mob" /></span
         ><span class="sub-s">{{ launchPriceDisplay }}</span>
       </div>
     </div>
@@ -67,7 +68,7 @@
       </div>
 
       <div class="receive">
-        <p class="receive-title sub-s">You receive</p>
+        <p class="receive-title sub-s">You receive (tokens)</p>
 
         <div class="calc-field receive-field">
           <input
@@ -336,6 +337,12 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 }
 .smaller .select-wrap {
   flex: 1 0 auto;
+}
+
+.launching .txt-1 {
+  @include mobile {
+    display: none;
+  }
 }
 
 /* кнопка */

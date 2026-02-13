@@ -119,7 +119,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
 
       meta: [
         // Base
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
+
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1",
+        },
+
         { name: "theme-color", content: "#0e0e0e" },
         { charset: "utf-8" },
 

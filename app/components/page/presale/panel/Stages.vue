@@ -9,7 +9,7 @@
           Stage {{ selectedStageNumber }} (Current):
         </p>
 
-        <p class="stage-text2 sub-s">1 $dUCK=$</p>
+        <p class="stage-text2 sub-s">1 $DUCK=$</p>
 
         <div class="select-wrap">
           <CommonSelect v-model="selectedProxy" :items="stagesPrice" inner />

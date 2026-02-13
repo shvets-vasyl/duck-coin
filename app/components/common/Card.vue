@@ -78,6 +78,9 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  @include mobile {
+    text-align: left;
+  }
 }
 .list-check {
   flex: 0 0 1.5rem;
@@ -108,7 +111,6 @@ defineProps<{
   gap: 1rem;
   @include mobile {
     gap: 0.75rem;
-    flex-direction: column;
   }
 }
 .list-text {

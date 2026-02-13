@@ -65,7 +65,7 @@
         </div>
 
         <a class="mail hover-fade" href="mailto:hello@duck.com">
-          <IconMail />
+          <IconMail class="icon-mail" />
           <span class="body-m">hello@duck.com</span>
         </a>
       </div>
@@ -91,10 +91,6 @@ const ecosystem = [
   {
     title: "DuckPad",
     link: "/duckpad",
-  },
-  {
-    title: "About",
-    link: "/",
   },
   {
     title: "Ecosystem",
@@ -242,6 +238,13 @@ const legal = [
 .nav.open .link-wrap {
   @include mobile {
     transform: rotate(180deg);
+  }
+}
+
+.icon-mail {
+  width: 1.5rem;
+  @include mobile {
+    width: 1.25rem;
   }
 }
 </style>

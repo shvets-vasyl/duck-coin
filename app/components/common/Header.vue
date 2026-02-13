@@ -56,10 +56,6 @@ const nav = [
     link: "/duckpad",
   },
   {
-    text: "About",
-    link: "/",
-  },
-  {
     text: "Ecosystem",
     link: "/ecosystem",
   },
@@ -131,6 +127,7 @@ onBeforeUnmount(() => {
   grid-template-columns: 0.3fr 1fr 0.3fr;
   padding: 1.5rem 3.5rem;
   align-items: center;
+
   @include mobile {
     padding: 1rem;
     display: flex;

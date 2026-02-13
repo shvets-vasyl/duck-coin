@@ -39,10 +39,6 @@ const nav = [
     link: "/duckpad",
   },
   {
-    text: "About",
-    link: "/",
-  },
-  {
     text: "Ecosystem",
     link: "/ecosystem",
   },

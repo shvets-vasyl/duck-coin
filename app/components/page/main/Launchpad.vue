@@ -10,8 +10,10 @@
     <div class="items">
       <div v-for="({ icon, title, descr }, i) in items" :key="i" class="item">
         <img :src="icon" :alt="title" class="item-img" draggable="false" />
-        <p class="item-title sub-l">{{ title }}</p>
-        <p class="item-descr body-m">{{ descr }}</p>
+        <div class="item-content">
+          <p class="item-title sub-l">{{ title }}</p>
+          <p class="item-descr body-m">{{ descr }}</p>
+        </div>
       </div>
 
       <div class="item-inner">
@@ -164,6 +166,21 @@ const items = [
     font-size: 1.5rem;
     line-height: 100%;
     margin-top: 1.5rem;
+  }
+}
+.item:nth-child(1) .item-content,
+.item:nth-child(2) .item-content,
+.item:nth-child(3) .item-content {
+  height: 8.5rem;
+  @include mobile {
+    height: auto;
+  }
+}
+.item:nth-child(4) .item-content,
+.item:nth-child(5) .item-content {
+  height: 7rem;
+  @include mobile {
+    height: auto;
   }
 }
 </style>
