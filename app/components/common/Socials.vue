@@ -8,7 +8,7 @@
       :href="link"
       rel="nofollow noopener noreferrer"
     >
-      <CommonButtonTemplate :extra="!small" :small="small" :yellow="yellow">
+      <CommonButtonTemplate :big="!small" :small="small" :yellow="yellow">
         <div class="link-wrap">
           <component :is="icons[name as IconName]" />
           <p v-if="!small" class="cta-s">{{ name }}</p>

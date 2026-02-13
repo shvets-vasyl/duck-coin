@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="right">
-        <CommonCalculator />
+        <CommonCalculator smaller />
       </div>
     </div>
   </section>

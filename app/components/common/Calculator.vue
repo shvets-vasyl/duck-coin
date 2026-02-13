@@ -308,17 +308,17 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 }
 .smaller .amount {
   order: 1;
-  width: 15rem;
+  width: calc(50% - 0.5rem);
   @include mobile {
-    width: 9.4375rem;
+    width: calc(50% - 0.25rem);
   }
 }
 .smaller .receive {
   order: 2;
-  width: 15rem;
   margin-bottom: 1rem;
+  width: calc(50% - 0.5rem);
   @include mobile {
-    width: 9.4375rem;
+    width: calc(50% - 0.25rem);
   }
 }
 .smaller .balance {
@@ -412,9 +412,9 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
   color: var(--c-grey);
 }
 .smaller .balance {
-  width: 15rem;
+  width: calc(50% - 0.5rem);
   @include mobile {
-    width: 9.4375rem;
+    width: calc(50% - 0.25rem);
   }
 }
 .icon-down {

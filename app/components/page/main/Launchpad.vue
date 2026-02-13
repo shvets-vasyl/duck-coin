@@ -108,14 +108,14 @@ const items = [
 }
 .item {
   padding: 1.5rem;
-  aspect-ratio: 1 / 1;
+  height: 21.5rem;
   display: flex;
   flex-direction: column;
   border-radius: 1.5rem;
   border: 0.25rem solid var(--c-grey-3);
   background: var(--c-white);
   @include mobile {
-    aspect-ratio: unset;
+    height: auto;
     padding: 1rem;
     border-width: 0.125rem;
     border-radius: 1rem;
@@ -136,7 +136,7 @@ const items = [
 }
 
 .item-img {
-  width: 9.75rem;
+  width: 7.5rem;
   margin-bottom: auto;
   @include mobile {
     width: 3.5rem;

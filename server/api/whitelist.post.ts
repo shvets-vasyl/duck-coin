@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       `${config.esputnikUsername}:${config.esputnikApiKey}`
     ).toString("base64")
 
-    const res = await $fetch("https://esputnik.com/api/v1/contact/subscribe", {
+    const res = await $fetch("https://esputnik.com/api/v1/contact", {
       method: "POST",
       headers: {
         Authorization: `Basic ${auth}`,
@@ -25,7 +25,6 @@ export default defineEventHandler(async (event) => {
             value: cleanEmail,
           },
         ],
-        groups: [123456], // ID твоєї групи
         fields: [{ id: 286181, value: "1" }],
       },
     })

@@ -58,11 +58,7 @@
       </div>
 
       <div class="contact">
-        <p class="contact-title sub-m">Join us</p>
-
-        <div class="socials-wrap">
-          <CommonSocials small />
-        </div>
+        <p class="contact-title sub-m">Need a help? Write us.</p>
 
         <a class="mail hover-fade" href="mailto:hello@duck.com">
           <IconMail class="icon-mail" />
@@ -190,7 +186,7 @@ const legal = [
   align-items: center;
   gap: 1rem;
   @include mobile {
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 }
 .contact {
@@ -200,6 +196,9 @@ const legal = [
     flex: 1;
     margin-left: 0;
     margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 .contact-title {

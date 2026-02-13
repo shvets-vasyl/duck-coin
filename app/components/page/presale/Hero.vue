@@ -74,6 +74,7 @@
   display: flex;
   align-items: flex-end;
   margin-left: -11.25rem;
+  margin-top: -3.125rem;
   @include mobile {
     margin-left: 0;
     flex: 1;
@@ -82,7 +83,7 @@
   }
 }
 .duck-img {
-  width: 55.875rem;
+  width: 50rem;
   @include mobile {
     display: none;
   }

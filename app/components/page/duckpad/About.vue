@@ -5,10 +5,10 @@
     <div class="content">
       <img class="coin-img" draggable="false" src="/images/duckpad/coin.webp" />
 
-      <h3 class="h3 title">
-        DuckPad is a meme token launch platform built to remove
-        <br class="mob" />the most common rug mechanics.
-      </h3>
+      <h3 class="h3 title">DuckPad is a meme <br />token launch platform</h3>
+      <p class="descr sub-m">
+        built to remove <br class="mob" />the most common rug mechanics.
+      </p>
 
       <button class="about-btn">
         <CommonButtonTemplate yellow big>
@@ -71,17 +71,21 @@ const logos = [
   }
 }
 .title {
-  margin-bottom: 2.5rem;
-  width: 80%;
+  margin-bottom: 1rem;
   text-transform: capitalize;
   text-align: center;
   @include mobile {
     width: 100%;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 
     font-size: 1.9rem;
     line-height: 100%;
   }
+}
+.descr {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-transform: capitalize;
 }
 
 .logos {
