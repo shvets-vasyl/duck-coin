@@ -28,8 +28,8 @@
           class="item"
         >
           <div class="item-top">
-            <p class="item-name sub-m">{{ name }}</p>
-            <h5 class="item-percent h5">{{ formatPercent(value) }}</h5>
+            <p class="item-name sub-s">{{ name }}</p>
+            <h5 class="item-percent sub-l">{{ formatPercent(value) }}</h5>
           </div>
 
           <CommonProgress :percent="value" :color="color" />
@@ -89,8 +89,8 @@
           class="item"
         >
           <div class="item-top">
-            <p class="item-name sub-m">{{ name }}</p>
-            <h5 class="item-percent h5">{{ formatPercent(value) }}</h5>
+            <p class="item-name sub-s">{{ name }}</p>
+            <h5 class="item-percent sub-l">{{ formatPercent(value) }}</h5>
           </div>
 
           <CommonProgress :percent="value" :color="color" />
@@ -338,7 +338,7 @@ const arcs = computed(() => {
 
 .graph {
   display: grid;
-  grid-template-columns: 23.1875rem 1fr 23.1875rem;
+  grid-template-columns: 27.1875rem 1fr 27.1875rem;
   gap: 4.5rem;
   align-items: center;
   width: 100%;
@@ -462,7 +462,7 @@ const arcs = computed(() => {
   }
 }
 .center-logo {
-  width: 9.6875rem;
+  width: 8.125rem;
   position: absolute;
   top: 50%;
   left: 50%;
