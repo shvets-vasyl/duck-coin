@@ -23,8 +23,8 @@ const infoData = {
         between you («User», «you», or «your») and the decentralized Duck team (
         «we», «us», or «our») (each a «Party» and collectively the «Parties»)
         operating the web interface at
-        <a href="https://itsduck.com/whitelist" target="_blank">
-          https://itsduck.com/whitelist</a
+        <a href="https://itsduck.com" target="_blank">
+          itsduck.com</a
         >.
 	`,
   textBlock: `
@@ -37,7 +37,7 @@ THE SERVICES ARE NON-CUSTODIAL. YOU ACKNOWLEDGE THAT YOU USE THE SERVICES AT YOU
     {
       title: "1. ACCEPTANCE OF TERMS",
       descr: `
-		1.1. By accessing, using, or clicking «Connect Wallet» on the website https://itsduck.com/whitelist (the "Site" or "Services"), which acts solely as a graphical user interface to facilitate your interaction with decentralized smart contracts, you agree to be bound by these Terms. If you do not agree with these Terms, you must immediately stop using the Services. You provide your consent by the actual use of the Site and its functionality.
+		1.1. By accessing, using, or clicking «Connect Wallet» on the website itsduck.com (the "Site" or "Services"), which acts solely as a graphical user interface to facilitate your interaction with decentralized smart contracts, you agree to be bound by these Terms. If you do not agree with these Terms, you must immediately stop using the Services. You provide your consent by the actual use of the Site and its functionality.
 		`,
     },
     {

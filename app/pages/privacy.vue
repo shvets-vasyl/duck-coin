@@ -19,8 +19,8 @@ const heroData = {
 const infoData = {
   title: "",
   descr: `
-	This Privacy Policy explains how the decentralized Duck project team («we», «us», «our») collects, uses, and protects information during your access and use of the website <a href="https://itsduck.com/whitelist" target="_blank">
-          https://itsduck.com/whitelist</a
+	This Privacy Policy explains how the decentralized Duck project team («we», «us», «our») collects, uses, and protects information during your access and use of the website <a href="https://itsduck.com" target="_blank">
+          itsduck.com</a
         > (the «Site»).
 	`,
   textBlock: `
