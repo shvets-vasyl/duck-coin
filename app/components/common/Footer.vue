@@ -97,11 +97,11 @@ const ecosystem = [
 const legal = [
   {
     title: "Privacy Policy",
-    link: "/",
+    link: "/privacy",
   },
   {
     title: "Terms",
-    link: "/",
+    link: "/terms",
   },
 ]
 </script>
