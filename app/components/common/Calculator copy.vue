@@ -119,34 +119,19 @@ type ExchangeItem = {
   icon: string
 }
 
+const exchange: ExchangeItem[] = [
+  { text: "USDT", icon: "/images/main/coin-1.webp" },
+  { text: "ETH", icon: "/images/main/coin-2.webp" },
+  { text: "USDC", icon: "/images/main/coin-3.webp" },
+]
+
 const auditedItems = [
   { text: "CertiK", icon: "/images/main/audited-1.webp" },
   { text: "hacken", icon: "/images/main/audited-2.webp" },
   { text: "solidproof", icon: "/images/main/audited-3.webp" },
 ]
 
-const config = useRuntimeConfig()
-
-const { data } = await useAsyncData("currencies", () =>
-  $fetch<{ currencies: string[] }>("/api/v1/presale/currencies", {
-    baseURL: config.public.apiBase,
-  })
-)
-
-const exchange = computed<ExchangeItem[]>(() =>
-  (data.value?.currencies ?? []).map((c) => ({
-    text: c,
-    icon: "",
-  }))
-)
-
-const selected = ref<ExchangeItem>({ text: "", icon: "" })
-
-watchEffect(() => {
-  if (!selected.value.text && exchange.value.length) {
-    selected.value = exchange.value[0]!
-  }
-})
+const selected = ref<ExchangeItem>(exchange[0]!)
 
 const sended = useState("form-sended")
 // const errorForm = useState("form-error")
@@ -239,8 +224,7 @@ const amountNum = computed(() => {
 })
 
 const payUsd = computed(() => {
-  const key = selected.value.text
-  const rate = ratesUsd[key] ?? 0
+  const rate = ratesUsd[selected.value.text] ?? 0
   return amountNum.value * rate
 })
 

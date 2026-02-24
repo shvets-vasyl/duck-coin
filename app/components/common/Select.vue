@@ -145,6 +145,7 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocClick))
   padding: 0.75rem 1rem;
   transition: background 0.15s ease;
   box-sizing: border-box;
+  text-transform: uppercase;
 }
 .select-item:not(:last-child) {
   border-bottom: 0.0625rem solid var(--c-grey-3);

@@ -180,6 +180,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
     esputnikUsername: process.env.ESPUTNIK_USERNAME || "any",
     public: {
       dev_mode: isDevMode,
+      apiBase:
+        process.env.NUXT_PUBLIC_API_BASE ||
+        process.env.API ||
+        "https://api.itsduck.com",
     },
   },
   devServer: {

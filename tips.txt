@@ -1,0 +1,154 @@
+DuckCoin Presale API — Frontend cheat sheet
+
+Base URL: API_BASE (візьми з "servers" у swagger або у бекендера)
+Далі всі урли: API_BASE + path
+
+Health
+GET /health
+
+Навіщо: перевірка що API живе
+Відповідь: 200 OK (json)
+
+GET /ready
+
+Навіщо: перевірка що бекенд бачить Solana RPC + NOWPayments
+Відповідь: 200 OK (json)
+
+Presale
+1) Створити інвойс (основний флоу)
+POST /api/v1/presale/create-invoice
+
+Навіщо: створює інвойс NOWPayments, повертає посилання куди редіректнути юзера
+
+Body (JSON):
+
+wallet_address (string) — Solana address
+
+usd_amount (number) — мінімум 50
+
+success_url (string | null) — куди повернути після успіху (опційно)
+
+cancel_url (string | null) — куди повернути якщо скасували (опційно)
+
+Response 200 (JSON):
+
+payment_id (string) — ваш внутрішній id
+
+invoice_url (string) — сюди редірект юзера
+
+invoice_id (string)
+
+token_amount (int) — скільки токенів буде зараховано (в smallest units)
+
+usd_amount (number)
+
+Frontend дія: після успішного POST → window.location.href = invoice_url
+
+2) Перевірити статус конкретного платежу
+GET /api/v1/presale/payment/{payment_id}
+
+Навіщо: показати “paid / pending / failed” і чи вже зараховано
+
+Path:
+
+payment_id (string)
+
+Response 200 (JSON):
+
+payment_status (string) — статус оплати
+
+credit_status (string) — статус зарахування в Solana
+
+credit_tx_signature (string | null) — tx hash якщо є
+
+поля: usd_amount, token_amount, wallet_address, created_at, paid_at, credited_at
+
+3) Отримати всі платежі по гаманцю
+GET /api/v1/presale/payments/{wallet_address}
+
+Навіщо: історія оплат користувача
+
+Path:
+
+wallet_address (string)
+
+Response 200:
+
+wallet_address
+
+payments (array of PaymentStatusResponse)
+
+total_count (int)
+
+4) Отримати ончейн аллокацію (скільки куплено/можна клеймити)
+GET /api/v1/presale/allocation/{wallet_address}
+
+Response 200:
+
+wallet_address
+
+amount_purchased (int)
+
+amount_claimed (int)
+
+claimable_amount (int)
+
+5) Конфіг пресейлу (ціна, капи, sold, raised)
+GET /api/v1/presale/config
+
+Response 200: поля типу token_price_usd, daily_cap, total_sold, total_raised_usd, status, etc.
+
+6) Статистика пресейлу (агреговано)
+GET /api/v1/presale/stats
+
+Response 200:
+
+total_sold (int)
+
+total_raised_usd (int)
+
+total_participants (int)
+
+presale_supply (int)
+
+is_active (boolean)
+
+7) Доступні криптовалюти для оплати
+GET /api/v1/presale/currencies
+
+Response 200: список валют (структура не описана в твоєму шматку, але це буде json)
+
+8) Оцінка: скільки crypto треба за USD
+GET /api/v1/presale/estimate?usd_amount=...&pay_currency=btc
+
+Query:
+
+usd_amount (number) — обов’язково
+
+pay_currency (string) — опційно, дефолт btc
+
+9) Профіль інвестора (агреговано по гаманцю)
+GET /api/v1/presale/investor/{wallet_address}
+
+Response 200: total_invested_usd, total_tokens, payment_count, extra_data, first_invested_at, last_invested_at
+
+PATCH /api/v1/presale/investor/{wallet_address}
+
+Навіщо: оновити extra_data (будь-який json)
+
+Body:
+
+extra_data (object)
+
+10) Лідерборд / список інвесторів
+GET /api/v1/presale/investors?limit=50&offset=0&order_by=-total_invested_usd
+
+Query:
+
+limit (int, default 50)
+
+offset (int, default 0)
+
+order_by (string, default -total_invested_usd)
+
+Response 200: масив InvestorResponse
