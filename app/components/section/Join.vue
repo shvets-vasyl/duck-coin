@@ -4,8 +4,8 @@
     <div class="content">
       <h2 class="title h2">Join the Duck Army</h2>
       <p class="descr body-m">
-        240,000+ degens and counting. This isn’t a community — it’s a movement.
-        Get in or get left behind.
+        6000+ degens and counting. This isn’t a community — it’s a movement. Get
+        in or get left behind.
       </p>
 
       <div class="socials-wrap">
