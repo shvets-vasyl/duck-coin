@@ -32,3 +32,11 @@ export const getWalletAddress = async () => {
   const response = await provider.connect()
   return response.publicKey.toString()
 }
+
+export const getConnectedWalletAddress = () => {
+  const provider = getPhantomProvider()
+
+  if (!provider?.publicKey) return null
+
+  return provider.publicKey.toString()
+}

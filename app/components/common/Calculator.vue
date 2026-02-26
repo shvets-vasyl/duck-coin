@@ -98,11 +98,7 @@
       <button
         class="btn-buy"
         :disabled="
-          !amountNum ||
-          amountNum < 50 ||
-          estimatePending ||
-          createInvoicePending ||
-          !isActive
+          !amountNum || estimatePending || createInvoicePending || !isActive
         "
         @click="onSubmit"
       >
@@ -128,40 +124,18 @@
 </template>
 
 <script setup lang="ts">
+import { nfMoney, nfInt, nfPrice, nfToken, nfCrypto } from "@/utils/formatters"
 import { getWalletAddress } from "@/utils/phantom"
+import type {
+  CurrencyItem,
+  ExchangeItem,
+  EstimateResponse,
+  CreateInvoiceResponse,
+} from "@/types/general"
 
 const props = defineProps<{
   smaller?: boolean
 }>()
-
-type CurrencyItem = {
-  id: number
-  code: string
-  name: string
-  logo_url: string
-  enable: boolean
-}
-
-type ExchangeItem = {
-  text: string
-  icon: string
-  code: string
-}
-
-type EstimateResponse = {
-  usd_amount: number
-  pay_currency: string
-  estimated_amount: number
-  token_amount: number
-}
-
-type CreateInvoiceResponse = {
-  payment_id: string
-  invoice_url: string
-  invoice_id: string
-  token_amount: number
-  usd_amount: number
-}
 
 const auditedItems = [
   { text: "CertiK", icon: "/images/main/audited-1.webp" },
@@ -172,10 +146,41 @@ const auditedItems = [
 const createInvoicePending = ref(false)
 const paymentId = useState<string | null>("presale-payment-id", () => null)
 
+const connectedWallet = useState<string | null>("connected-wallet", () => null)
+
 const { presaleData } = await usePresaleData()
 const { isMobile } = useViewport()
 
+const route = useRoute()
+const router = useRouter()
 const sended = useState("form-sended")
+
+onMounted(() => {
+  const wallet = getConnectedWalletAddress()
+
+  if (wallet) {
+    connectedWallet.value = wallet
+  }
+})
+
+onMounted(() => {
+  const payment = route.query.payment
+
+  if (payment === "success") {
+    sended.value = true
+
+    setTimeout(() => {
+      sended.value = false
+    }, 4000)
+
+    router.replace({ query: { ...route.query, payment: undefined } })
+  }
+
+  if (payment === "cancel") {
+    router.replace({ query: { ...route.query, payment: undefined } })
+  }
+})
+
 const isSmaller = computed(() => props.smaller || isMobile.value)
 
 const configData = computed(
@@ -209,9 +214,11 @@ watchEffect(() => {
 })
 
 const onSubmit = async () => {
-  if (!amountNum.value || amountNum.value < 50 || !isActive.value) return
+  if (!amountNum.value || !isActive.value) return
 
   const wallet = await getWalletAddress()
+  connectedWallet.value = wallet
+
   if (!wallet) return
 
   createInvoicePending.value = true
@@ -226,6 +233,8 @@ const onSubmit = async () => {
         body: {
           wallet_address: wallet,
           usd_amount: amountNum.value,
+          success_url: `${origin}/presale?payment=success`,
+          cancel_url: `${origin}/presale?payment=cancel`,
         },
       }
     )
@@ -247,46 +256,6 @@ function onInput(e: Event) {
   v = v.replace(/(\..*)\./g, "$1")
   v = v.replace(/^0+(?=\d)/, "")
   amount.value = v
-}
-
-function nfInt(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 0,
-  }).format(n)
-}
-
-function nfMoney(n: number) {
-  return (
-    "$" +
-    new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(n)
-  )
-}
-
-function nfPrice(n: number) {
-  return (
-    "$" +
-    new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 5,
-    }).format(n)
-  )
-}
-
-function nfToken(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 4,
-  }).format(n)
-}
-
-function nfCrypto(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 8,
-  }).format(n)
 }
 
 const amountNum = computed(() => {

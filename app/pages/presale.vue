@@ -4,7 +4,7 @@
     <CommonMenu />
 
     <PagePresaleHero />
-    <PagePresaleProfile />
+    <PagePresaleProfile v-if="connectedWallet" />
     <PagePresalePanel />
     <PagePresaleHow />
     <PagePresaleReferrals />
@@ -32,6 +32,8 @@ const headerNav = [
     link: "/",
   },
 ]
+
+const connectedWallet = useState<string | null>("connected-wallet")
 </script>
 
 <style scoped lang="scss"></style>

@@ -10,10 +10,10 @@
       </div>
 
       <div class="score">
-        <p class="score-title cap-m">Stay score</p>
-        <h5 class="score-name h5">3 (Middle Duck)</h5>
+        <p class="score-title cap-m">Wallet</p>
+        <h5 class="score-name h5">{{ walletDisplay }}</h5>
 
-        <button class="buy-btn">
+        <button class="buy-btn" @click="scrollToBuy">
           <CommonButtonTemplate yellow big> Buy $DUCK </CommonButtonTemplate>
         </button>
       </div>
@@ -26,7 +26,9 @@
             </CommonButtonTemplate>
           </div>
           <div class="item-content">
-            <p class="item-number sub-m">$500</p>
+            <p class="item-number sub-m">
+              {{ pending ? "..." : investedDisplay }}
+            </p>
             <p class="item-text cap-m">Invested</p>
           </div>
         </div>
@@ -38,7 +40,9 @@
             </CommonButtonTemplate>
           </div>
           <div class="item-content">
-            <p class="item-number sub-m">4 221 333 $DUCK</p>
+            <p class="item-number sub-m">
+              {{ pending ? "..." : tokensDisplay }}
+            </p>
             <p class="item-text cap-m">Tokens</p>
           </div>
         </div>
@@ -71,7 +75,54 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { nfMoney, nfToken } from "@/utils/formatters"
+import type { InvestorResponse } from "@/types/general"
+
+const connectedWallet = useState<string | null>("connected-wallet")
+
+const { data: investorData, pending } = await useAsyncData(
+  "presale-investor-profile",
+  async () => {
+    if (!connectedWallet.value) return null
+
+    return await $fetch<InvestorResponse>(
+      `/api/presale/investor/${connectedWallet.value}`
+    )
+  },
+  {
+    watch: [connectedWallet],
+  }
+)
+
+function scrollToBuy() {
+  gsap.to(window, {
+    scrollTo: "section.panel",
+  })
+}
+
+function shortAddress(addr: string, start = 6, end = 4) {
+  if (!addr) return ""
+  return `${addr.slice(0, start)}...${addr.slice(-end)}`
+}
+
+const investedDisplay = computed(() => {
+  const value = investorData.value?.total_invested_usd ?? 0
+  return value ? nfMoney(value) : "—"
+})
+
+const tokensDisplay = computed(() => {
+  const raw = Number(investorData.value?.total_tokens ?? 0)
+  const tokens = raw > 0 ? raw / 1e9 : 0
+  return tokens ? `${nfToken(tokens)} $DUCK` : "—"
+})
+
+const walletDisplay = computed(() => {
+  return investorData.value?.wallet_address
+    ? shortAddress(investorData.value.wallet_address)
+    : "Not connected"
+})
+</script>
 
 <style scoped lang="scss">
 .content {
