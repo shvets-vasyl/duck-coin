@@ -19,15 +19,17 @@
         </svg>
 
         <div class="place-left">
-          <p class="sub-m place-title">Your place: #?</p>
-          <h5 class="h5 place-count">$0.0</h5>
+          <p class="sub-m place-title">Top holder: {{ topHolderPlace }}</p>
+          <h5 class="h5 place-count">{{ topHolderMoney }}</h5>
         </div>
         <div class="place-right">
           <p class="sub-s place-number">
-            {{ shortAddress("0xd4e8a9c1f23b7e91a44357") }}
+            {{ shortAddress(topHolderAddress) }}
           </p>
 
-          <p class="place-text sub-s">Current coin worth</p>
+          <p class="place-text sub-s">
+            {{ pending ? "Loading..." : "Highest invested" }}
+          </p>
         </div>
       </div>
 
@@ -48,7 +50,7 @@
       <div class="items-wrap">
         <div class="items">
           <div
-            v-for="({ place, address, money }, i) in paginatedItems"
+            v-for="({ place, address, money, payments }, i) in paginatedItems"
             :key="i"
             class="item base-card"
           >
@@ -61,7 +63,7 @@
                 {{ shortAddress(address) }}
               </p>
 
-              <p class="item-text sub-s">Total Transactions</p>
+              <p class="item-text sub-s">{{ payments }} Payments</p>
             </div>
           </div>
         </div>
@@ -93,224 +95,115 @@
 </template>
 
 <script setup lang="ts">
+type ApiLeaderboardItem = {
+  rank: number
+  wallet_address: string
+  total_invested_usd: number
+  total_tokens: number
+  payment_count: number
+  last_invested_at: string | null
+}
+
+type LeaderboardResponse = {
+  total_count: number
+  items: ApiLeaderboardItem[]
+}
+
 type LeaderboardItem = {
   place: number
   address: string
   money: string
+  payments: number
   date: string
 }
 
-const todayItems: LeaderboardItem[] = [
-  {
-    place: 1,
-    address: "0xd4e8a9c1f23b7e91a44357",
-    money: "$36,453",
-    date: "2026-02-07",
-  },
-  {
-    place: 2,
-    address: "0xa91c4e2f8b73d9e144b210",
-    money: "$34,120",
-    date: "2026-02-07",
-  },
-  {
-    place: 3,
-    address: "0x7f21b9e43c0a8d55219eaa",
-    money: "$31,998",
-    date: "2026-02-07",
-  },
-  {
-    place: 4,
-    address: "0x91b4eaa73d2f8c104f8e22",
-    money: "$29,450",
-    date: "2026-02-07",
-  },
-  {
-    place: 5,
-    address: "0x3c9e1a4b8d2f774aa918ee",
-    money: "$27,880",
-    date: "2026-02-07",
-  },
-  {
-    place: 6,
-    address: "0x8a22f9c1d4b73e9100aa55",
-    money: "$26,410",
-    date: "2026-02-07",
-  },
-  {
-    place: 7,
-    address: "0xb7e19f23d44a91c8ee1021",
-    money: "$25,030",
-    date: "2026-02-07",
-  },
-  {
-    place: 8,
-    address: "0x4aa8d1f9b73e22c019f333",
-    money: "$23,760",
-    date: "2026-02-07",
-  },
-  {
-    place: 9,
-    address: "0x9c44e2f1b73d8a901aa812",
-    money: "$22,540",
-    date: "2026-02-07",
-  },
-  {
-    place: 10,
-    address: "0x1f73e9c4b8d22aa901344f",
-    money: "$21,300",
-    date: "2026-02-07",
-  },
-]
+const activeTab = ref<"today" | "all">("today")
+const ITEMS_PER_PAGE = 6
+const currentPage = ref(1)
 
-const allTimeItems: LeaderboardItem[] = [
-  ...todayItems,
-
-  {
-    place: 11,
-    address: "0xa8129c44e1f73d8b2aa901",
-    money: "$20,150",
-    date: "2026-02-06",
-  },
-  {
-    place: 12,
-    address: "0xb8d1f73e9c44aa901221f",
-    money: "$19,020",
-    date: "2026-02-06",
-  },
-  {
-    place: 13,
-    address: "0x22aa9c44e1f73d8b19001",
-    money: "$18,100",
-    date: "2026-02-05",
-  },
-  {
-    place: 14,
-    address: "0x901f73e9c44b8d1aa2213",
-    money: "$17,350",
-    date: "2026-02-05",
-  },
-  {
-    place: 15,
-    address: "0x73e9c44b8d1f22aa90199",
-    money: "$16,700",
-    date: "2026-02-04",
-  },
-  {
-    place: 16,
-    address: "0x44b8d1f73e9c22aa901f3",
-    money: "$15,980",
-    date: "2026-02-04",
-  },
-  {
-    place: 17,
-    address: "0x8d1f73e9c44b22aa901aa",
-    money: "$15,240",
-    date: "2026-02-03",
-  },
-  {
-    place: 18,
-    address: "0x9c44b8d1f73e22aa901ef",
-    money: "$14,600",
-    date: "2026-02-03",
-  },
-  {
-    place: 19,
-    address: "0xf73e9c44b8d122aa901bb",
-    money: "$13,950",
-    date: "2026-02-02",
-  },
-  {
-    place: 20,
-    address: "0x1f73e9c44b8d22aa90012",
-    money: "$13,300",
-    date: "2026-02-02",
-  },
-
-  {
-    place: 21,
-    address: "0xc44b8d1f73e922aa90177",
-    money: "$12,880",
-    date: "2026-02-01",
-  },
-  {
-    place: 22,
-    address: "0x8d1f73e9c44b22aa90144",
-    money: "$12,300",
-    date: "2026-02-01",
-  },
-  {
-    place: 23,
-    address: "0x73e9c44b8d1f22aa90188",
-    money: "$11,760",
-    date: "2026-01-31",
-  },
-  {
-    place: 24,
-    address: "0x44b8d1f73e9c22aa90121",
-    money: "$11,200",
-    date: "2026-01-31",
-  },
-  {
-    place: 25,
-    address: "0xb8d1f73e9c4422aa90131",
-    money: "$10,740",
-    date: "2026-01-30",
-  },
-  {
-    place: 26,
-    address: "0x9c44b8d1f73e22aa90099",
-    money: "$10,120",
-    date: "2026-01-30",
-  },
-  {
-    place: 27,
-    address: "0xf73e9c44b8d122aa90055",
-    money: "$9,680",
-    date: "2026-01-29",
-  },
-  {
-    place: 28,
-    address: "0x1f73e9c44b8d22aa900aa",
-    money: "$9,120",
-    date: "2026-01-29",
-  },
-  {
-    place: 29,
-    address: "0xc44b8d1f73e922aa900ef",
-    money: "$8,650",
-    date: "2026-01-28",
-  },
-  {
-    place: 30,
-    address: "0x8d1f73e9c44b22aa90001",
-    money: "$8,100",
-    date: "2026-01-28",
-  },
-]
-
-const filteredItems = computed(() =>
-  activeTab.value === "today" ? todayItems : allTimeItems
+const { data: leaderboardData, pending } = await useAsyncData(
+  "presale-leaderboard",
+  () => $fetch<LeaderboardResponse>("/api/presale/leaderboard")
 )
 
-const shortAddress = (addr: string, start = 4, end = 5) => {
+function nfMoney(n: number) {
+  return (
+    "$" +
+    new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(n)
+  )
+}
+
+function shortAddress(addr: string, start = 6, end = 4) {
   if (!addr) return ""
   return `${addr.slice(0, start)}...${addr.slice(-end)}`
 }
 
-const activeTab = ref<"today" | "all">("today")
+function toDateKey(value: string | null) {
+  if (!value) return ""
+  const d = new Date(value)
 
-const ITEMS_PER_PAGE = 6
-const currentPage = ref(1)
+  if (Number.isNaN(d.getTime())) return ""
 
-const totalPages = computed(() =>
-  Math.ceil(filteredItems.value.length / ITEMS_PER_PAGE)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+
+  return `${year}-${month}-${day}`
+}
+
+const todayKey = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, "0")
+  const day = String(now.getDate()).padStart(2, "0")
+
+  return `${year}-${month}-${day}`
+})
+
+const allTimeItems = computed<LeaderboardItem[]>(() =>
+  (leaderboardData.value?.items ?? []).slice(0, 30).map((item) => ({
+    place: item.rank,
+    address: item.wallet_address,
+    money: nfMoney(item.total_invested_usd),
+    payments: item.payment_count,
+    date: toDateKey(item.last_invested_at),
+  }))
 )
+
+const todayItems = computed<LeaderboardItem[]>(() =>
+  allTimeItems.value.filter((item) => item.date === todayKey.value)
+)
+
+const filteredItems = computed(() =>
+  activeTab.value === "today" ? todayItems.value : allTimeItems.value
+)
+
+const totalPages = computed(() => {
+  const pages = Math.ceil(filteredItems.value.length / ITEMS_PER_PAGE)
+  return pages || 1
+})
 
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * ITEMS_PER_PAGE
   const end = start + ITEMS_PER_PAGE
   return filteredItems.value.slice(start, end)
+})
+
+const topHolder = computed(() => allTimeItems.value[0] ?? null)
+
+const topHolderPlace = computed(() => {
+  return topHolder.value ? `#${topHolder.value.place}` : "#—"
+})
+
+const topHolderMoney = computed(() => {
+  return topHolder.value?.money ?? "$0"
+})
+
+const topHolderAddress = computed(() => {
+  return topHolder.value?.address ?? ""
 })
 
 const prevPage = () => {
@@ -323,6 +216,12 @@ const nextPage = () => {
 
 watch(activeTab, () => {
   currentPage.value = 1
+})
+
+watch(filteredItems, () => {
+  if (currentPage.value > totalPages.value) {
+    currentPage.value = 1
+  }
 })
 </script>
 

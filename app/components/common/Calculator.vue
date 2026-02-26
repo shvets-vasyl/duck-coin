@@ -7,8 +7,8 @@
 
     <div class="top-info">
       <div class="days">
-        <span class="sub-s">{{ dayDisplay }} </span
-        ><span class="cap-m"> Day</span>
+        <span class="sub-s">{{ soldDisplay }} </span
+        ><span class="cap-m"> Sold</span>
       </div>
       <div class="investors">
         <span class="sub-s">{{ investorsDisplay }} </span
@@ -22,13 +22,15 @@
 
     <div class="bot-info">
       <div class="cost">
-        <span class="cap-m">1 $DUCK = <br class="mob" /></span
-        ><span class="sub-s">{{ duckPriceDisplay }}</span>
+        <span class="cap-m">1 $DUCK = <br class="mob" /></span>
+        <span class="sub-s">{{ duckPriceDisplay }}</span>
       </div>
+
       <div class="launching">
-        <span class="cap-m"
-          >Launch<span class="txt-1">ing</span> price = <br class="mob" /></span
-        ><span class="sub-s">{{ launchPriceDisplay }}</span>
+        <span class="cap-m">
+          Launch<span class="txt-1">ing</span> price = <br class="mob" />
+        </span>
+        <span class="sub-s">{{ launchPriceDisplay }}</span>
       </div>
     </div>
 
@@ -57,7 +59,13 @@
         </div>
       </div>
 
-      <p class="balance cap-s"><span>Balance: </span>0.00000 Max</p>
+      <p class="balance cap-s">
+        <span v-if="estimatePending">Calculating...</span>
+        <span v-else-if="estimatedAmountDisplay">
+          Pay: {{ estimatedAmountDisplay }} {{ selected.code }}
+        </span>
+        <span v-else>Enter amount</span>
+      </p>
 
       <div v-if="!isSmaller" class="decor-down">
         <div class="decor-line" />
@@ -87,7 +95,17 @@
     </div>
 
     <div class="btn-wrap">
-      <button class="btn-buy" @click="onSubmit">
+      <button
+        class="btn-buy"
+        :disabled="
+          !amountNum ||
+          amountNum < 50 ||
+          estimatePending ||
+          createInvoicePending ||
+          !isActive
+        "
+        @click="onSubmit"
+      >
         <CommonButtonTemplate big yellow> Buy $DUCK </CommonButtonTemplate>
       </button>
     </div>
@@ -110,13 +128,39 @@
 </template>
 
 <script setup lang="ts">
+import { getWalletAddress } from "@/utils/phantom"
+
 const props = defineProps<{
   smaller?: boolean
 }>()
 
+type CurrencyItem = {
+  id: number
+  code: string
+  name: string
+  logo_url: string
+  enable: boolean
+}
+
 type ExchangeItem = {
   text: string
   icon: string
+  code: string
+}
+
+type EstimateResponse = {
+  usd_amount: number
+  pay_currency: string
+  estimated_amount: number
+  token_amount: number
+}
+
+type CreateInvoiceResponse = {
+  payment_id: string
+  invoice_url: string
+  invoice_id: string
+  token_amount: number
+  usd_amount: number
 }
 
 const auditedItems = [
@@ -125,22 +169,38 @@ const auditedItems = [
   { text: "solidproof", icon: "/images/main/audited-3.webp" },
 ]
 
-const config = useRuntimeConfig()
+const createInvoicePending = ref(false)
+const paymentId = useState<string | null>("presale-payment-id", () => null)
 
-const { data } = await useAsyncData("currencies", () =>
-  $fetch<{ currencies: string[] }>("/api/v1/presale/currencies", {
-    baseURL: config.public.apiBase,
-  })
+const { presaleData } = await usePresaleData()
+const { isMobile } = useViewport()
+
+const sended = useState("form-sended")
+const isSmaller = computed(() => props.smaller || isMobile.value)
+
+const configData = computed(
+  () => (presaleData.value?.config ?? {}) as Record<string, unknown>
+)
+
+const statsData = computed(
+  () => (presaleData.value?.stats ?? {}) as Record<string, unknown>
 )
 
 const exchange = computed<ExchangeItem[]>(() =>
-  (data.value?.currencies ?? []).map((c) => ({
-    text: c,
-    icon: "",
-  }))
+  ((presaleData.value?.currencies as CurrencyItem[]) ?? [])
+    .filter((item) => item.enable)
+    .map(({ code, logo_url }) => ({
+      text: code,
+      code,
+      icon: "https://nowpayments.io" + logo_url,
+    }))
 )
 
-const selected = ref<ExchangeItem>({ text: "", icon: "" })
+const selected = ref<ExchangeItem>({
+  text: "",
+  icon: "",
+  code: "",
+})
 
 watchEffect(() => {
   if (!selected.value.text && exchange.value.length) {
@@ -148,69 +208,53 @@ watchEffect(() => {
   }
 })
 
-const sended = useState("form-sended")
-// const errorForm = useState("form-error")
+const onSubmit = async () => {
+  if (!amountNum.value || amountNum.value < 50 || !isActive.value) return
 
-const { isMobile } = useViewport()
+  const wallet = await getWalletAddress()
+  if (!wallet) return
 
-const isSmaller = computed(() => {
-  return props.smaller || isMobile.value
-})
+  createInvoicePending.value = true
 
-const onSubmit = () => {
-  sended.value = true
+  try {
+    const origin = window.location.origin
 
-  setTimeout(() => {
-    sended.value = false
-  }, 2000)
+    const response = await $fetch<CreateInvoiceResponse>(
+      "/api/presale/create-invoice",
+      {
+        method: "POST",
+        body: {
+          wallet_address: wallet,
+          usd_amount: amountNum.value,
+        },
+      }
+    )
+
+    paymentId.value = response.payment_id
+    window.location.href = response.invoice_url
+  } finally {
+    createInvoicePending.value = false
+  }
 }
 
-/** ---------------------------
- *  Мінімальні "дані пресейлу"
- *  -------------------------- */
-const stats = reactive({
-  raisedUsd: 1_525_632,
-  investors: 1572,
-  day: 4,
-  totalDays: 150,
-  // щоб твій 40% співпав — hardcap = raised / 0.40
-  hardcapUsd: 3_814_080,
-})
-
-const duckPriceUsd = ref(0.00463)
-const launchPriceUsd = ref(0.012)
-
-/**
- * Курс до USD для розрахунку:
- * - для stable = 1
- * - для ETH ставимо заглушку (потім заміниш на бек/API)
- */
-const ratesUsd = reactive<Record<string, number>>({
-  USDT: 1,
-  USDC: 1,
-  ETH: 2300, // placeholder
-})
-
-/** ---------------------------
- *  Input
- *  -------------------------- */
 const amount = ref("")
+const estimateData = ref<EstimateResponse | null>(null)
+const estimatePending = ref(false)
 
 function onInput(e: Event) {
   const el = e.target as HTMLInputElement
-  // тільки цифри
-  let v = el.value.replace(/[^\d]/g, "")
-  // прибираємо зайві нулі на початку
+  let v = el.value.replace(/[^\d.]/g, "")
+  v = v.replace(/(\..*)\./g, "$1")
   v = v.replace(/^0+(?=\d)/, "")
   amount.value = v
 }
 
-/** ---------------------------
- *  Helpers форматування
- *  -------------------------- */
 function nfInt(n: number) {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(n)
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
+  }).format(n)
 }
+
 function nfMoney(n: number) {
   return (
     "$" +
@@ -220,6 +264,7 @@ function nfMoney(n: number) {
     }).format(n)
   )
 }
+
 function nfPrice(n: number) {
   return (
     "$" +
@@ -230,44 +275,106 @@ function nfPrice(n: number) {
   )
 }
 
-/** ---------------------------
- *  Computed значення
- *  -------------------------- */
+function nfToken(n: number) {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4,
+  }).format(n)
+}
+
+function nfCrypto(n: number) {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 8,
+  }).format(n)
+}
+
 const amountNum = computed(() => {
-  const n = Number.parseInt(amount.value || "0", 10)
+  const n = Number.parseFloat(amount.value || "0")
   return Number.isFinite(n) ? n : 0
 })
 
-const payUsd = computed(() => {
-  const key = selected.value.text
-  const rate = ratesUsd[key] ?? 0
-  return amountNum.value * rate
+const duckPriceUsd = computed(() => {
+  const raw = Number(configData.value.token_price_usd ?? 0)
+  return raw > 0 ? raw / 1e9 : 0
 })
 
-const receiveDuck = computed(() => {
-  const price = duckPriceUsd.value
-  if (!price) return 0
-  return payUsd.value / price
+const fetchEstimate = async () => {
+  if (!amountNum.value || !selected.value.code) {
+    estimateData.value = null
+    return
+  }
+
+  estimatePending.value = true
+
+  try {
+    const response = await $fetch<EstimateResponse>("/api/presale/estimate", {
+      query: {
+        usd_amount: amountNum.value,
+        pay_currency: selected.value.code,
+      },
+    })
+
+    estimateData.value = response
+  } catch {
+    estimateData.value = null
+  } finally {
+    estimatePending.value = false
+  }
+}
+
+watch([amountNum, () => selected.value.code], () => {
+  fetchEstimate()
+})
+
+const receiveTokens = computed(() => {
+  if (!amountNum.value || !duckPriceUsd.value) return 0
+  return amountNum.value / duckPriceUsd.value
 })
 
 const receiveDisplay = computed(() => {
-  // мінімально і красиво: ціле число токенів
-  return receiveDuck.value ? nfInt(Math.floor(receiveDuck.value)) : ""
+  return receiveTokens.value ? nfToken(receiveTokens.value) : ""
 })
 
-const raisedDisplay = computed(() => nfMoney(stats.raisedUsd))
-const investorsDisplay = computed(() => nfInt(stats.investors))
-const dayDisplay = computed(() => `${stats.day} / ${stats.totalDays}`)
+const estimatedAmountDisplay = computed(() => {
+  const value = estimateData.value?.estimated_amount ?? 0
+  return value ? nfCrypto(value) : ""
+})
+
+const raisedDisplay = computed(() => {
+  const value = Number(statsData.value.total_raised_usd ?? 0)
+  return nfMoney(value)
+})
+
+const investorsDisplay = computed(() => {
+  const value = Number(statsData.value.total_participants ?? 0)
+  return nfInt(value)
+})
+
+const soldDisplay = computed(() => {
+  const value = Number(statsData.value.total_sold ?? 0)
+  return nfInt(value)
+})
 
 const progressPercent = computed(() => {
-  const p = (stats.raisedUsd / stats.hardcapUsd) * 100
+  const sold = Number(statsData.value.total_sold ?? 0)
+  const supply = Number(statsData.value.presale_supply ?? 0)
+
+  if (!supply) return 0
+
+  const p = (sold / supply) * 100
   return Math.max(0, Math.min(100, Math.round(p)))
 })
 
-const duckPriceDisplay = computed(() => nfPrice(duckPriceUsd.value))
-const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
+const isActive = computed(() => Boolean(statsData.value.is_active))
 
-// const canBuy = computed(() => amountNum.value > 0 && payUsd.value > 0)
+const duckPriceDisplay = computed(() => {
+  return duckPriceUsd.value ? nfPrice(duckPriceUsd.value) : "—"
+})
+
+const launchPriceDisplay = computed(() => {
+  return "—"
+})
 </script>
 
 <style scoped lang="scss">
@@ -475,6 +582,10 @@ const launchPriceDisplay = computed(() => nfPrice(launchPriceUsd.value))
 }
 .btn-buy {
   width: 100%;
+}
+.btn-buy:disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 .audited-title {
   text-align: center;
