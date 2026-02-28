@@ -61,7 +61,11 @@
           />
 
           <div class="icon-dollar">
-            <IconDollar />
+            <img
+              class="logo-img"
+              draggable="false"
+              src="/images/presale/profile.png"
+            />
           </div>
         </div>
       </div>
@@ -215,6 +219,9 @@ const firstStagePrice = computed(() => {
     width: 1.25rem;
     flex: 0 0 1.25rem;
   }
+}
+.icon-dollar img {
+  width: 100%;
 }
 .calc-field {
   height: 4rem;

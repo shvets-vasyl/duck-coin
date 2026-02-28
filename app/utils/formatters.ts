@@ -37,3 +37,20 @@ export const nfCrypto = (n: number) => {
     maximumFractionDigits: 8,
   }).format(n)
 }
+
+export function formatInputNumber(value: number, maxDigits = 8) {
+  if (!Number.isFinite(value) || value <= 0) return ""
+
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: maxDigits,
+    useGrouping: false,
+  }).format(value)
+}
+
+export function sanitizeNumericValue(value: string) {
+  let v = value.replace(/[^\d.]/g, "")
+  v = v.replace(/(\..*)\./g, "$1")
+  v = v.replace(/^0+(?=\d)/, "")
+  return v
+}

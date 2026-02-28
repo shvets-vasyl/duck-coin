@@ -87,13 +87,12 @@
 
           <div class="calc-field receive-field">
             <input
-              v-model="receive"
               class="calc-input body-xl"
               name="receive"
               type="text"
               placeholder="0"
-              inputmode="numeric"
-              @input="onReceiveInput"
+              :value="receiveDisplay"
+              readonly
             />
             <div class="icon-dollar">
               <img
@@ -147,13 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  nfMoney,
-  nfInt,
-  nfPrice,
-  nfCrypto,
-  sanitizeNumericValue,
-} from "@/utils/formatters"
+import { nfMoney, nfInt, nfPrice, nfToken, nfCrypto } from "@/utils/formatters"
 import { getWalletAddress } from "@/utils/phantom"
 import type {
   CurrencyItem,
@@ -356,50 +349,15 @@ const onSubmit = async () => {
 }
 
 const amount = ref("")
-const receive = ref("")
 const estimateData = ref<EstimateResponse | null>(null)
 const estimatePending = ref(false)
 
 function onInput(e: Event) {
   const el = e.target as HTMLInputElement
-  const v = sanitizeNumericValue(el.value)
-
+  let v = el.value.replace(/[^\d.]/g, "")
+  v = v.replace(/(\..*)\./g, "$1")
+  v = v.replace(/^0+(?=\d)/, "")
   amount.value = v
-
-  if (!v || !duckPriceUsd.value) {
-    receive.value = ""
-    return
-  }
-
-  const usd = Number.parseFloat(v)
-
-  if (!Number.isFinite(usd)) {
-    receive.value = ""
-    return
-  }
-
-  receive.value = formatInputNumber(usd / duckPriceUsd.value, 2)
-}
-
-function onReceiveInput(e: Event) {
-  const el = e.target as HTMLInputElement
-  const v = sanitizeNumericValue(el.value)
-
-  receive.value = v
-
-  if (!v || !duckPriceUsd.value) {
-    amount.value = ""
-    return
-  }
-
-  const tokens = Number.parseFloat(v)
-
-  if (!Number.isFinite(tokens)) {
-    amount.value = ""
-    return
-  }
-
-  amount.value = formatInputNumber(tokens * duckPriceUsd.value, 2)
 }
 
 const amountNum = computed(() => {
@@ -438,6 +396,15 @@ const fetchEstimate = async () => {
 
 watch([amountNum, () => selected.value.code], () => {
   fetchEstimate()
+})
+
+const receiveTokens = computed(() => {
+  if (!amountNum.value || !duckPriceUsd.value) return 0
+  return amountNum.value / duckPriceUsd.value
+})
+
+const receiveDisplay = computed(() => {
+  return receiveTokens.value ? nfToken(receiveTokens.value) : ""
 })
 
 const estimatedAmountDisplay = computed(() => {
