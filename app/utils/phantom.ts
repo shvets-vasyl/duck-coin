@@ -2,7 +2,9 @@ export type PhantomProvider = {
   isPhantom?: boolean
   publicKey?: { toString(): string }
   isConnected?: boolean
-  connect: () => Promise<{ publicKey: { toString(): string } }>
+  connect: (options?: { onlyIfTrusted?: boolean }) => Promise<{
+    publicKey: { toString(): string }
+  }>
 }
 
 export const getPhantomProvider = () => {
@@ -33,10 +35,19 @@ export const getWalletAddress = async () => {
   return response.publicKey.toString()
 }
 
-export const getConnectedWalletAddress = () => {
+export const getConnectedWalletAddress = async () => {
   const provider = getPhantomProvider()
 
-  if (!provider?.publicKey) return null
+  if (!provider) return null
 
-  return provider.publicKey.toString()
+  if (provider.publicKey) {
+    return provider.publicKey.toString()
+  }
+
+  try {
+    const response = await provider.connect({ onlyIfTrusted: true })
+    return response.publicKey.toString()
+  } catch {
+    return null
+  }
 }

@@ -180,12 +180,10 @@ const selected = ref<ExchangeItem>({
   code: "",
 })
 
-onMounted(() => {
-  const wallet = getConnectedWalletAddress()
+onMounted(async () => {
+  const wallet = await getConnectedWalletAddress()
 
-  console.log(window.phantom?.solana)
-  console.log(window.phantom?.solana?.isPhantom)
-  console.log(window.phantom?.solana?.publicKey?.toString())
+  console.log(wallet)
 
   if (wallet) {
     connectedWallet.value = wallet
