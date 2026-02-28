@@ -35,3 +35,10 @@ export type CreateInvoiceResponse = {
   token_amount: number
   usd_amount: number
 }
+
+export type SelectItem = {
+  text: string
+  priceUsd: number
+  day: number
+  stage: number
+}

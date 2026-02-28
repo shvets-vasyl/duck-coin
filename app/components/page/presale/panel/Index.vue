@@ -20,6 +20,8 @@
           <PagePresalePanelGraph
             :stages-price="stagesPrice"
             :current-stage="selectedStageNumber"
+            :selected="selected"
+            :listing-price="listingPrice"
           />
         </div>
       </div>
@@ -39,65 +41,67 @@
 </template>
 
 <script setup lang="ts">
-type SelectItem = { text: string }
+import type { SelectItem } from "@/types/general"
 
-const listingPrice = "0.0300"
+const { presaleData } = await usePresaleData()
 
-const stagesPrice: SelectItem[] = [
-  { text: "0.0100" }, // 1
-  { text: "0.0102" }, // 2
-  { text: "0.0104" }, // 3
-  { text: "0.0106" }, // 4
-  { text: "0.0108" }, // 5
-  { text: "0.0110" }, // 6
-  { text: "0.0112" }, // 7
-  { text: "0.0115" }, // 8
-  { text: "0.0117" }, // 9
-  { text: "0.0119" }, // 10
-  { text: "0.0121" }, // 11
-  { text: "0.0124" }, // 12
-  { text: "0.0126" }, // 13
-  { text: "0.0129" }, // 14
-  { text: "0.0131" }, // 15
-  { text: "0.0134" }, // 16
-  { text: "0.0137" }, // 17
-  { text: "0.0140" }, // 18
-  { text: "0.0143" }, // 19
-  { text: "0.0146" }, // 20
-  { text: "0.0149" }, // 21
-  { text: "0.0152" }, // 22
-  { text: "0.0155" }, // 23
-  { text: "0.0158" }, // 24
-  { text: "0.0161" }, // 25
-  { text: "0.0164" }, // 26
-  { text: "0.0167" }, // 27
-  { text: "0.0170" }, // 28
-  { text: "0.0173" }, // 29
-]
+const priceData = computed(
+  () => (presaleData.value?.price ?? {}) as Record<string, unknown>
+)
 
-const selected = ref<SelectItem>(stagesPrice[10]!)
+const stagesPrice = computed<SelectItem[]>(() => {
+  const tokenomic = (priceData.value.tokenomic ?? {}) as Record<
+    string,
+    { price_usd: number; stage: number }
+  >
 
-/** ---------------------------
- *  Amount input (тільки цифри)
- *  -------------------------- */
-const amount = ref("")
-
-/** ---------------------------
- *  Calc
- *  -------------------------- */
-// ціна з селекта (float)
-const selectedPrice = computed(() => {
-  const n = Number(String(selected.value?.text ?? "").replace(",", "."))
-  return Number.isFinite(n) ? n : 0
+  return Object.entries(tokenomic)
+    .sort(([a], [b]) => Number(a) - Number(b))
+    .map(([day, item]) => ({
+      text: String(item.price_usd),
+      priceUsd: Number(item.price_usd),
+      day: Number(day),
+      stage: Number(item.stage),
+    }))
 })
 
-// сума інвестиції (int)
+const listingPrice = computed(() => {
+  const value = Number(priceData.value.launch_price_usd ?? 0)
+  return value > 0 ? String(value) : "—"
+})
+
+const currentDay = computed(() => Number(priceData.value.day_today ?? 1))
+
+const selected = ref<SelectItem>({
+  text: "",
+  priceUsd: 0,
+  day: 1,
+  stage: 1,
+})
+
+watchEffect(() => {
+  if (!stagesPrice.value.length) return
+
+  const current =
+    stagesPrice.value.find((item) => item.day === currentDay.value) ||
+    stagesPrice.value[0]!
+
+  if (!selected.value.text) {
+    selected.value = current
+  }
+})
+
+const amount = ref("")
+
+const selectedPrice = computed(() => {
+  return selected.value?.priceUsd || 0
+})
+
 const amountNumber = computed(() => {
   const n = Number(amount.value)
   return Number.isFinite(n) ? n : 0
 })
 
-// receive = amount / price  (скільки $DUCK отримаєш)
 const receive = computed(() => {
   const price = selectedPrice.value
   if (!price) return 0
@@ -106,23 +110,24 @@ const receive = computed(() => {
 
 function formatNumber(n: number, maxDecimals = 2) {
   if (!Number.isFinite(n)) return "0"
+
   return new Intl.NumberFormat("en-US", {
     maximumFractionDigits: maxDecimals,
   }).format(n)
 }
 
 const receiveDisplay = computed(() => {
-  // можеш змінити decimals: 0 / 2 / 6 — як тобі треба для токена
   return receive.value ? formatNumber(receive.value, 2) : ""
 })
 
 const selectedStageNumber = computed(() => {
-  const i = stagesPrice.findIndex((s) => s.text === selected.value?.text)
-  return i === -1 ? 1 : i + 1
+  return selected.value?.stage || 1
 })
 
 function onJoin() {
-  // тут твоя логіка (open modal / send tx / whitelist etc)
+  gsap.to(window, {
+    scrollTo: "section.panel",
+  })
 }
 </script>
 

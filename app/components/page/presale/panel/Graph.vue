@@ -1,13 +1,13 @@
 <template>
   <div class="graph">
-    <div class="left-content">
+    <!-- <div class="left-content">
       <p class="price-top sub-s">$0.33</p>
       <p class="price-1 sub-s">$0.17</p>
       <p class="price-2 sub-s">$0.09</p>
       <p class="price-3 sub-s">$0.00</p>
-    </div>
+    </div> -->
+
     <div ref="linksWrap" class="right-content">
-      <!-- SVG overlay -->
       <svg class="links-svg" preserveAspectRatio="none">
         <line
           v-for="(l, i) in links"
@@ -25,14 +25,13 @@
           <div class="col-block">
             <div class="track">
               <div :ref="setCircleRef(0)" class="circle">
-                <div class="circle-price body-m">
-                  ${{ stagesPrice[0]?.text }}
-                </div>
+                <div class="circle-price body-m">${{ firstStagePrice }}</div>
               </div>
             </div>
           </div>
           <p class="col-title sub-s">1 Stage</p>
         </div>
+
         <div class="col col-2">
           <div class="col-block">
             <div class="col-logo">
@@ -49,14 +48,13 @@
                 class="circle"
                 :style="{ bottom: `${currentPct}%` }"
               >
-                <div class="circle-price body-m">
-                  ${{ stagesPrice[currentStage - 1]?.text }}
-                </div>
+                <div class="circle-price body-m">${{ currentStagePrice }}</div>
               </div>
             </div>
           </div>
-          <p class="col-title sub-s">{{ currentStage }} Stage</p>
+          <p class="col-title sub-s">{{ currentStageValue }} Stage</p>
         </div>
+
         <div class="col col-3">
           <div class="col-block">
             <div class="track">
@@ -65,20 +63,19 @@
                 class="circle"
                 :style="{ bottom: `${nextPct}%` }"
               >
-                <div class="circle-price body-m">
-                  ${{ stagesPrice[nextStage - 1]?.text }}
-                </div>
+                <div class="circle-price body-m">${{ nextStagePrice }}</div>
               </div>
             </div>
           </div>
-          <p class="col-title sub-s">{{ nextStage }} Stage</p>
+          <p class="col-title sub-s">{{ nextStageValue }} Stage</p>
         </div>
+
         <div class="col col-4">
           <div class="col-block">
             <div class="track">
               <div :ref="setCircleRef(3)" class="circle">
                 <div class="circle-price body-m">
-                  ${{ stagesPrice[stagesPrice.length - 1]?.text }}
+                  ${{ listingPriceDisplay }}
                 </div>
               </div>
             </div>
@@ -93,39 +90,74 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, VNodeRef } from "vue"
 
-type SelectItem = { text: string }
+type SelectItem = {
+  text: string
+  priceUsd: number
+  day: number
+  stage: number
+}
 
 const props = defineProps<{
   stagesPrice: SelectItem[]
   currentStage: number
+  selected: SelectItem
+  listingPrice: string
 }>()
 
-const totalStages = computed(() => props.stagesPrice.length || 1)
+const uniqueStages = computed<SelectItem[]>(() => {
+  const map = new Map<number, SelectItem>()
 
-const currentStage = computed(() => {
+  for (const item of props.stagesPrice) {
+    if (!map.has(item.stage)) {
+      map.set(item.stage, item)
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => a.stage - b.stage)
+})
+
+const totalStages = computed(() => uniqueStages.value.length || 1)
+
+const currentStageValue = computed(() => {
   const n = Number(props.currentStage)
   if (!Number.isFinite(n)) return 1
   return Math.min(Math.max(Math.trunc(n), 1), totalStages.value)
 })
 
-const nextStage = computed(() =>
-  Math.min(currentStage.value + 1, totalStages.value)
-)
+const nextStageValue = computed(() => {
+  return Math.min(currentStageValue.value + 1, totalStages.value)
+})
 
 function stageToPct(stage: number) {
   const total = totalStages.value
   if (total <= 1) return 0
-  // stage 1 => 0%, last stage => 100%
   return ((stage - 1) / (total - 1)) * 100
 }
 
-const currentPct = computed(() => stageToPct(currentStage.value))
-const nextPct = computed(() => stageToPct(nextStage.value))
+const currentPct = computed(() => stageToPct(currentStageValue.value))
+const nextPct = computed(() => stageToPct(nextStageValue.value))
+
+const firstStagePrice = computed(() => {
+  return uniqueStages.value[0]?.text || "—"
+})
+
+const currentStagePrice = computed(() => {
+  return props.selected?.text || "—"
+})
+
+const nextStagePrice = computed(() => {
+  const next = uniqueStages.value.find(
+    (item) => item.stage === nextStageValue.value
+  )
+  return next?.text || props.selected?.text || "—"
+})
+
+const listingPriceDisplay = computed(() => {
+  return props.listingPrice || "—"
+})
 
 // --- links svg
 const linksWrap = ref<HTMLElement | null>(null)
-
-// Vue refs callback receives Element | ComponentPublicInstance | null
 const circleEls = ref<(HTMLElement | null)[]>([null, null, null, null])
 
 const setCircleRef = (i: number): VNodeRef => {
@@ -143,6 +175,7 @@ const links = ref([
 function centerOf(el: Element, relativeTo: DOMRect) {
   const node = el as HTMLElement
   const r = node.getBoundingClientRect()
+
   return {
     x: r.left - relativeTo.left + r.width / 2,
     y: r.top - relativeTo.top + r.height / 2,
@@ -198,8 +231,18 @@ onBeforeUnmount(() => {
   ro?.disconnect()
 })
 
-// важливо: коли міняються bottom %, перераховуємо
-watch([currentPct, nextPct, totalStages], updateLinks, { flush: "post" })
+watch(
+  [
+    currentPct,
+    nextPct,
+    totalStages,
+    currentStagePrice,
+    nextStagePrice,
+    listingPriceDisplay,
+  ],
+  updateLinks,
+  { flush: "post" }
+)
 </script>
 
 <style scoped lang="scss">
@@ -207,25 +250,21 @@ watch([currentPct, nextPct, totalStages], updateLinks, { flush: "post" })
 .graph {
   display: flex;
   gap: 1rem;
-  padding-top: 1.5rem;
   height: 100%;
-  @include mobile {
-    padding-top: 0.5rem;
-  }
 }
-.left-content {
-  display: flex;
-  flex-direction: column;
-  gap: 3.5rem;
-  min-width: 3.6875rem;
-  text-align: right;
-  padding-bottom: 2.5rem;
-  @include mobile {
-    min-width: 2.75rem;
-    padding-bottom: 2rem;
-    gap: 1.5rem;
-  }
-}
+// .left-content {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 3.5rem;
+//   min-width: 3.6875rem;
+//   text-align: right;
+//   padding-bottom: 2.5rem;
+//   @include mobile {
+//     min-width: 2.75rem;
+//     padding-bottom: 2rem;
+//     gap: 1.5rem;
+//   }
+// }
 .right-content {
   flex: 1 1 auto;
   position: relative;

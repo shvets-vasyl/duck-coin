@@ -11,6 +11,10 @@
           class="base-card form"
           @submit="onSubmit"
         >
+          <div v-if="sended" class="sended-message">
+            <IconCheck3 />
+            <p class="body-m">You have successfully joined the whitelist!</p>
+          </div>
           <h3 class="form-title h3">Whitelist is Live</h3>
 
           <div class="vip">
@@ -40,9 +44,9 @@
             </CommonFormInput>
           </div>
 
-          <button class="form-btn">
-            <CommonButtonTemplate big yellow>
-              Join Whitelist
+          <button class="form-btn" :disabled="isLoading">
+            <CommonButtonTemplate big :yellow="!isLoading" :white="isLoading">
+              {{ isLoading ? "Loading..." : "Join Whitelist" }}
             </CommonButtonTemplate>
           </button>
         </Form>
@@ -77,13 +81,16 @@ const schema = yup.object({
 
 // ----- FORM SUBMIT
 const formOpenedAt = Date.now()
-const sended = useState("form-sended")
+const sended = ref(false)
 const errorForm = useState("form-error")
+const isLoading = ref(false)
 
 const onSubmit: SubmissionHandler<GenericObject> = async (
   values,
   { resetForm }
 ) => {
+  if (isLoading.value) return
+
   const check = values.check as string
   if (check || sended.value) return
 
@@ -92,27 +99,38 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
 
   const email = values.email as string
 
-  resetForm()
+  isLoading.value = true
 
-  const res = await $fetch("/api/whitelist", {
-    method: "POST",
-    body: { email },
-  })
+  try {
+    const res = await $fetch<{ ok: boolean }>("/api/whitelist", {
+      method: "POST",
+      body: { email },
+    })
 
-  console.log(res)
+    if (res.ok) {
+      resetForm()
+      sended.value = true
 
-  if (res.ok) {
-    sended.value = true
+      setTimeout(() => {
+        sended.value = false
+      }, 2000)
+    } else {
+      errorForm.value = true
 
-    setTimeout(() => {
-      sended.value = false
-    }, 2000)
-  } else {
+      setTimeout(() => {
+        errorForm.value = false
+      }, 2000)
+    }
+  } catch (error) {
+    console.log(error)
+
     errorForm.value = true
 
     setTimeout(() => {
       errorForm.value = false
     }, 2000)
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -165,6 +183,7 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
+  position: relative;
   @include mobile {
     padding: 1.5rem 1.25rem;
   }
@@ -229,6 +248,39 @@ const onSubmit: SubmissionHandler<GenericObject> = async (
   @include mobile {
     font-size: 1rem;
     line-height: 1rem;
+  }
+}
+.form-btn:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.sended-message:deep(svg) {
+  width: 2rem;
+  @include mobile {
+    width: 1.5rem;
+  }
+}
+.sended-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  height: 4.5rem;
+  border-radius: 1rem;
+  background: var(--c-milk);
+  position: absolute;
+  top: 1.5rem;
+  width: calc(100% - 3rem);
+  left: 1.5rem;
+
+  @include mobile {
+    left: 1rem;
+    top: 1rem;
+    width: calc(100% - 2rem);
+    height: 4rem;
+    padding: 0.75rem;
+    gap: 0.75rem;
   }
 }
 </style>

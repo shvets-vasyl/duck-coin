@@ -1,126 +1,133 @@
 <template>
-  <div class="base-card calculator" :class="{ smaller: isSmaller }">
-    <div class="price">
-      <h3 class="price-number h3">{{ raisedDisplay }}</h3>
-      <p class="price-text cap-m">Raised</p>
-    </div>
-
-    <div class="top-info">
-      <div class="days">
-        <span class="sub-s">{{ soldDisplay }} </span
-        ><span class="cap-m"> Sold</span>
-      </div>
-      <div class="investors">
-        <span class="sub-s">{{ investorsDisplay }} </span
-        ><span class="cap-m"> Investors</span>
-      </div>
-    </div>
-
-    <div class="calc-progress">
-      <CommonProgress :percent="progressPercent" color="#ffec00" />
-    </div>
-
-    <div class="bot-info">
-      <div class="cost">
-        <span class="cap-m">1 $DUCK = <br class="mob" /></span>
-        <span class="sub-s">{{ duckPriceDisplay }}</span>
+  <ClientOnly>
+    <div class="base-card calculator" :class="{ smaller: isSmaller }">
+      <div class="price">
+        <h3 class="price-number h3">{{ raisedDisplay }}</h3>
+        <p class="price-text cap-m">Raised</p>
       </div>
 
-      <div class="launching">
-        <span class="cap-m">
-          Launch<span class="txt-1">ing</span> price = <br class="mob" />
-        </span>
-        <span class="sub-s">{{ launchPriceDisplay }}</span>
+      <div class="top-info">
+        <div class="days">
+          <span class="sub-s">{{ soldDisplay }} </span
+          ><span class="cap-m"> Sold</span>
+        </div>
+        <div class="investors">
+          <span class="sub-s">{{ investorsDisplay }} </span
+          ><span class="cap-m"> Investors</span>
+        </div>
       </div>
-    </div>
 
-    <div class="fields-wrap">
-      <div class="amount">
-        <p class="amount-title sub-s">Your amount</p>
+      <div class="calc-progress">
+        <CommonProgress :percent="progressPercent" color="#ffec00" />
+      </div>
 
-        <div class="calc-field">
-          <input
-            v-model="amount"
-            class="calc-input body-xl"
-            name="amount"
-            type="text"
-            placeholder="0"
-            inputmode="numeric"
-            @input="onInput"
-          />
+      <div class="bot-info">
+        <div class="cost">
+          <span class="cap-m">1 $DUCK = <br class="mob" /></span>
+          <span class="sub-s">{{ duckPriceDisplay }}</span>
+        </div>
 
-          <div class="select-wrap">
-            <CommonSelect
-              v-model="selected"
-              :items="exchange"
-              :inner2="isSmaller"
+        <div class="launching">
+          <span class="cap-m">
+            Launch<span class="txt-1">ing</span> price = <br class="mob" />
+          </span>
+          <span class="sub-s">{{ launchPriceDisplay }}</span>
+        </div>
+      </div>
+
+      <div class="fields-wrap">
+        <div class="amount">
+          <p class="amount-title sub-s">Your amount</p>
+
+          <div class="calc-field">
+            <input
+              v-model="amount"
+              class="calc-input body-xl"
+              name="amount"
+              type="text"
+              placeholder="0"
+              inputmode="numeric"
+              @input="onInput"
             />
+
+            <div class="select-wrap">
+              <CommonSelect
+                v-model="selected"
+                :items="exchange"
+                :inner2="isSmaller"
+              />
+            </div>
+          </div>
+        </div>
+
+        <p class="balance cap-s">
+          <span v-if="estimatePending">Calculating...</span>
+          <span v-else-if="estimatedAmountDisplay">
+            Pay: {{ estimatedAmountDisplay }} {{ selected.code }}
+          </span>
+          <span v-else>Enter amount</span>
+        </p>
+
+        <div v-if="!isSmaller" class="decor-down">
+          <div class="decor-line" />
+          <CommonButtonTemplate small disabled>
+            <IconDown class="icon-down" />
+          </CommonButtonTemplate>
+          <div class="decor-line" />
+        </div>
+
+        <div class="receive">
+          <p class="receive-title sub-s">You receive (tokens)</p>
+
+          <div class="calc-field receive-field">
+            <input
+              class="calc-input body-xl"
+              name="receive"
+              type="text"
+              placeholder="0"
+              :value="receiveDisplay"
+              readonly
+            />
+            <div class="icon-dollar">
+              <IconDollar />
+            </div>
           </div>
         </div>
       </div>
 
-      <p class="balance cap-s">
-        <span v-if="estimatePending">Calculating...</span>
-        <span v-else-if="estimatedAmountDisplay">
-          Pay: {{ estimatedAmountDisplay }} {{ selected.code }}
-        </span>
-        <span v-else>Enter amount</span>
-      </p>
-
-      <div v-if="!isSmaller" class="decor-down">
-        <div class="decor-line" />
-        <CommonButtonTemplate small disabled>
-          <IconDown class="icon-down" />
-        </CommonButtonTemplate>
-        <div class="decor-line" />
-      </div>
-
-      <div class="receive">
-        <p class="receive-title sub-s">You receive (tokens)</p>
-
-        <div class="calc-field receive-field">
-          <input
-            class="calc-input body-xl"
-            name="receive"
-            type="text"
-            placeholder="0"
-            :value="receiveDisplay"
-            readonly
-          />
-          <div class="icon-dollar">
-            <IconDollar />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="btn-wrap">
-      <button
-        class="btn-buy"
-        :disabled="
-          !amountNum || estimatePending || createInvoicePending || !isActive
-        "
-        @click="onSubmit"
-      >
-        <CommonButtonTemplate big yellow> Buy $DUCK </CommonButtonTemplate>
-      </button>
-    </div>
-
-    <div class="audited">
-      <p class="audited-title cap-m">Audited by:</p>
-
-      <div class="audited-items">
-        <div
-          v-for="({ text, icon }, i) in auditedItems"
-          :key="i"
-          class="audited-item"
+      <div class="btn-wrap">
+        <button
+          class="btn-buy"
+          :disabled="
+            !amountNum || estimatePending || createInvoicePending || !isActive
+          "
+          @click="onSubmit"
         >
-          <img class="audited-img" draggable="false" :src="icon" :alt="text" />
-          <p class="audited-text sub-s">{{ text }}</p>
+          <CommonButtonTemplate big yellow> Buy $DUCK </CommonButtonTemplate>
+        </button>
+      </div>
+
+      <div class="audited">
+        <p class="audited-title cap-m">Audited by:</p>
+
+        <div class="audited-items">
+          <div
+            v-for="({ text, icon }, i) in auditedItems"
+            :key="i"
+            class="audited-item"
+          >
+            <img
+              class="audited-img"
+              draggable="false"
+              :src="icon"
+              :alt="text"
+            />
+            <p class="audited-text sub-s">{{ text }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
@@ -189,6 +196,10 @@ const configData = computed(
 
 const statsData = computed(
   () => (presaleData.value?.stats ?? {}) as Record<string, unknown>
+)
+
+const priceData = computed(
+  () => (presaleData.value?.price ?? {}) as Record<string, unknown>
 )
 
 const exchange = computed<ExchangeItem[]>(() =>
@@ -342,7 +353,8 @@ const duckPriceDisplay = computed(() => {
 })
 
 const launchPriceDisplay = computed(() => {
-  return "—"
+  const value = Number(priceData.value.launch_price_usd ?? 0)
+  return value > 0 ? nfPrice(value) : "—"
 })
 </script>
 

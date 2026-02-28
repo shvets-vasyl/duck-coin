@@ -86,9 +86,14 @@ const { data: investorData, pending } = await useAsyncData(
   async () => {
     if (!connectedWallet.value) return null
 
-    return await $fetch<InvestorResponse>(
-      `/api/presale/investor/${connectedWallet.value}`
-    )
+    try {
+      return await $fetch<InvestorResponse>(
+        `/api/presale/info/${connectedWallet.value}`
+      )
+    } catch (err) {
+      console.error("Investor fetch error:", err)
+      return null
+    }
   },
   {
     watch: [connectedWallet],

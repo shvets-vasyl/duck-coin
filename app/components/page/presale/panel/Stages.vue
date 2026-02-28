@@ -1,7 +1,7 @@
 <template>
   <div class="stages-box base-card">
     <div class="stages-top">
-      <div class="stage body-m">Stage 1 ${{ stagesPrice[0]?.text }}</div>
+      <div class="stage body-m">Stage 1 ${{ firstStagePrice }}</div>
       <div class="stage-line" />
 
       <div class="current-stage">
@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-type SelectItem = { text: string }
+import type { SelectItem } from "@/types/general"
 
 const props = defineProps<{
   stagesPrice: SelectItem[]
@@ -110,8 +110,11 @@ function onInput(e: Event) {
 }
 
 const selectedStageNumber = computed(() => {
-  const i = props.stagesPrice.findIndex((s) => s.text === props.selected?.text)
-  return i === -1 ? 1 : i + 1
+  return props.selected?.stage || 1
+})
+
+const firstStagePrice = computed(() => {
+  return props.stagesPrice[0]?.text || "—"
 })
 </script>
 

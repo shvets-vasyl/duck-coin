@@ -1,13 +1,13 @@
 <template>
   <main class="presale-page">
-    <CommonHeader :nav-list="headerNav" btn-text="Connect wallet" />
+    <CommonHeader btn-text="Connect wallet" />
     <CommonMenu />
 
     <PagePresaleHero />
     <PagePresaleProfile v-if="connectedWallet" />
     <PagePresalePanel />
     <PagePresaleHow />
-    <PagePresaleReferrals />
+    <PagePresaleReferrals v-if="connectedWallet" />
     <PagePresaleLeaderboard />
     <SectionJoin />
 
@@ -18,21 +18,6 @@
 </template>
 
 <script setup lang="ts">
-const headerNav = [
-  {
-    text: "Duck Dynasty",
-    link: "/",
-  },
-  {
-    text: "Tokenomics",
-    link: "/",
-  },
-  {
-    text: "Stay Score",
-    link: "/",
-  },
-]
-
 const connectedWallet = useState<string | null>("connected-wallet")
 </script>
 

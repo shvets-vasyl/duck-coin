@@ -23,11 +23,15 @@
     </nav>
 
     <div v-if="!hideNav" class="cta-wrap">
-      <button class="cta-btn">
+      <button v-if="btnText" class="cta-btn" @click="scrollToPanel">
         <CommonButtonTemplate>
-          {{ btnText ? btnText : "Join the presale" }}
+          {{ btnText }}
         </CommonButtonTemplate>
       </button>
+
+      <NuxtLink v-else to="/presale" class="cta-btn">
+        <CommonButtonTemplate> Join the presale </CommonButtonTemplate>
+      </NuxtLink>
     </div>
 
     <button v-if="!hideNav" class="burger" @click="toggleMenu">
@@ -104,6 +108,12 @@ const toggleMenu = () => {
 
 const onScroll = () => {
   headerState.value.isScrolled = window.scrollY > 0
+}
+
+const scrollToPanel = () => {
+  gsap.to(window, {
+    scrollTo: "section.panel",
+  })
 }
 
 onMounted(() => {
@@ -187,5 +197,9 @@ onBeforeUnmount(() => {
 }
 .burger:deep(svg) {
   width: 1.5rem;
+}
+.nav-item.router-link-active {
+  opacity: 0.5;
+  pointer-events: none;
 }
 </style>

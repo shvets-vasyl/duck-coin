@@ -5,6 +5,7 @@ export const usePresaleData = async () => {
     currencies: unknown[]
     config: Record<string, unknown>
     stats: Record<string, unknown>
+    price: Record<string, unknown>
   } | null>("presale-data", () => null)
 
   const presalePending = useState<boolean>("presale-data-pending", () => false)
@@ -17,7 +18,7 @@ export const usePresaleData = async () => {
     presaleError.value = null
 
     try {
-      const [currenciesRes, configRes, statsRes] = await Promise.all([
+      const [currenciesRes, configRes, statsRes, priceRes] = await Promise.all([
         $fetch<{ currencies: unknown[] }>("/api/v1/presale/currencies", {
           baseURL: runtimeConfig.public.apiBase,
         }),
@@ -27,12 +28,16 @@ export const usePresaleData = async () => {
         $fetch<Record<string, unknown>>("/api/v1/presale/stats", {
           baseURL: runtimeConfig.public.apiBase,
         }),
+        $fetch<Record<string, unknown>>("/api/v1/presale/price", {
+          baseURL: runtimeConfig.public.apiBase,
+        }),
       ])
 
       presaleData.value = {
         currencies: currenciesRes?.currencies ?? [],
         config: configRes ?? {},
         stats: statsRes ?? {},
+        price: priceRes ?? {},
       }
     } catch (error) {
       presaleError.value =
