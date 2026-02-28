@@ -61,7 +61,13 @@
         </div>
 
         <p class="balance cap-s">
-          <span v-if="estimatePending">Calculating...</span>
+          <span v-if="minAmountPending">Checking minimum...</span>
+          <span v-else-if="!amountNum">Enter amount</span>
+
+          <span v-else-if="isBelowMinAmount">
+            Min payment is {{ minAmountDisplay }} {{ selected.code }}
+          </span>
+          <span v-else-if="estimatePending">Calculating...</span>
           <span v-else-if="estimatedAmountDisplay">
             Pay: {{ estimatedAmountDisplay }} {{ selected.code }}
           </span>
@@ -99,7 +105,12 @@
         <button
           class="btn-buy"
           :disabled="
-            !amountNum || estimatePending || createInvoicePending || !isActive
+            !amountNum ||
+            isBelowMinAmount ||
+            estimatePending ||
+            minAmountPending ||
+            createInvoicePending ||
+            !isActive
           "
           @click="onSubmit"
         >
@@ -138,6 +149,7 @@ import type {
   ExchangeItem,
   EstimateResponse,
   CreateInvoiceResponse,
+  MinAmountResponse,
 } from "@/types/general"
 
 const props = defineProps<{
@@ -161,6 +173,12 @@ const { isMobile } = useViewport()
 const route = useRoute()
 const router = useRouter()
 const sended = useState("form-sended")
+
+const selected = ref<ExchangeItem>({
+  text: "",
+  icon: "",
+  code: "",
+})
 
 onMounted(() => {
   const wallet = getConnectedWalletAddress()
@@ -190,6 +208,73 @@ onMounted(() => {
 
 const isSmaller = computed(() => props.smaller || isMobile.value)
 
+const minAmountData = ref<MinAmountResponse | null>(null)
+const minAmountPending = ref(false)
+
+const fetchMinAmount = async () => {
+  const code = selected.value.code?.toLowerCase()
+
+  console.log("1", code)
+
+  if (!code) {
+    minAmountData.value = null
+    return
+  }
+
+  console.log("2", code)
+
+  minAmountPending.value = true
+
+  try {
+    const response = await $fetch<MinAmountResponse>(
+      "/api/presale/min-amount",
+      {
+        query: {
+          currency_from: code,
+        },
+      }
+    )
+
+    minAmountData.value = response
+    console.log("3", response)
+  } catch (error) {
+    console.error("Min amount fetch error:", error)
+    minAmountData.value = null
+  } finally {
+    minAmountPending.value = false
+  }
+}
+
+watch(
+  () => selected.value.code,
+  () => {
+    fetchMinAmount()
+  },
+  { immediate: true }
+)
+
+const minAmountValue = computed(() => {
+  return Number(minAmountData.value?.min_amount ?? 0)
+})
+
+const estimatedAmountValue = computed(() => {
+  return Number(estimateData.value?.estimated_amount ?? 0)
+})
+
+const isBelowMinAmount = computed(() => {
+  if (!estimatedAmountValue.value || !minAmountValue.value) return false
+  return estimatedAmountValue.value < minAmountValue.value
+})
+
+const minAmountDisplay = computed(() => {
+  if (!minAmountValue.value) return "—"
+
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 8,
+  }).format(minAmountValue.value)
+})
+
 const configData = computed(
   () => (presaleData.value?.config ?? {}) as Record<string, unknown>
 )
@@ -212,12 +297,6 @@ const exchange = computed<ExchangeItem[]>(() =>
     }))
 )
 
-const selected = ref<ExchangeItem>({
-  text: "",
-  icon: "",
-  code: "",
-})
-
 watchEffect(() => {
   if (!selected.value.text && exchange.value.length) {
     selected.value = exchange.value[0]!
@@ -225,7 +304,13 @@ watchEffect(() => {
 })
 
 const onSubmit = async () => {
-  if (!amountNum.value || !isActive.value) return
+  if (
+    !amountNum.value ||
+    !isActive.value ||
+    isBelowMinAmount.value ||
+    minAmountPending.value
+  )
+    return
 
   const wallet = await getWalletAddress()
   connectedWallet.value = wallet
@@ -317,7 +402,7 @@ const receiveDisplay = computed(() => {
 })
 
 const estimatedAmountDisplay = computed(() => {
-  const value = estimateData.value?.estimated_amount ?? 0
+  const value = estimatedAmountValue.value
   return value ? nfCrypto(value) : ""
 })
 

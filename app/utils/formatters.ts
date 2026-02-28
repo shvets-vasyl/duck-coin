@@ -3,7 +3,7 @@ export const nfMoney = (n: number) => {
     "$" +
     new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      maximumFractionDigits: 2,
     }).format(n)
   )
 }
@@ -11,7 +11,7 @@ export const nfMoney = (n: number) => {
 export const nfToken = (n: number) => {
   return new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 4,
+    maximumFractionDigits: 2,
   }).format(n)
 }
 

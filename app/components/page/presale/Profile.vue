@@ -54,7 +54,9 @@
             </CommonButtonTemplate>
           </div>
           <div class="item-content">
-            <p class="item-number sub-m">$500</p>
+            <p class="item-number sub-m">
+              {{ pending ? "..." : balanceDisplay }}
+            </p>
             <p class="item-text cap-m">Current balance</p>
           </div>
         </div>
@@ -66,7 +68,9 @@
             </CommonButtonTemplate>
           </div>
           <div class="item-content">
-            <p class="item-number sub-m">$3500</p>
+            <p class="item-number sub-m">
+              {{ pending ? "..." : launchEvaluationDisplay }}
+            </p>
             <p class="item-text cap-m">Launch Evaluation</p>
           </div>
         </div>
@@ -86,14 +90,9 @@ const { data: investorData, pending } = await useAsyncData(
   async () => {
     if (!connectedWallet.value) return null
 
-    try {
-      return await $fetch<InvestorResponse>(
-        `/api/presale/info/${connectedWallet.value}`
-      )
-    } catch (err) {
-      console.error("Investor fetch error:", err)
-      return null
-    }
+    return await $fetch<InvestorResponse>(
+      `/api/presale/investor/${connectedWallet.value}`
+    )
   },
   {
     watch: [connectedWallet],
@@ -112,14 +111,23 @@ function shortAddress(addr: string, start = 6, end = 4) {
 }
 
 const investedDisplay = computed(() => {
-  const value = investorData.value?.total_invested_usd ?? 0
+  const value = investorData.value?.invested ?? 0
   return value ? nfMoney(value) : "—"
 })
 
 const tokensDisplay = computed(() => {
-  const raw = Number(investorData.value?.total_tokens ?? 0)
-  const tokens = raw > 0 ? raw / 1e9 : 0
-  return tokens ? `${nfToken(tokens)} $DUCK` : "—"
+  const value = investorData.value?.tokens ?? 0
+  return value ? `${nfToken(value)} $DUCK` : "—"
+})
+
+const balanceDisplay = computed(() => {
+  const value = investorData.value?.balance ?? 0
+  return value ? nfMoney(value) : "$0"
+})
+
+const launchEvaluationDisplay = computed(() => {
+  const value = investorData.value?.launch_evaluation ?? 0
+  return value ? nfMoney(value) : "$0"
 })
 
 const walletDisplay = computed(() => {

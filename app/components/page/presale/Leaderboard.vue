@@ -95,27 +95,8 @@
 </template>
 
 <script setup lang="ts">
-type ApiLeaderboardItem = {
-  rank: number
-  wallet_address: string
-  total_invested_usd: number
-  total_tokens: number
-  payment_count: number
-  last_invested_at: string | null
-}
-
-type LeaderboardResponse = {
-  total_count: number
-  items: ApiLeaderboardItem[]
-}
-
-type LeaderboardItem = {
-  place: number
-  address: string
-  money: string
-  payments: number
-  date: string
-}
+import { nfMoney } from "@/utils/formatters"
+import type { LeaderboardItem, LeaderboardResponse } from "@/types/general"
 
 const activeTab = ref<"today" | "all">("today")
 const ITEMS_PER_PAGE = 6
@@ -125,16 +106,6 @@ const { data: leaderboardData, pending } = await useAsyncData(
   "presale-leaderboard",
   () => $fetch<LeaderboardResponse>("/api/presale/leaderboard")
 )
-
-function nfMoney(n: number) {
-  return (
-    "$" +
-    new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(n)
-  )
-}
 
 function shortAddress(addr: string, start = 6, end = 4) {
   if (!addr) return ""

@@ -1,8 +1,16 @@
 export default defineEventHandler(async (event) => {
-  const runtimeConfig = useRuntimeConfig()
+  const {
+    public: { apiBase },
+  } = useRuntimeConfig()
+
   const wallet = getRouterParam(event, "wallet")
 
-  return await $fetch(`/api/v1/presale/investor/${wallet}`, {
-    baseURL: runtimeConfig.public.apiBase,
-  })
+  if (!wallet) return null
+
+  try {
+    return await $fetch(`${apiBase}/api/v1/presale/info/${wallet}`)
+  } catch (error) {
+    console.error("Presale info fetch error:", error)
+    return null
+  }
 })
