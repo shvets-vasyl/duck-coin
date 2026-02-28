@@ -183,6 +183,8 @@ const selected = ref<ExchangeItem>({
 onMounted(() => {
   const wallet = getConnectedWalletAddress()
 
+  console.log(wallet)
+
   if (wallet) {
     connectedWallet.value = wallet
   }
