@@ -183,7 +183,9 @@ const selected = ref<ExchangeItem>({
 onMounted(() => {
   const wallet = getConnectedWalletAddress()
 
-  console.log(wallet)
+  console.log(window.phantom?.solana)
+  console.log(window.phantom?.solana?.isPhantom)
+  console.log(window.phantom?.solana?.publicKey?.toString())
 
   if (wallet) {
     connectedWallet.value = wallet
