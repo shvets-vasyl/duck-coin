@@ -1,6 +1,4 @@
 export const usePresaleData = async () => {
-  const runtimeConfig = useRuntimeConfig()
-
   const presaleData = useState<{
     currencies: unknown[]
     config: Record<string, unknown>
@@ -19,18 +17,10 @@ export const usePresaleData = async () => {
 
     try {
       const [currenciesRes, configRes, statsRes, priceRes] = await Promise.all([
-        $fetch<{ currencies: unknown[] }>("/api/v1/presale/currencies", {
-          baseURL: runtimeConfig.public.apiBase,
-        }),
-        $fetch<Record<string, unknown>>("/api/v1/presale/config", {
-          baseURL: runtimeConfig.public.apiBase,
-        }),
-        $fetch<Record<string, unknown>>("/api/v1/presale/stats", {
-          baseURL: runtimeConfig.public.apiBase,
-        }),
-        $fetch<Record<string, unknown>>("/api/v1/presale/price", {
-          baseURL: runtimeConfig.public.apiBase,
-        }),
+        $fetch<{ currencies: unknown[] }>("/api/presale/currencies"),
+        $fetch<Record<string, unknown>>("/api/presale/config"),
+        $fetch<Record<string, unknown>>("/api/presale/stats"),
+        $fetch<Record<string, unknown>>("/api/presale/price"),
       ])
 
       presaleData.value = {

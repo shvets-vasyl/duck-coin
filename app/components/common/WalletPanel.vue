@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-const connectedWallet = useState<string | null>("connected-wallet")
+const { connectedWallet, disconnect } = useWallet()
 
 const { isDesktop } = useViewport()
 
@@ -66,8 +66,7 @@ const scrollToPanel = () => {
 }
 
 const logOutWallet = async () => {
-  await logoutWallet()
-  connectedWallet.value = null
+  await disconnect()
 }
 </script>
 

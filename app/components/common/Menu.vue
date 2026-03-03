@@ -35,11 +35,10 @@ defineProps<{
   btnText?: string
 }>()
 
-const connectedWallet = useState<string | null>("connected-wallet")
+const { connectedWallet, disconnect } = useWallet()
 
 const logOutWallet = async () => {
-  await logoutWallet()
-  connectedWallet.value = null
+  await disconnect()
 }
 
 const nav = [

@@ -20,3 +20,5 @@ logs
 
 # Ignore robots.txt
 robots.txt
+
+.env

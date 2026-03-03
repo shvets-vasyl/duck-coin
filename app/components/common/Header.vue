@@ -75,7 +75,7 @@ const nav = [
   },
 ]
 
-const connectedWallet = useState<string | null>("connected-wallet")
+const { connectedWallet, openConnectModal } = useWallet()
 
 const headerState = useState<{
   isMenuOpen: boolean
@@ -118,9 +118,8 @@ const onScroll = () => {
   headerState.value.isScrolled = window.scrollY > 0
 }
 
-const connectWalletFunc = async () => {
-  const wallet = await getWalletAddress()
-  connectedWallet.value = wallet
+const connectWalletFunc = () => {
+  openConnectModal()
 }
 
 onMounted(() => {

@@ -13,7 +13,14 @@
         <p class="score-title cap-m">Wallet</p>
         <h5 class="score-name h5">{{ walletDisplay }}</h5>
 
-        <button class="buy-btn" @click="scrollToBuy">
+        <button
+          v-if="!connectedWallet"
+          class="buy-btn"
+          @click="openConnectModal"
+        >
+          <CommonButtonTemplate yellow big> Connect wallet </CommonButtonTemplate>
+        </button>
+        <button v-else class="buy-btn" @click="scrollToBuy">
           <CommonButtonTemplate yellow big> Buy $DUCK </CommonButtonTemplate>
         </button>
       </div>
@@ -83,7 +90,7 @@
 import { nfMoney, nfToken } from "@/utils/formatters"
 import type { InvestorResponse } from "@/types/general"
 
-const connectedWallet = useState<string | null>("connected-wallet")
+const { connectedWallet, openConnectModal } = useWallet()
 
 const { data: investorData, pending } = await useAsyncData(
   "presale-investor-profile",
@@ -131,9 +138,8 @@ const launchEvaluationDisplay = computed(() => {
 })
 
 const walletDisplay = computed(() => {
-  return investorData.value?.wallet_address
-    ? shortAddress(investorData.value.wallet_address)
-    : "Not connected"
+  const addr = connectedWallet.value ?? investorData.value?.wallet_address
+  return addr ? shortAddress(addr) : "Not connected"
 })
 </script>
 

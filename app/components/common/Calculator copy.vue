@@ -107,6 +107,14 @@
 
       <div class="btn-wrap">
         <button
+          v-if="!connectedWallet"
+          class="btn-buy"
+          @click="openConnectModal"
+        >
+          <CommonButtonTemplate big yellow> Connect wallet </CommonButtonTemplate>
+        </button>
+        <button
+          v-else
           class="btn-buy"
           :disabled="
             !amountNum ||
@@ -147,7 +155,6 @@
 
 <script setup lang="ts">
 import { nfMoney, nfInt, nfPrice, nfToken, nfCrypto } from "@/utils/formatters"
-import { getWalletAddress } from "@/utils/phantom"
 import type {
   CurrencyItem,
   ExchangeItem,
@@ -169,7 +176,7 @@ const auditedItems = [
 const createInvoicePending = ref(false)
 const paymentId = useState<string | null>("presale-payment-id", () => null)
 
-const connectedWallet = useState<string | null>("connected-wallet", () => null)
+const { connectedWallet, openConnectModal } = useWallet()
 
 const { presaleData } = await usePresaleData()
 const { isMobile } = useViewport()
@@ -182,16 +189,6 @@ const selected = ref<ExchangeItem>({
   text: "",
   icon: "",
   code: "",
-})
-
-onMounted(async () => {
-  const wallet = await getConnectedWalletAddress()
-
-  console.log(wallet)
-
-  if (wallet) {
-    connectedWallet.value = wallet
-  }
 })
 
 onMounted(() => {
@@ -310,6 +307,12 @@ watchEffect(() => {
 })
 
 const onSubmit = async () => {
+  const wallet = connectedWallet.value
+  if (!wallet) {
+    openConnectModal()
+    return
+  }
+
   if (
     !amountNum.value ||
     !isActive.value ||
@@ -317,11 +320,6 @@ const onSubmit = async () => {
     minAmountPending.value
   )
     return
-
-  const wallet = await getWalletAddress()
-  connectedWallet.value = wallet
-
-  if (!wallet) return
 
   createInvoicePending.value = true
 
