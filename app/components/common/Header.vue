@@ -1,7 +1,11 @@
 <template>
   <header
     class="header"
-    :class="{ scrolled: headerState.isScrolled, open: headerState.isMenuOpen }"
+    :class="{
+      scrolled: headerState.isScrolled,
+      open: headerState.isMenuOpen,
+      connected: connectedWallet,
+    }"
   >
     <div class="logo">
       <NuxtLink class="logo-link" to="/">
@@ -22,8 +26,8 @@
       </template>
     </nav>
 
-    <div v-if="!hideNav" class="cta-wrap">
-      <button v-if="btnText" class="cta-btn" @click="scrollToPanel">
+    <div v-if="!hideNav && !connectedWallet" class="cta-wrap">
+      <button v-if="btnText" class="cta-btn" @click="connectWalletFunc">
         <CommonButtonTemplate>
           {{ btnText }}
         </CommonButtonTemplate>
@@ -33,6 +37,8 @@
         <CommonButtonTemplate> Join the presale </CommonButtonTemplate>
       </NuxtLink>
     </div>
+
+    <CommonWalletPanel v-if="connectedWallet" class="header-wallet" />
 
     <button v-if="!hideNav" class="burger" @click="toggleMenu">
       <IconBurger v-if="!headerState.isMenuOpen" />
@@ -68,6 +74,8 @@ const nav = [
     link: "/contact",
   },
 ]
+
+const connectedWallet = useState<string | null>("connected-wallet")
 
 const headerState = useState<{
   isMenuOpen: boolean
@@ -110,10 +118,9 @@ const onScroll = () => {
   headerState.value.isScrolled = window.scrollY > 0
 }
 
-const scrollToPanel = () => {
-  gsap.to(window, {
-    scrollTo: "section.panel",
-  })
+const connectWalletFunc = async () => {
+  const wallet = await getWalletAddress()
+  connectedWallet.value = wallet
 }
 
 onMounted(() => {
@@ -134,7 +141,7 @@ onBeforeUnmount(() => {
   width: 100%;
   z-index: var(--z-header);
   display: grid;
-  grid-template-columns: 0.3fr 1fr 0.3fr;
+  grid-template-columns: 0.2fr 1fr 0.2fr;
   padding: 1.5rem 3.5rem;
   align-items: center;
 
@@ -174,6 +181,9 @@ onBeforeUnmount(() => {
     display: none;
   }
 }
+.header.connected .nav {
+  justify-content: flex-start;
+}
 .cta-wrap {
   display: flex;
   justify-content: flex-end;
@@ -201,5 +211,11 @@ onBeforeUnmount(() => {
 .nav-item.router-link-active {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.header .header-wallet {
+  @include mobile {
+    display: none;
+  }
 }
 </style>

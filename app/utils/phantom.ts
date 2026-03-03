@@ -5,6 +5,7 @@ export type PhantomProvider = {
   connect: (options?: { onlyIfTrusted?: boolean }) => Promise<{
     publicKey: { toString(): string }
   }>
+  disconnect?: () => Promise<void>
 }
 
 export const getPhantomProvider = () => {
@@ -49,5 +50,17 @@ export const getConnectedWalletAddress = async () => {
     return response.publicKey.toString()
   } catch {
     return null
+  }
+}
+
+export const logoutWallet = async () => {
+  const provider = getPhantomProvider()
+
+  if (!provider) return
+
+  try {
+    await provider.disconnect?.()
+  } catch (e) {
+    console.error("Disconnect error", e)
   }
 }

@@ -7,6 +7,8 @@
           <IconArrow />
         </NuxtLink>
       </h5>
+
+      <CommonWalletPanel class="menu-wallet" />
     </nav>
 
     <div class="foot">
@@ -15,10 +17,14 @@
         <span class="body-m">hello@duck.com</span>
       </a>
 
-      <button class="cta-btn">
+      <button v-if="!connectedWallet" class="cta-btn">
         <CommonButtonTemplate big yellow>
           {{ btnText ? btnText : "Join the presale" }}
         </CommonButtonTemplate>
+      </button>
+
+      <button v-else class="cta-btn" @click="logOutWallet">
+        <CommonButtonTemplate big yellow> Log Out </CommonButtonTemplate>
       </button>
     </div>
   </menu>
@@ -28,6 +34,13 @@
 defineProps<{
   btnText?: string
 }>()
+
+const connectedWallet = useState<string | null>("connected-wallet")
+
+const logOutWallet = async () => {
+  await logoutWallet()
+  connectedWallet.value = null
+}
 
 const nav = [
   {
@@ -74,7 +87,7 @@ const nav = [
   flex-direction: column;
   gap: 2.5rem;
   background: var(--c-yellow);
-  padding: 7.5rem 1rem 1rem;
+  padding: 7.5rem 1rem 1.5rem;
   border-radius: 0 0 2rem 2rem;
   flex: 1 1 auto;
   margin-bottom: 1.5rem;
@@ -98,5 +111,8 @@ const nav = [
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+}
+.menu-wallet {
+  margin-top: auto;
 }
 </style>
