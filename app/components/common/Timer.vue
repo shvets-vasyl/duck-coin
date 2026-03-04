@@ -25,19 +25,25 @@
 </template>
 
 <script setup lang="ts">
-const { presaleData } = await usePresaleData()
+/** Next 00:05 UTC (midnight + 5 min) in ms */
+function getNextUtc0005Ms(nowMs: number): number {
+  const d = new Date(nowMs)
+  const year = d.getUTCFullYear()
+  const month = d.getUTCMonth()
+  const day = d.getUTCDate()
+  const today0005 = Date.UTC(year, month, day, 0, 5, 0, 0)
+  if (nowMs < today0005) return today0005
+  return Date.UTC(year, month, day + 1, 0, 5, 0, 0)
+}
 
 const now = ref(Date.now())
 let intervalId: number | undefined
 
-const startTimeMs = computed(() => {
-  const config = (presaleData.value?.config ?? {}) as Record<string, unknown>
-  const raw = Number(config.start_time ?? 0)
+const next0005UtcMs = computed(() => getNextUtc0005Ms(now.value))
 
-  return raw > 0 ? raw * 1000 : 0
-})
-
-const remainingMs = computed(() => Math.max(0, startTimeMs.value - now.value))
+const remainingMs = computed(() =>
+  Math.max(0, next0005UtcMs.value - now.value)
+)
 
 const days = computed(() => {
   const d = Math.floor(remainingMs.value / (24 * 60 * 60 * 1000))
