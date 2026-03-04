@@ -361,8 +361,7 @@ const amountNum = computed(() => {
 })
 
 const duckPriceUsd = computed(() => {
-  const raw = Number(configData.value.token_price_usd ?? 0)
-  return raw > 0 ? raw / 1e9 : 0
+  return Number(configData.value.token_price_usd ?? 0)
 })
 
 const fetchEstimate = async () => {
