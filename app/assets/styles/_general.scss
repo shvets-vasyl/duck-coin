@@ -97,6 +97,12 @@ html.lenis {
   pointer-events: none;
 }
 
+w3m-modal[data-lenis-prevent] {
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
 // sections
 .section {
   padding: 3.5rem;
