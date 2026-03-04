@@ -7,7 +7,9 @@
           draggable="false"
           src="/images/presale/profile.png"
         />
-        <p class="coins-text sub-s">753</p>
+        <p class="coins-text sub-s">
+          {{ tokensDisplay }}
+        </p>
       </div>
       <div class="info-wallet">
         <IconWallet />
@@ -28,7 +30,27 @@
 </template>
 
 <script setup lang="ts">
+import type { InvestorResponse } from "@/types/general"
+import { nfToken } from "@/utils/formatters"
+
 const { connectedWallet, disconnect } = useWallet()
+
+const { data: investorData, pending: investorPending } = await useAsyncData(
+  "presale-investor-profile",
+  async () => {
+    if (!connectedWallet.value) return null
+    return await $fetch<InvestorResponse>(
+      `/api/presale/investor/${connectedWallet.value}`
+    )
+  },
+  { watch: [connectedWallet] }
+)
+
+const tokensDisplay = computed(() => {
+  if (investorPending.value) return "..."
+  const tokens = investorData.value?.tokens ?? 0
+  return tokens ? nfToken(tokens) : "0"
+})
 
 const { isDesktop } = useViewport()
 
