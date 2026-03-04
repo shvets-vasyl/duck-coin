@@ -1,12 +1,5 @@
 <template>
   <div class="graph">
-    <!-- <div class="left-content">
-      <p class="price-top sub-s">$0.33</p>
-      <p class="price-1 sub-s">$0.17</p>
-      <p class="price-2 sub-s">$0.09</p>
-      <p class="price-3 sub-s">$0.00</p>
-    </div> -->
-
     <div ref="linksWrap" class="right-content">
       <svg class="links-svg" preserveAspectRatio="none">
         <line
@@ -124,10 +117,6 @@ const currentStageValue = computed(() => {
   return Math.min(Math.max(Math.trunc(n), 1), totalStages.value)
 })
 
-const nextStageValue = computed(() => {
-  return Math.min(currentStageValue.value + 1, totalStages.value)
-})
-
 function stageToPct(stage: number) {
   const total = totalStages.value
   if (total <= 1) return 0
@@ -145,11 +134,25 @@ const currentStagePrice = computed(() => {
   return props.selected?.text || "—"
 })
 
-const nextStagePrice = computed(() => {
-  const next = uniqueStages.value.find(
-    (item) => item.stage === nextStageValue.value
+const nextItem = computed<SelectItem | null>(() => {
+  const list = props.stagesPrice
+  const cur = props.selected
+  if (!list?.length || !cur) return null
+
+  const idx = list.findIndex(
+    (i) =>
+      i.stage === cur.stage && i.day === cur.day && i.priceUsd === cur.priceUsd
   )
-  return next?.text || props.selected?.text || "—"
+
+  return idx >= 0 ? (list[idx + 1] ?? null) : null
+})
+
+const nextStagePrice = computed(() => {
+  return nextItem.value?.text || "—"
+})
+
+const nextStageValue = computed(() => {
+  return nextItem.value?.stage ?? currentStageValue.value
 })
 
 const listingPriceDisplay = computed(() => {
