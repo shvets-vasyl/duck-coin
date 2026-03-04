@@ -16,9 +16,9 @@
       <div class="swiper-pag" />
     </div>
 
-    <button class="hero-btn">
+    <NuxtLink class="hero-btn" to="/presale">
       <CommonButtonTemplate yellow big> Join the Presale </CommonButtonTemplate>
-    </button>
+    </NuxtLink>
   </section>
 </template>
 

@@ -10,11 +10,11 @@
         built to remove <br class="mob" />the most common rug mechanics.
       </p>
 
-      <button class="about-btn">
+      <NuxtLink class="about-btn" to="/presale">
         <CommonButtonTemplate yellow big>
           Get Access via $DUCK
         </CommonButtonTemplate>
-      </button>
+      </NuxtLink>
     </div>
 
     <div class="logos">

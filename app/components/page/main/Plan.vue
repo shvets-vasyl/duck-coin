@@ -71,11 +71,11 @@
         <p>Markets might be volatile but our shipping schedule isn’t.</p>
       </div>
 
-      <button class="join-btn">
+      <NuxtLink class="join-btn" to="/presale">
         <CommonButtonTemplate yellow big>
           Secure Your Position in the Token Sale
         </CommonButtonTemplate>
-      </button>
+      </NuxtLink>
     </div>
   </section>
 </template>

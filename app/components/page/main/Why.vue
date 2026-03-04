@@ -65,11 +65,11 @@
       </div>
     </div>
 
-    <button class="join-btn">
+    <NuxtLink class="join-btn" to="/presale">
       <CommonButtonTemplate yellow big>
         Join the $DUCK Presale
       </CommonButtonTemplate>
-    </button>
+    </NuxtLink>
   </section>
 </template>
 

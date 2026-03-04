@@ -2,7 +2,7 @@
   <ClientOnly>
     <div class="base-card calculator" :class="{ smaller: isSmaller }">
       <div class="price">
-        <h3 class="price-number h3">{{ raisedDisplay }}</h3>
+        <h3 class="price-number h4">{{ raisedDisplay }}</h3>
         <p class="price-text cap-m">Raised</p>
       </div>
 
@@ -111,7 +111,9 @@
           class="btn-buy"
           @click="openConnectModal"
         >
-          <CommonButtonTemplate big yellow> Connect wallet </CommonButtonTemplate>
+          <CommonButtonTemplate big yellow>
+            Connect wallet
+          </CommonButtonTemplate>
         </button>
         <button
           v-else
@@ -463,7 +465,7 @@ const launchPriceDisplay = computed(() => {
 }
 .price-text {
   position: relative;
-  top: -1rem;
+  top: -0.5rem;
   @include mobile {
     top: 0;
   }

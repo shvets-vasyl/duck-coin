@@ -107,9 +107,9 @@
       <p class="total-text cap-m">Total supply</p>
       <h3 class="total-number h3">6 000 000 000 $DUCK</h3>
 
-      <button class="join-btn">
+      <NuxtLink class="join-btn" to="/presale">
         <CommonButtonTemplate yellow big> Join Presale </CommonButtonTemplate>
-      </button>
+      </NuxtLink>
     </div>
 
     <div class="cards">

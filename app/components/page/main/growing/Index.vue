@@ -33,11 +33,11 @@
 
     <div class="foot">
       <p class="foot-title sub-m">The timeline is noticing. Are you?</p>
-      <button class="join-btn">
+      <NuxtLink class="join-btn" to="/presale">
         <CommonButtonTemplate yellow big>
           Join the presale
         </CommonButtonTemplate>
-      </button>
+      </NuxtLink>
     </div>
   </section>
 </template>
