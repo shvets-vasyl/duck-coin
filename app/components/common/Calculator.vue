@@ -55,6 +55,7 @@
                 v-model="selected"
                 :items="exchange"
                 :inner2="isSmaller"
+                searchable
               />
             </div>
           </div>
@@ -522,7 +523,18 @@ const launchPriceDisplay = computed(() => {
 .select-wrap {
   flex: 0 0 7.75rem;
   position: relative;
-  margin-right: 1rem;
+  height: 100%;
+}
+.select-wrap:deep(.select) {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 1rem;
+}
+.calculator .select-wrap:deep(.select-dropdown) {
+  width: 14.875rem;
+  margin-right: -0.0625rem;
 }
 .smaller .select-wrap {
   flex: 1 0 auto;
@@ -534,67 +546,6 @@ const launchPriceDisplay = computed(() => {
   }
 }
 
-/* кнопка */
-.select-btn {
-  width: 100%;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 3.125rem;
-
-  border: 0.0625rem solid var(--c-black);
-  background: var(--c-white);
-}
-
-.select-icon {
-  width: 1.25rem;
-}
-
-/* стрілка */
-.select-arrow {
-  width: 0.625rem;
-  transform: rotate(180deg);
-}
-.select-arrow.open {
-  transform: rotate(0deg);
-}
-
-/* dropdown */
-.select-dropdown {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 0.25rem);
-  width: 100%;
-  max-height: 25rem;
-
-  border-radius: 1rem;
-  border: 0.0938rem solid var(--c-grey-3);
-  background: var(--c-white);
-  overflow: auto;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-}
-
-.select-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  transition: background 0.15s ease;
-  box-sizing: border-box;
-}
-.select-item:not(:last-child) {
-  border-bottom: 0.0625rem solid var(--c-grey-3);
-}
-
-.select-item:hover,
-.select-item.active {
-  background: var(--c-grey-3);
-}
 .balance {
   margin-bottom: 1rem;
   text-align: center;
