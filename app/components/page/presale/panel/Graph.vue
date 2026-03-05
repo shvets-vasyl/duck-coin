@@ -130,8 +130,15 @@ const firstStagePrice = computed(() => {
   return uniqueStages.value[0]?.text || "—"
 })
 
+const currentStageItem = computed<SelectItem | null>(() => {
+  return (
+    uniqueStages.value.find((item) => item.stage === currentStageValue.value) ??
+    null
+  )
+})
+
 const currentStagePrice = computed(() => {
-  return props.selected?.text || "—"
+  return currentStageItem.value?.text || "—"
 })
 
 const nextItem = computed<SelectItem | null>(() => {

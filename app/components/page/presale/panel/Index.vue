@@ -19,7 +19,7 @@
         <div class="body-right">
           <PagePresalePanelGraph
             :stages-price="stagesPrice"
-            :current-stage="selectedStageNumber"
+            :current-stage="currentStageNumber"
             :selected="selected"
             :listing-price="listingPrice"
           />
@@ -120,8 +120,12 @@ const receiveDisplay = computed(() => {
   return receive.value ? formatNumber(receive.value, 2) : ""
 })
 
-const selectedStageNumber = computed(() => {
-  return selected.value?.stage || 1
+const currentStageNumber = computed(() => {
+  const current =
+    stagesPrice.value.find((item) => item.day === currentDay.value) ||
+    stagesPrice.value[0]
+
+  return current?.stage || 1
 })
 
 function onJoin() {
