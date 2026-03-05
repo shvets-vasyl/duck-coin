@@ -51,25 +51,25 @@ const items = [
     img: "/images/main/soc-1.webp",
     name: "Elon Musk",
     nickname: "@elonmusk",
-    link: "/",
+    link: "https://x.com/JudiciaryGOP/status/1833154509222129884?s=20",
   },
   {
     img: "/images/main/soc-2.webp",
     name: "Elon Musk",
     nickname: "@elonmusk",
-    link: "/",
+    link: "https://x.com/notcapnamerica/status/1885893825572356420",
   },
   {
     img: "/images/main/soc-3.webp",
     name: "Elon Musk",
     nickname: "@elonmusk",
-    link: "/",
+    link: "https://x.com/elonmusk/status/1111926388435488773",
   },
   {
     img: "/images/main/soc-4.webp",
     name: "Elon Musk",
     nickname: "@elonmusk",
-    link: "/",
+    link: "https://x.com/elonmusk/status/1112409761520087040?s=20",
   },
 ]
 

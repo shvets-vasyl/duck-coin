@@ -14,11 +14,11 @@
         <p class="item-nickname sub-s">{{ data.nickname }}</p>
       </div>
       <div class="item-right">
-        <NuxtLink :to="data.link" class="soc-link">
+        <a :href="data.link" target="_blank" class="soc-link">
           <CommonButtonTemplate small>
             <IconX class="icon-x" />
           </CommonButtonTemplate>
-        </NuxtLink>
+        </a>
       </div>
     </div>
   </div>
