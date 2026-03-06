@@ -119,12 +119,12 @@ function shortAddress(addr: string, start = 6, end = 4) {
 
 const investedDisplay = computed(() => {
   const value = investorData.value?.invested ?? 0
-  return value ? nfMoney(value) : "—"
+  return nfMoney(value)
 })
 
 const tokensDisplay = computed(() => {
   const value = investorData.value?.tokens ?? 0
-  return value ? `${nfToken(value)} $DUCK` : "—"
+  return `${nfToken(value)} $DUCK`
 })
 
 const balanceDisplay = computed(() => {

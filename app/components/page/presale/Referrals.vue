@@ -72,8 +72,11 @@
 </template>
 
 <script setup lang="ts">
+import { nfMoney } from "@/utils/formatters"
+
 const connectedWallet = useState<string | null>("connected-wallet", () => null)
-const { data: referralStats } = useReferralStats(connectedWallet)
+const { data: referralStats, pending: referralStatsPending } =
+  useReferralStats(connectedWallet)
 
 const origin = ref("")
 onMounted(() => {
@@ -94,16 +97,20 @@ const copyRef = async () => {
   setTimeout(() => (copied.value = false), 1500)
 }
 
-const info = [
-  {
-    title: "$10,532.48",
-    descr: "All-time earnings",
-  },
-  {
-    title: "93",
-    descr: "Total Referrals",
-  },
-]
+const info = computed(() => {
+  const usd = referralStats.value?.total_referral_earnings_usd ?? 0
+  const count = referralStats.value?.referral_count ?? 0
+  return [
+    {
+      title: referralStatsPending ? "..." : nfMoney(usd),
+      descr: "All-time earnings",
+    },
+    {
+      title: referralStatsPending ? "..." : String(count),
+      descr: "Total Referrals",
+    },
+  ]
+})
 
 const items = [
   {
