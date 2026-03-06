@@ -9,7 +9,7 @@
 
         <div class="copy">
           <p class="copy-text body-m">
-            https://duckcoin.io/ref/sqdd123utm_source=referral&utm_campaign=presale
+            https://itsduck.com/ref/sqdd123utm_source=referral&utm_campaign=presale
           </p>
 
           <button class="copy-btn" @click="copyRef">
@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 const referral =
-  "https://duckcoin.io/ref/sqdd123utm_source=referral&utm_campaign=presale"
+  "https://itsduck.com/ref/sqdd123utm_source=referral&utm_campaign=presale"
 const copied = ref(false)
 
 const copyRef = async () => {
