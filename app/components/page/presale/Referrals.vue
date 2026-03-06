@@ -98,15 +98,17 @@ const copyRef = async () => {
 }
 
 const info = computed(() => {
-  const usd = referralStats.value?.total_referral_earnings_usd ?? 0
-  const count = referralStats.value?.referral_count ?? 0
+  const stats = referralStats.value
+  const isLoading = referralStatsPending && stats == null
+  const usd = stats?.total_referral_earnings_usd ?? 0
+  const count = stats?.referral_count ?? 0
   return [
     {
-      title: referralStatsPending ? "..." : nfMoney(usd),
+      title: isLoading ? "..." : nfMoney(usd),
       descr: "All-time earnings",
     },
     {
-      title: referralStatsPending ? "..." : String(count),
+      title: isLoading ? "..." : String(count),
       descr: "Total Referrals",
     },
   ]
