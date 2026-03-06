@@ -9,10 +9,14 @@
 
         <div class="copy">
           <p class="copy-text body-m">
-            https://itsduck.com/ref/sqdd123utm_source=referral&utm_campaign=presale
+            {{ referralLink || "—" }}
           </p>
 
-          <button class="copy-btn" @click="copyRef">
+          <button
+            class="copy-btn"
+            :disabled="!referralLink"
+            @click="copyRef"
+          >
             <span v-if="copied" class="tooltip body-s">Copied</span>
             <CommonButtonTemplate yellow> Copy </CommonButtonTemplate>
           </button>
@@ -68,12 +72,24 @@
 </template>
 
 <script setup lang="ts">
-const referral =
-  "https://itsduck.com/ref/sqdd123utm_source=referral&utm_campaign=presale"
-const copied = ref(false)
+const connectedWallet = useState<string | null>("connected-wallet", () => null)
+const { data: referralStats } = useReferralStats(connectedWallet)
 
+const origin = ref("")
+onMounted(() => {
+  if (import.meta.client) origin.value = window.location.origin
+})
+
+const referralLink = computed(() => {
+  const code = referralStats.value?.referral_code
+  if (!code || !origin.value) return ""
+  return `${origin.value}/presale?ref=${encodeURIComponent(code)}&utm_source=referral&utm_campaign=presale`
+})
+
+const copied = ref(false)
 const copyRef = async () => {
-  await navigator.clipboard.writeText(referral)
+  if (!referralLink.value) return
+  await navigator.clipboard.writeText(referralLink.value)
   copied.value = true
   setTimeout(() => (copied.value = false), 1500)
 }

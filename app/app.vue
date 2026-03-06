@@ -16,4 +16,6 @@ useState("header-state", () => {
     isScrolled: false,
   }
 })
+
+useReferralAttach()
 </script>

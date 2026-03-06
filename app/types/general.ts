@@ -69,3 +69,21 @@ export type MinAmountResponse = {
   min_amount: number
   fiat_equivalent: number | null
 }
+
+export type ReferralAttachRequestBody = {
+  wallet_address: string
+  referral_code: string
+}
+
+export type ReferralAttachResponse = {
+  message: string
+  wallet_address: string
+  referred_by: string
+}
+
+export type ReferralStatsResponse = {
+  referral_code: string | null
+  total_referral_earnings_usd: number
+  total_referral_earnings_tokens: number
+  referral_count: number
+}
