@@ -142,6 +142,7 @@
             :key="i"
             class="audited-item"
           >
+            <p class="audited-soon cap-s">Soon</p>
             <img
               class="audited-img"
               draggable="false"
@@ -644,5 +645,15 @@ const launchPriceDisplay = computed(() => {
 .smaller .calc-field {
   height: 4rem;
   margin-bottom: 0;
+}
+.audited-soon {
+  color: #50af95;
+  border-radius: 0.5rem;
+  border: 0.0938rem solid #50af95;
+  width: 4.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

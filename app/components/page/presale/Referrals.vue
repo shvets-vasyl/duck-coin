@@ -12,11 +12,7 @@
             {{ referralLink || "—" }}
           </p>
 
-          <button
-            class="copy-btn"
-            :disabled="!referralLink"
-            @click="copyRef"
-          >
+          <button class="copy-btn" :disabled="!referralLink" @click="copyRef">
             <span v-if="copied" class="tooltip body-s">Copied</span>
             <CommonButtonTemplate yellow> Copy </CommonButtonTemplate>
           </button>
@@ -42,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="right">
+      <!-- <div class="right">
         <h5 class="content-title h5">your Referral earnings</h5>
 
         <p class="content-subtitle sub-s">Available to claim</p>
@@ -57,7 +53,7 @@
             Convert to $DUCK
           </CommonButtonTemplate>
         </button>
-      </div>
+      </div> -->
     </div>
 
     <div class="items">
@@ -154,7 +150,8 @@ const items = [
   padding: 2.5rem;
   margin-bottom: 3.5rem;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50%;
+  justify-content: center;
   @include mobile {
     display: none;
     padding: 2.5rem 1.5rem;
@@ -165,13 +162,13 @@ const items = [
 }
 .left {
   padding-right: 2.5rem;
-  border-right: 0.125rem solid var(--c-grey-3);
+  // border-right: 0.125rem solid var(--c-grey-3);
   @include mobile {
     border-right: none;
     padding-right: 0;
-    padding-bottom: 1.5rem;
-    border-bottom: 0.0625rem solid var(--c-grey-3);
-    margin-bottom: 1.5rem;
+    // padding-bottom: 1.5rem;
+    // border-bottom: 0.0625rem solid var(--c-grey-3);
+    // margin-bottom: 1.5rem;
   }
 }
 .right {
