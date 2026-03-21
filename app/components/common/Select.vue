@@ -29,7 +29,7 @@
 
       <button
         v-for="item in filteredItems"
-        :key="item.text"
+        :key="item.code ?? item.text"
         type="button"
         class="select-item"
         :class="{ active: item.text === modelValue.text }"
@@ -72,7 +72,7 @@
         <div class="select-mobile-list">
           <button
             v-for="item in filteredItems"
-            :key="item.text"
+            :key="item.code ?? item.text"
             type="button"
             class="select-item"
             :class="{ active: item.text === modelValue.text }"
@@ -96,6 +96,8 @@
 export type ExchangeItem = {
   text: string
   icon?: string
+  /** API currency code; used for list keys and search when `text` is a display label */
+  code?: string
 }
 
 const props = defineProps<{
@@ -120,7 +122,11 @@ const filteredItems = computed(() => {
 
   const query = searchQuery.value.trim().toLowerCase()
 
-  return props.items.filter((item) => item.text.toLowerCase().includes(query))
+  return props.items.filter((item) => {
+    const text = item.text.toLowerCase()
+    const code = (item.code ?? "").toLowerCase()
+    return text.includes(query) || code.includes(query)
+  })
 })
 
 function updateIsMobile() {

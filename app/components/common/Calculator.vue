@@ -37,9 +37,7 @@
 
       <div class="fields-wrap">
         <div class="amount">
-          <p class="amount-title sub-s">
-            Your amount<span v-if="selected.code"> ({{ selected.code }})</span>
-          </p>
+          <p class="amount-title sub-s">Your amount</p>
 
           <div class="calc-field">
             <input
@@ -70,11 +68,11 @@
           <span v-else-if="amountNum && !cryptoPerUsd">Rate unavailable</span>
 
           <span v-else-if="isBelowMinAmount">
-            Min payment is {{ minAmountDisplay }} {{ selected.code }}
+            Min payment is {{ minAmountDisplay }} {{ selected.text }}
           </span>
           <span v-else-if="estimatePending">Calculating...</span>
           <span v-else-if="estimatedAmountDisplay">
-            Pay: {{ estimatedAmountDisplay }} {{ selected.code }}
+            Pay: {{ estimatedAmountDisplay }} {{ selected.text }}
           </span>
           <span v-else>Enter amount</span>
         </p>
@@ -341,8 +339,8 @@ const priceData = computed(
 const exchange = computed<ExchangeItem[]>(() =>
   ((presaleData.value?.currencies as CurrencyItem[]) ?? [])
     .filter((item) => item.enable)
-    .map(({ code, logo_url }) => ({
-      text: code,
+    .map(({ code, display_code, logo_url }) => ({
+      text: display_code?.trim() || code,
       code,
       icon: "https://nowpayments.io" + logo_url,
     }))

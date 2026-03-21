@@ -9,6 +9,8 @@ export interface InvestorResponse {
 export type CurrencyItem = {
   id: number
   code: string
+  /** Human-readable label from API (e.g. USDT (ERC20)); falls back to `code` in UI if missing */
+  display_code?: string | null
   name: string
   logo_url: string
   enable: boolean
