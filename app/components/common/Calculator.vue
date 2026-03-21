@@ -37,7 +37,9 @@
 
       <div class="fields-wrap">
         <div class="amount">
-          <p class="amount-title sub-s">Your amount</p>
+          <p class="amount-title sub-s">
+            Your amount<span v-if="selected.code"> ({{ selected.code }})</span>
+          </p>
 
           <div class="calc-field">
             <input
@@ -63,7 +65,9 @@
 
         <p class="balance cap-s">
           <span v-if="minAmountPending">Checking minimum...</span>
+          <span v-else-if="ratePending">Loading rate...</span>
           <span v-else-if="!amountNum">Enter amount</span>
+          <span v-else-if="amountNum && !cryptoPerUsd">Rate unavailable</span>
 
           <span v-else-if="isBelowMinAmount">
             Min payment is {{ minAmountDisplay }} {{ selected.code }}
@@ -121,8 +125,10 @@
           class="btn-buy"
           :disabled="
             !amountNum ||
+            !cryptoPerUsd ||
             isBelowMinAmount ||
             estimatePending ||
+            ratePending ||
             minAmountPending ||
             createInvoicePending ||
             !isActive
@@ -255,6 +261,43 @@ watch(
   { immediate: true }
 )
 
+/** Amount of pay currency per 1 USD (from /estimate?usd_amount=1). Used to convert crypto input → USD for invoice. */
+const cryptoPerUsd = ref(0)
+const ratePending = ref(false)
+
+const fetchCryptoRate = async () => {
+  const code = selected.value.code
+  if (!code) {
+    cryptoPerUsd.value = 0
+    return
+  }
+
+  ratePending.value = true
+  try {
+    const response = await $fetch<EstimateResponse>("/api/presale/estimate", {
+      query: {
+        usd_amount: 1,
+        pay_currency: code,
+      },
+    })
+    const perUsd = Number(response?.estimated_amount ?? 0)
+    cryptoPerUsd.value = perUsd > 0 ? perUsd : 0
+  } catch (error) {
+    console.error("Crypto rate fetch error:", error)
+    cryptoPerUsd.value = 0
+  } finally {
+    ratePending.value = false
+  }
+}
+
+watch(
+  () => selected.value.code,
+  () => {
+    fetchCryptoRate()
+  },
+  { immediate: true }
+)
+
 const minAmountValue = computed(() => {
   return Number(minAmountData.value?.min_amount ?? 0)
 })
@@ -263,9 +306,15 @@ const estimatedAmountValue = computed(() => {
   return Number(estimateData.value?.estimated_amount ?? 0)
 })
 
+/** Input is in pay currency; invoice still uses USD. */
+const usdAmountNum = computed(() => {
+  if (!amountNum.value || !cryptoPerUsd.value) return 0
+  return amountNum.value / cryptoPerUsd.value
+})
+
 const isBelowMinAmount = computed(() => {
-  if (!estimatedAmountValue.value || !minAmountValue.value) return false
-  return estimatedAmountValue.value < minAmountValue.value
+  if (!amountNum.value || !minAmountValue.value) return false
+  return amountNum.value < minAmountValue.value
 })
 
 const minAmountDisplay = computed(() => {
@@ -314,9 +363,12 @@ const onSubmit = async () => {
 
   if (
     !amountNum.value ||
+    !usdAmountNum.value ||
     !isActive.value ||
     isBelowMinAmount.value ||
-    minAmountPending.value
+    minAmountPending.value ||
+    ratePending.value ||
+    !cryptoPerUsd.value
   )
     return
 
@@ -331,7 +383,7 @@ const onSubmit = async () => {
         method: "POST",
         body: {
           wallet_address: wallet,
-          usd_amount: amountNum.value,
+          usd_amount: usdAmountNum.value,
           success_url: `${origin}/presale?payment=success`,
           cancel_url: `${origin}/presale?payment=cancel`,
         },
@@ -367,7 +419,7 @@ const duckPriceUsd = computed(() => {
 })
 
 const fetchEstimate = async () => {
-  if (!amountNum.value || !selected.value.code) {
+  if (!usdAmountNum.value || !selected.value.code) {
     estimateData.value = null
     return
   }
@@ -377,7 +429,7 @@ const fetchEstimate = async () => {
   try {
     const response = await $fetch<EstimateResponse>("/api/presale/estimate", {
       query: {
-        usd_amount: amountNum.value,
+        usd_amount: usdAmountNum.value,
         pay_currency: selected.value.code,
       },
     })
@@ -390,13 +442,14 @@ const fetchEstimate = async () => {
   }
 }
 
-watch([amountNum, () => selected.value.code], () => {
+watch([amountNum, () => selected.value.code, cryptoPerUsd], () => {
   fetchEstimate()
 })
 
+/** Match backend `calculate_token_amount` / day schedule — same source as `/estimate`, not `config.token_price_usd`. */
 const receiveTokens = computed(() => {
-  if (!amountNum.value || !duckPriceUsd.value) return 0
-  return amountNum.value / duckPriceUsd.value
+  const t = Number(estimateData.value?.token_amount ?? 0)
+  return Number.isFinite(t) && t > 0 ? t : 0
 })
 
 const receiveDisplay = computed(() => {
